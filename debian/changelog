@@ -1,3 +1,9 @@
+gdbm (1.8.3-10pexip1) pexip; urgency=low
+
+  * Prepare Pexip packaging
+
+ -- John-Mark Bell <jmb@pexip.com>  Tue, 24 Dec 2013 19:16:20 +0000
+
 gdbm (1.8.3-10) unstable; urgency=low
 
   * Use multiarch library paths

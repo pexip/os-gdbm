@@ -1,11 +1,13 @@
 Source: gdbm
 Section: libs
 Priority: important
-Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
+Maintainer: Pexip AS <packaging@pexip.com>
+XSBC-Pexip-Original-Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
 Build-Depends: texinfo, quilt, libtool, automake, autoconf, autotools-dev,
 	dpkg-dev (>= 1.16.0)
 Standards-Version: 3.9.2
 Homepage: http://directory.fsf.org/project/gdbm/
+XS-Pexip-Upstream: http://archive.ubuntu.com/ubuntu/ precise
 
 Package: libgdbm3
 Architecture: any
