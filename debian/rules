@@ -18,6 +18,8 @@ DEB_HOST_MULTIARCH	:= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/buildflags.mk
 
+BUILD_DATE := $(shell dpkg-parsechangelog | sed -n -e 's/^Date: //p')
+
 CFLAGS += -O2 -g -Wall -D_REENTRANT
 
 ifeq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
@@ -88,8 +90,7 @@ binary-libgdbm: checkroot build
 	rmdir debian/tmp/usr/share/man
 
 	$(install_dir) debian/tmp/DEBIAN
-	$(install_file) debian/shlibs debian/tmp/DEBIAN/
-	$(install_script) debian/postinst debian/postrm debian/tmp/DEBIAN/
+	$(install_file) debian/shlibs debian/triggers debian/tmp/DEBIAN/
 
 	dh_installchangelogs -Pdebian/tmp -plibgdbm3
 	$(compress) debian/tmp/usr/share/doc/libgdbm3/*
@@ -102,6 +103,8 @@ binary-libgdbm: checkroot build
 	dpkg-gensymbols -plibgdbm3
 	chown -R root.root debian/tmp/
 	chmod -R go=rX debian/tmp/
+	find debian/tmp -depth -newermt '$(BUILD_DATE)' -print0 | \
+		xargs -0r touch --no-dereference --date='$(BUILD_DATE)'
 	dpkg --build debian/tmp/ ..
 
 binary-libgdbm-dev: checkroot build
@@ -119,6 +122,8 @@ binary-libgdbm-dev: checkroot build
 	done
 	#chmod 644 debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/*.la
 	rm -f debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/*.la
+	find debian/tmp -type f -name '*.a' -print0 | \
+		xargs -0 strip-nondeterminism --type ar
 
 	# libc6 owns ndbm.h, but some apps want gdbm's
 	mv debian/tmp/usr/include/ndbm.h debian/tmp/usr/include/gdbm-ndbm.h
@@ -154,6 +159,8 @@ binary-libgdbm-dev: checkroot build
 	cd debian/tmp/; find . -type f ! -regex '.*/DEBIAN/.*' -printf '%P\0' | xargs -r0 md5sum > DEBIAN/md5sums
 	chown -R root.root debian/tmp/
 	chmod -R go=rX debian/tmp/
+	find debian/tmp -depth -newermt '$(BUILD_DATE)' -print0 | \
+		xargs -0r touch --no-dereference --date='$(BUILD_DATE)'
 	dpkg --build debian/tmp/ ..
 
 define checkdir

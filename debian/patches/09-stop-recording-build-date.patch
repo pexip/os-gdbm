@@ -1,0 +1,18 @@
+Description: Stop recording build date
+ Recording the build date and time prevents gdbm to be build
+ reproducibly. Given it was only added to the version string when
+ certain macros were available, we simply disable the code
+ unconditionally.
+Author: Jérémy Bobbio <lunar@debian.org>
+
+--- gdbm-1.8.3.orig/version.c
++++ gdbm-1.8.3/version.c
+@@ -30,7 +30,7 @@
+ 
+ /* Keep a string with the version number in it! */
+ const char * gdbm_version = "GDBM version 1.8.3. 10/15/2002"
+-#if defined(__STDC__) && defined(__DATE__) && defined(__TIME__)
++#if 0 && defined(__STDC__) && defined(__DATE__) && defined(__TIME__)
+ 		" (built " __DATE__ " " __TIME__ ")"
+ #endif
+ 		;
