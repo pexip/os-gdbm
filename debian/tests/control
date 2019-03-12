@@ -1,0 +1,6 @@
+# Autopkgtest manual advices aganist @builddeps@
+Tests: simple
+Depends: @, @builddeps@
+Restrictions: allow-stderr
+
+# vim: ft=debcontrol
