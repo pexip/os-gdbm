@@ -1,3 +1,9 @@
+gdbm (1.18.1-4pexip1) pexip; urgency=medium
+
+  * Migrate to Buster
+
+ -- Vincent Sanders <vince@pexip.com>  Fri, 28 Feb 2020 21:02:29 +0000
+
 gdbm (1.18.1-4) unstable; urgency=medium
 
   * Install gdbm tools without large file support to facilate transition
