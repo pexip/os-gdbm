@@ -1,0 +1,5 @@
+#!/usr/bin/dh-exec
+/usr/lib/*/libgdbm_compat.so
+/usr/include/dbm.h
+/usr/include/ndbm.h
+compat/ndbm.h => /usr/include/gdbm-ndbm.h

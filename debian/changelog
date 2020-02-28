@@ -1,3 +1,234 @@
+gdbm (1.18.1-4) unstable; urgency=medium
+
+  * Install gdbm tools without large file support to facilate transition
+    of databases, created on Stretch and before. (Closes: #923609)
+  * Re-export upstream signing key without extra signatures.
+
+ -- Dmitry Bogatov <KAction@debian.org>  Tue, 12 Mar 2019 20:23:34 +0000
+
+gdbm (1.18.1-3) unstable; urgency=medium
+
+  * Make values of __DATE__ and __TIME__ macros independent of locale.
+  * Add future=+all into DEB_BUILD_MAINT_OPTIONS instead of manual
+    calls to getconf(1).
+
+ -- Dmitry Bogatov <KAction@debian.org>  Wed, 13 Feb 2019 14:08:31 -0500
+
+gdbm (1.18.1-2) unstable; urgency=medium
+
+  * Update Vcs-* fields in debian/control.
+  * Add `Build-Depends-Package' field into symbols file.
+
+ -- Dmitry Bogatov <KAction@debian.org>  Sat, 24 Nov 2018 17:58:05 +0000
+
+gdbm (1.18.1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Drop patches, introduced in previous release
+    (included in current upstream release)
+
+ -- Dmitry Bogatov <KAction@debian.org>  Sat, 27 Oct 2018 06:59:07 +0000
+
+gdbm (1.18-3) unstable; urgency=medium
+
+  * Set Rules-Requires-Root to `no'
+  * Replace `debian/compat' with modern `debhelper-compat' dependency
+  * Redefine __DATE__ and __TIME__ macros to ensure reproducible build.
+    + Remove obsoleted `03_ensure_reproducible_build.patch'
+  * Switch to gbp-applied workflow
+  * Backport upstream patches that restores compatibility with old databases
+    (Closes: #910911)
+  * Update symbols file (Backported patches introduced new internal symbol)
+
+ -- Dmitry Bogatov <KAction@debian.org>  Fri, 26 Oct 2018 21:53:18 +0000
+
+gdbm (1.18-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Dmitry Bogatov <KAction@gnu.org>  Sat, 06 Oct 2018 13:04:19 +0000
+
+gdbm (1.18-1) experimental; urgency=medium
+
+  * New upstream release
+  * Refresh patches
+  * Correct debian/copyright in regard of test suite
+  * Update standards version to 4.2.1
+
+ -- Dmitry Bogatov <KAction@gnu.org>  Thu, 27 Sep 2018 20:09:55 +0300
+
+gdbm (1.17-1) experimental; urgency=medium
+
+  * New upstream release
+  * Refresh patches
+
+ -- Dmitry Bogatov <KAction@gnu.org>  Tue, 31 Jul 2018 22:52:05 +0300
+
+gdbm (1.16-1) experimental; urgency=medium
+
+  * New upstream release
+  * Add build-dependency on bison
+  * Remove binary package libgdbm5, add libgdbm6 due upstream SONAME bump.
+  * Update debian/symbols
+  * Update standards version to 4.1.4 (no changes needed)
+
+ -- Dmitry Bogatov <KAction@gnu.org>  Fri, 06 Jul 2018 18:07:17 +0300
+
+gdbm (1.14.1-6) unstable; urgency=medium
+
+  * Fix description of libgdbm-compat4 binary package (Closes: #892846)
+    + Thanks: Vincent Lefevre <vincent@vinc17.net>
+
+ -- Dmitry Bogatov <KAction@gnu.org>  Wed, 14 Mar 2018 10:38:47 +0300
+
+gdbm (1.14.1-5) unstable; urgency=medium
+
+  * Update Vcs-* fields in debian/control.
+  * Bump compat version to 11 (no changes needed)
+  * Enable dietlibc build, unless pkg.gdbm.nodietlibc profile is in effect.
+  * Change section of bin:gdbm-l10n to 'localization'
+  * Fix spelling error on manpage
+  * Enable large file support (Closes: #340479)
+  * Reduce repetition in debian/control with ${S:fieldname}.
+    See deb-substvars(5)
+  * Note about legacy applications and bin:libgdbm-compat in
+    description of libgdbm-dev. (Closes: #891376)
+  * New autopkgtest: libgdbm successfully links and works with dietlibc.
+  * Temporary disable mmap IO when linking with dietlibc (otherwise
+    weird undefined reference errors to __divmoddi4 appear)
+  * Disable building with dietlibc on Ubuntu
+      + Suggested: Gianfranco Costamagna
+
+ -- Dmitry Bogatov <KAction@gnu.org>  Thu, 01 Mar 2018 22:09:44 +0300
+
+gdbm (1.14.1-4) unstable; urgency=medium
+
+  * Team upload
+  * Change priority to optional (Closes: #890832)
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Tue, 20 Feb 2018 11:58:39 +0100
+
+gdbm (1.14.1-3) unstable; urgency=medium
+
+  [ Helmut Grohne ]
+  * Add pkg.gdbm.nodietlibc build profile. (Closes: #889474)
+
+  [ Gianfranco Costamagna ]
+  * Team upload
+  * Fixup typo in breaks, leading to upgrade failures (Closes: #889107)
+    Thanks <anbe> for the useful bug report!
+  * Remove ia64 from dietlibc (Closes: #889057)
+  * Disable for now dietlibc build, it makes bootstrap really problematic,
+    and needs some extra work (Closes: #889080).
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Sat, 10 Feb 2018 13:45:31 +0100
+
+gdbm (1.14.1-2) unstable; urgency=medium
+
+  * Upload to unstable
+    (Closes: #867641, LP: #1001189)
+  * Refresh symbols
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Wed, 31 Jan 2018 13:24:25 +0100
+
+gdbm (1.14.1-1) experimental; urgency=medium
+
+  * New upstream release
+    - fixes GDBM_ERR_UNKNOWN_ERROR declaration
+      (clisp build error)
+  * Team upload
+  * Bump soname to 5
+  * Bump copyright years
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Mon, 29 Jan 2018 14:43:50 +0100
+
+gdbm (1.13-2) experimental; urgency=medium
+
+  * Team upload
+  * Depend on dietlibc only where available
+  * Bump std-version to 4.1.3
+  * Update symbol files
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Thu, 18 Jan 2018 19:35:48 +0100
+
+gdbm (1.13-1) experimental; urgency=medium
+
+  * New upstream release
+  * Team upload (better call it NMU, but NVM)
+  * Use the correct MAINT_OPTION to enable hardening
+  * Switch url in https mode
+  * Drop patches 01_*, 02_*: upstream
+  * Refresh patch 03_ensure_reproducible_build.patch
+  * Bump std-version to 4.1.2, no changes required
+  * Update copyright file
+  * Add new readline support
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Tue, 12 Dec 2017 17:40:51 +0100
+
+gdbm (1.12-4) experimental; urgency=medium
+
+  * Compile and install version of library, compiled with diet libc
+    in addition to GNU libc.
+  * Use debhelper compat 10, which provides --with autoreconf implicitly.
+
+ -- Dmitry Bogatov <KAction@gnu.org>  Wed, 21 Dec 2016 23:45:07 +0300
+
+gdbm (1.12-3) experimental; urgency=medium
+
+  * Separate translation files (/usr/share/locale/*) into new binary
+    package 'gdbm-l10n' to comply with Policy §8.2 (Closes: #828005)
+  * Add Replaces fields for 'libgdbm-dev' and 'gdbm-l10n' to avoid file
+    conflicts on upgrades
+  * Add Breaks+Replaces for 'libgdbm-compat-dev' to allow transition
+    from versions below 1.12. Policy §7.6 (Closes: #829050)
+  * Update homepage link from directory.fsf.org to gnu.org
+  * Add Multi-Arch field for libgdbm-dev
+
+ -- Dmitry Bogatov <KAction@gnu.org>  Fri, 24 Jun 2016 06:54:16 +0300
+
+gdbm (1.12-2) experimental; urgency=medium
+
+  * Install localization into libgdbm4 binary package
+  * Install info manual into libgdbm-dev binary package
+  * Separate dbm and ndbm compat layer into separate package
+
+ -- Dmitry Bogatov <KAction@gnu.org>  Wed, 15 Jun 2016 10:37:13 +0300
+
+gdbm (1.12-1) experimental; urgency=medium
+
+  * New maintainer (Closes: #826639)
+  * New upstream release (Closes: #682239, #340479)
+  * Update debian/watch
+      - use HTTP over FTP protocol. FTP have some issues with Tor.
+      - check GPG signature
+  * New binary package libgdbm4 over libgdbm3 due upstream changing ABI.
+  * Migrate debian/rules to `dh' sequencer (Closes: #436944, #589761)
+  * Remove obsolete README.source -- package no longer uses dpatch,
+    it now uses quilt
+  * Refresh patches and format them according dep3
+    - 01_texinfo-usr-local.patch: upstream moved texinfo manual under doc/
+  * Drop no longer needed patches
+     - 02_zero-headers.patch: code seems to be correct as-is,
+       no bug reference is present in patch
+     - 03-Makefile.in.patch: upstream now uses Automake
+     - 04_fix-gdbm-compat-linking.patch: compatibility with ancient (pre-2.0)
+       libtool is not needed anymore.
+     - 05_handle-short-read.patch: implemented upstream
+     - 06_manpage-cleanup.patch: hyphen issues fixed upstream
+     - 07-link-flags.patch: upstream now uses Automake
+     - 08-651521-libtool-mode-install.patch: upstream now uses Automake
+     - 08-709905-gdbm.texinfo.patch: fixed upstream
+  * Reformat debian/copyright according dep5
+  * New binary package 'gdbtool' for command line utilities, provided by
+    upstream.
+  * Enable hardening
+  * Fix spelling in manual pages
+  * Regenerate 'symbols' file
+  * Add Vcs-* fields in debian/control
+  * Install upstream NEWS and NOTE-WARNING into devel binary package
+
+ -- Dmitry Bogatov <KAction@gnu.org>  Sat, 11 Jun 2016 14:23:30 +0300
+
 gdbm (1.8.3-14pexip1) pexip; urgency=medium
 
   * Migrate to Stretch
@@ -62,7 +293,7 @@ gdbm (1.8.3-12) unstable; urgency=low
   * Standards Version is 3.9.4
 
   [ Wookey ]
-  * Fix crossbuild to use correct strip binary 
+  * Fix crossbuild to use correct strip binary
     Closes: #604648
 
  -- Anibal Monsalve Salazar <anibal@debian.org>  Sun, 02 Jun 2013 08:43:36 +1000
@@ -107,7 +338,7 @@ gdbm (1.8.3-9) unstable; urgency=low
 
 gdbm (1.8.3-8) unstable; urgency=low
 
-  * Build depend on quilt 
+  * Build depend on quilt
 
  -- Anibal Monsalve Salazar <anibal@debian.org>  Sat, 07 Nov 2009 21:32:33 +1100
 
@@ -118,7 +349,7 @@ gdbm (1.8.3-7) unstable; urgency=low
   * Non-maintainer upload.
   * Replace obsoleted automake1.4 with automake; gdbm does not use
     'automake' itself but uses 'aclocal' which is provided by that package
-    Closes: 549099 
+    Closes: 549099
   * Fix patch-system-but-no-source-readme: add README.source refering to
     /usr/share/doc/dpatch/README.source.gz
   * Fix debian-rules-ignores-make-clean-error: test for Makefile presence
@@ -161,7 +392,7 @@ gdbm (1.8.3-5) unstable; urgency=low
 
 gdbm (1.8.3-4) unstable; urgency=low
 
-  * New maintainer; closes: #496710 
+  * New maintainer; closes: #496710
   * libgdbm3 depends on ${misc:Depends}
   * Add homepage control header
   * Add debian/watch

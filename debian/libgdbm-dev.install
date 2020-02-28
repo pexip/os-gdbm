@@ -1,0 +1,5 @@
+/usr/include/gdbm.h
+/usr/share/man/man3/*
+/usr/share/info/*
+/usr/lib/*/libgdbm.a
+/usr/lib/*/libgdbm.so
