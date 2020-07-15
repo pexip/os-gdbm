@@ -1,3 +1,9 @@
+gdbm (1.18.1-4pexip2) pexip; urgency=medium
+
+  * Rebuild in buster environment
+
+ -- Steve McIntyre <steve.mcintyre@pexip.com>  Wed, 15 Jul 2020 21:33:08 +0000
+
 gdbm (1.18.1-4pexip1) pexip; urgency=medium
 
   * Migrate to Buster
