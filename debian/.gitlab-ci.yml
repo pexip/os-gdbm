@@ -1,12 +1,9 @@
-image: registry.gitlab.com/eighthave/ci-image-git-buildpackage:latest
-pages:
-  stage: deploy
-  artifacts:
-    paths:
-      - public
-  script:
-    - gitlab-ci-enable-experimental
-    - gitlab-ci-git-buildpackage
-    - gitlab-ci-lintian
-    - gitlab-ci-autopkgtest
-    - gitlab-ci-aptly
+include:
+  - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/salsa-ci.yml
+  - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/pipeline-jobs.yml
+reprotest:
+  extends: .test-reprotest
+  variables:
+    REPROTEST_EXTRA_ARGS: '--variations=+all,-kernel'
+variables:
+  RELEASE: experimental

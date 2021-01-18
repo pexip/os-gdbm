@@ -15,7 +15,7 @@
 @SET_MAKE@
 
 # This file is part of GDBM.                                   -*- Makefile -*-
-# Copyright (C) 2007, 2011, 2014-2018 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2011, 2014-2020 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -283,6 +283,7 @@ LN_S = @LN_S@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
+LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
@@ -375,7 +376,8 @@ gdbm_TEXINFOS = \
   fdl.texi
 
 dist_man_MANS = gdbm.3 gdbm_dump.1 gdbm_load.1 gdbmtool.1
-GENDOCS = $(srcdir)/gendocs.sh --no-copy-images --html '--init-file=$(abs_srcdir)/html.init'
+GENDOCS = perl gendocs.pl
+EXTRA_DIST = gendocs.pl webdoc.init
 TEXI2DVI = texi2dvi -t '@set $(RENDITION)'
 all: all-am
 
@@ -928,10 +930,13 @@ uninstall-man: uninstall-man1 uninstall-man3
 # TEXINPUTS=/usr/share/texmf/pdftex/plain/misc/ is ok for most distributions
 .PHONY: manual
 manual:
+	rm -rf manual
 	TEXINPUTS=$(srcdir):$(top_srcdir)/build-aux:$(TEXINPUTS) \
-	 MAKEINFO="$(MAKEINFO) $(MAKEINFOFLAGS)" \
+	 MAKEINFO="$(MAKEINFO) $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS)" \
 	 TEXI2DVI="$(TEXI2DVI) -t @finalout" \
-	 $(GENDOCS) --no-copy-images $(PACKAGE) '$(PACKAGE_NAME) manual'
+	 $(GENDOCS) -C manual -o otherdoc.texi $(PACKAGE) otherdoc.texi.in
+	$(MAKEINFO) $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS) -DWEBDOC \
+	   --html --init-file=webdoc.init $(info_TEXINFOS) -o manual
 
 # Checking
 check-tabs:

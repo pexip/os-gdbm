@@ -20,7 +20,13 @@ readonly src='debian/tests/files/read-back.c'
 readonly exe="${AUTOPKGTEST_TMP:-/tmp}/read-back"
 readonly db="${AUTOPKGTEST_TMP:-/tmp}/example.gdbm"
 
-gcc "${src}" -lgdbm -o "${exe}"
+if [ -n "${DEB_HOST_GNU_TYPE:-}" ]; then
+    CC="$DEB_HOST_GNU_TYPE-gcc"
+else
+    CC=gcc
+fi
+
+"$CC" "${src}" -lgdbm -o "${exe}"
 "${exe}" "${db}"
 
 if [ "$(dpkg -s dietlibc-dev | grep -o installed)" = installed ] \

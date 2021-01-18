@@ -32,6 +32,7 @@ Description: ${S:X-Short-Desc} (runtime version) ${S:X-Long-Desc}
 
 Package: gdbm-l10n
 Architecture: all
+Multi-Arch: foreign
 Replaces: libgdbm4 (= 1.12-2)
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Section: localization

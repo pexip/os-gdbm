@@ -1,5 +1,5 @@
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2018 Free
+   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2020 Free
    Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
@@ -24,9 +24,7 @@
 #include <signal.h>
 #include <pwd.h>
 #include <sys/ioctl.h>
-#ifdef HAVE_SYS_TERMIOS_H
-# include <sys/termios.h>
-#endif
+#include <termios.h>
 #include <stdarg.h>
 #ifdef HAVE_LOCALE_H
 # include <locale.h>
@@ -37,8 +35,6 @@ GDBM_FILE gdbm_file = NULL;   /* Database to operate upon */
 datum key_data;               /* Current key */
 datum return_data;            /* Current data */
 int open_mode;                /* Default open mode */
-
-#define SIZE_T_MAX ((size_t)-1)
 
 unsigned input_line;
 
@@ -1677,7 +1673,7 @@ kvpair_list (struct locus *loc, struct slist *s)
   return p;
 }  
 
-static void
+void
 kvlist_free (struct kvpair *kvp)
 {
   while (kvp)
@@ -1697,6 +1693,15 @@ kvlist_free (struct kvpair *kvp)
       free (kvp);
       kvp = next;
     }
+}
+
+struct kvpair *
+kvlist_find (struct kvpair *kv, char const *tag)
+{
+  for (; kv; kv = kv->next)
+    if (kv->key && strcmp (kv->key, tag) == 0)
+      break;
+  return kv;
 }
 
 int

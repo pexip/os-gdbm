@@ -1,3 +1,84 @@
+2020-12-23  Sergey Poznyakoff  <gray@gnu.org>
+
+	Version 1.19
+
+	Update the docs
+
+	* doc/Makefile.am: Use gendocs.pl to generate web version of the
+	manual.
+	* doc/gdbm.texi: Update.
+	* doc/gendocs.pl: New file.
+	* doc/otherdoc.texi.in: New file.
+	* doc/.gitignore: Ignore otherdoc.texi.
+	* doc/webdoc.init: New file.
+	* doc/gendocs.sh: Remove.
+	* doc/gendocs_template: Remove.
+	* doc/html.init: Remove.
+
+2020-12-23  Sergey Poznyakoff  <gray@gnu.org.ua>
+
+	Update copyright years
+
+2020-12-23  Sergey Poznyakoff  <gray@gnu.org>
+
+	Remove duplicate global declarations
+
+	* src/gdbm_dump.c: Add missing I18N.
+	* src/gdbm_load.c: Likewise.
+	* src/parseopt.c (parseopt_program_doc)
+	(parseopt_program_args): Remove duplicate declarations.
+
+2020-10-09  Sergey Poznyakoff  <gray@gnu.org>
+
+	Implement tagged structure initializers.
+
+	* NEWS: Document changes.
+	* doc/gdbm.texi: Document changes.
+	* src/datconv.c (datum_scan_tag): Implement tagged structure
+	initialization.
+	* src/gdbmtool.c (kvlist_free): Made extern.
+	(kvlist_find): New function.
+	* src/gdbmtool.h (kvlist_find, kvlist_free)
+	(dsegm_list_find): New protos.
+	(dsegm_free_list): Rename to dsegm_list_free. All uses changed.
+	* src/gram.y: Forbid duplicate tags in kvlist.
+
+2020-10-08  Sergey Poznyakoff  <gray@gnu.org>
+
+	Bugfixes.
+
+	* doc/gdbm.texi: Fix the description of a sample content structure.
+	* src/datconv.c (datum_scan_notag): Proceed to the next kvpair only
+	for segments of the FDEF_FLD type.
+
+2019-10-29  Sergey Poznyakoff  <gray@gnu.org>
+
+	Pre-read the memory mapped regions on systems that support it
+
+	* src/mmap.c (GDBM_MMAP_FLAGS): Define to MAP_POPULATE or
+	MAP_PREFAULT_READ, if available.
+	(_gdbm_internal_remap): Use GDBM_MMAP_FLAGS.
+
+	Minor changes
+
+	* src/gdbmconst.h: Don't redefine SIZE_T_MAX
+	* src/gdbmtool.c: Likewise.
+	Include <termios.h>, instead of <sys/termios.h>
+	* configure.ac: Don't check for termios.h
+	* tests/closerr.c: Minor fixes.
+
+2019-04-08  Sergey Poznyakoff  <gray@gnu.org>
+
+	Update copyright years
+
+	Preserve locking type during database reorganization
+
+	* src/recover.c (_gdbm_finish_transfer): Preserve locking type.
+
+2018-11-27  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix typo in the manpage.
+
 2018-10-27  Sergey Poznyakoff  <gray@gnu.org>
 
 	Version 1.18.1
@@ -1041,48 +1122,6 @@
 2016-07-08  Sergey Poznyakoff  <gray@gnu.org.ua>
 
 	Use C99 array initializers in src/gdbmerrno.c
-
-	Improve _gdbm_findkey interface.
-
-	* doc/gdbm.texi: Document gdbm_exists in detail.
-	* src/findkey.c (_gdbm_findkey): return parameters can be
-	NULL.
-	* src/gdbmexists.c (gdbm_exists): Remove unnecessary
-	local variables.  Reset gdbm_errno to 0 if the key was
-	not found.
-	* src/gdbmdelete.c (gdbm_delete): Remove unnecessary
-	local variables.
-	* src/gdbmfetch.c: Likewise.
-	* src/gdbmseq.c: Likewise.
-	* src/gdbmstore.c: Likewise.
-
-	Fix error handling in gdbm_fetch, gdbm_firstkey, and gdbm_nextkey.
-
-	* src/gdbmfetch.c: Hanlde out of memory error.
-	* src/findkey.c: Set gdbm_errno to GDBM_ITEM_NOT_FOUND
-	if nothing was found.
-	* src/gdbmdelete.c: Don't set gdbm_errno after
-	_gdbm_findkey returns -1.  It's been done already.
-	* src/gdbmexp.c (gdbm_export_to_file): Return -1 if
-	gdbm_fetch fails.
-	* src/gdbmseq.c (get_next_key): Set gdbm_errno to
-	GDBM_ITEM_NOT_FOUND if there's no next key.
-	Don't call _gdbm_fatal on out of memory condition.
-	(gdbm_nextkey): Set gdbm_errno to
-	GDBM_ITEM_NOT_FOUND if there's no next key.
-	* src/gdbmtool.c (fetch_handler)
-	(firstkey_handler,nextkey_handler): Check gdbm_errno.
-	* src/gdbmstore.c: Handle error return from _gdbm_findkey.
-	* tests/gtdump.c: Likewise.
-	* tests/gtfetch.c: Likewise.
-
-	* doc/gdbm.texi: Document changes.
-	* doc/gdbm.3: Likewise.
-
-	* configure.ac: Version 1.12.90
-	* NEWS: Update.
-
-	* .gitignore: Update.
 
 2016-07-07  Sergey Poznyakoff  <gray@gnu.org.ua>
 
