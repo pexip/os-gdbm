@@ -1,6 +1,6 @@
 %{
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2018 Free
+   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2020 Free
    Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
@@ -148,6 +148,13 @@ kvlist    : kvpair
 	    }
           | kvlist ',' kvpair
 	    {
+	      if (kvlist_find ($1.head, $3->key))
+		{
+		  lerror (&@3, _("duplicate tag: %s"), $3->key);
+		  kvlist_free ($1.head);
+		  $1.head = $1.tail = NULL;
+		  YYERROR;
+		}
 	      $1.tail->next = $3;
 	      $1.tail = $3;
 	      $$ = $1;
@@ -191,7 +198,7 @@ string    : T_IDENT
 defn      : T_DEF defid { begin_def (); } defbody
             {
 	      end_def ();
-	      dsegm_free_list (dsdef[$2]);
+	      dsegm_list_free (dsdef[$2]);
 	      dsdef[$2] = $4;
 	    }
           ;
@@ -299,7 +306,7 @@ asgn      : T_IDENT
 		default:
 		  lerror (&@1, _("unexpected error setting %s: %d"), $1, rc);
 		}
-	      free($1);
+	      free ($1);
 	    }
           | T_IDENT '=' string
 	    {
@@ -349,7 +356,7 @@ var       : T_IDENT
 		  lerror (&@1, _("%s: variable cannot be unset"), $1);
 		  break;
 		}
-	      free($1);
+	      free ($1);
 	    }
           ;
 

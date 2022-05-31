@@ -1,5 +1,5 @@
 # This file is part of GDBM.                                   -*- autoconf -*-
-# Copyright (C) 2007, 2009, 2011, 2013-2014, 2016-2018 Free Software
+# Copyright (C) 2007, 2009, 2011, 2013-2014, 2016-2020 Free Software
 # Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
@@ -16,8 +16,8 @@
 # along with GDBM. If not, see <http://www.gnu.org/licenses/>. */
 
 m4_define([_GDBM_VERSION_MAJOR], 1)
-m4_define([_GDBM_VERSION_MINOR], 18)
-m4_define([_GDBM_VERSION_PATCH], 1)
+m4_define([_GDBM_VERSION_MINOR], 19)
+dnl m4_define([_GDBM_VERSION_PATCH], 0)
 
 AC_INIT([gdbm],
         _GDBM_VERSION_MAJOR._GDBM_VERSION_MINOR[]m4_ifdef([_GDBM_VERSION_PATCH],._GDBM_VERSION_PATCH),
@@ -96,7 +96,7 @@ dnl Internationalization macros.
 AM_GNU_GETTEXT([external], [need-ngettext])
 AM_GNU_GETTEXT_VERSION(0.18)
 
-AC_CHECK_HEADERS([sys/file.h sys/termios.h string.h locale.h getopt.h])
+AC_CHECK_HEADERS([sys/file.h string.h locale.h getopt.h])
 
 AC_CHECK_LIB(dbm, main)
 AC_CHECK_LIB(ndbm, main)

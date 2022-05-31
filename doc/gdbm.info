@@ -1,9 +1,9 @@
-This is gdbm.info, produced by makeinfo version 5.9.93 from gdbm.texi.
+This is gdbm.info, produced by makeinfo version 6.7 from gdbm.texi.
 
 Published by the Free Software Foundation, 51 Franklin Street, Fifth
 Floor Boston, MA 02110-1301, USA
 
-   Copyright (C) 1989-1999, 2007-2018 Free Software Foundation, Inc.
+   Copyright (C) 1989-1999, 2007-2020 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -26,9 +26,9 @@ The GNU database manager.
 *************************
 
 GNU 'dbm' is a library of functions implementing a hashed database on a
-disk file.  This manual documents GNU 'dbm' Version 1.18.1 ('gdbm').
-The software was originally written by Philip A. Nelson.  This document
-was originally written by Pierre Gaumond from texts written by Phil.
+disk file.  This manual documents GNU 'dbm' Version 1.19 ('gdbm').  The
+software was originally written by Philip A. Nelson.  This document was
+originally written by Pierre Gaumond from texts written by Phil.
 
 * Menu:
 
@@ -36,7 +36,6 @@ Introduction:
 
 * Copying::                    Your rights.
 * Intro::                      Introduction to GNU dbm.
-* List::                       List of functions.
 
 Functions:
 
@@ -112,7 +111,7 @@ License.)  A copy the GNU General Public License is included with the
 distribution of 'gdbm'.
 
 
-File: gdbm.info,  Node: Intro,  Next: List,  Prev: Copying,  Up: Top
+File: gdbm.info,  Node: Intro,  Next: Open,  Prev: Copying,  Up: Top
 
 2 Introduction to GNU 'dbm'.
 ****************************
@@ -128,15 +127,16 @@ Each key must be unique and each key is paired with only one data item.
 The keys can not be directly accessed in sorted order.  The basic unit
 of data in 'gdbm' is the structure:
 
-       typedef struct {
-                  char *dptr;
-                  int  dsize;
-               } datum;
+     typedef struct
+     {
+        char *dptr;
+        int  dsize;
+     } datum;
 
    This structure allows for arbitrary sized keys and data items.
 
-   The key/data pairs are stored in a 'gdbm' disk file, called a 'gdbm'
-database.  An application must open a 'gdbm' database to be able
+   The key/data pairs are stored in a 'gdbm' disk file, called a "gdbm
+database".  An application must open a 'gdbm' database to be able
 manipulate the keys and data contained in the database.  'gdbm' allows
 an application to have multiple databases open at the same time.  When
 an application opens a 'gdbm' database, it is designated as a 'reader'
@@ -144,46 +144,126 @@ or a 'writer'.  A 'gdbm' database can be opened by at most one writer at
 a time.  However, many readers may open the database simultaneously.
 Readers and writers can not open the 'gdbm' database at the same time.
 
-
-File: gdbm.info,  Node: List,  Next: Open,  Prev: Intro,  Up: Top
+   To use the 'gdbm' functions, the programmer must first include the
+header file 'gdbm.h'.
 
-3 List of functions.
-********************
+   This file defines, among others, the 'GDBM_FILE' data type, an opaque
+pointer to the structure that represents the opened gdbm database.  To
+access the database, the programmer must first open it using the
+'gdbm_open' function.  The function takes several arguments, the name of
+the database file being one of them, and returns a 'GDBM_FILE' object on
+success.  This object is then passed to other functions in order to
+manipulate the database.  When the database is no longer needed, the
+programmer "closes" it using the 'gdbm_close' call.
 
-The following is a quick list of the functions contained in the 'gdbm'
-library.  The include file 'gdbm.h', that can be included by the user,
-contains a definition of these functions.
+   These and other functions are discussed in detail in chapters that
+follow.  Here we show an example illustrating the use of 'gdbm' to look
+up a key in the database.
 
+     #include <stdio.h>
+     #include <string.h>
      #include <gdbm.h>
 
-     GDBM_FILE gdbm_open(name, block_size, flags, mode, fatal_func);
-     int gdbm_close(dbf);
-     int gdbm_store(dbf, key, content, flag);
-     datum gdbm_fetch(dbf, key);
-     int gdbm_delete(dbf, key);
-     datum gdbm_firstkey(dbf);
-     datum gdbm_nextkey(dbf, key);
-     int gdbm_reorganize(dbf);
-     int gdbm_sync(dbf);
-     int gdbm_exists(dbf, key);
-     char *gdbm_strerror(errno);
-     int gdbm_setopt(dbf, option, value, size);
-     int gdbm_fdesc(dbf);
-     int gdbm_export (GDBM_FILE, const char *, int, int);
-     int gdbm_export_to_file (GDBM_FILE dbf, FILE *fp);
-     int gdbm_import (GDBM_FILE, const char *, int);
-     int gdbm_import_from_file (GDBM_FILE dbf, FILE *fp, int flag);
-     int gdbm_count (GDBM_FILE dbf, gdbm_count_t *pcount);
-     int gdbm_version_cmp (int const a[], int const b[]);
+     int
+     main (int argc, char **argv)
+     {
+       GDBM_FILE gdbf;     /* Database file object pointer */
+       datum key, content; /* Key and content data */
+       int status = 0;     /* Exit status of the program: 0 - OK, 1 - key
+                              not found, 2 - error. */
 
-   The 'gdbm.h' include file is often in the '/usr/include' directory.
-(The actual location of 'gdbm.h' depends on your local installation of
-'gdbm'.)
+       /*
+        * Validate arguments.
+        */
+       if (argc != 3)
+         {
+           fprintf (stderr, "usage: %s DBFILE KEY\n", argv[0]);
+           return 2;
+         }
+
+       /*
+        * Open the database.  The GDBM_READER flag indicates that we only intend
+        * to read from it.
+        */
+       gdbf = gdbm_open (argv[1], 0, GDBM_READER, 0, NULL);
+       if (gdbf == NULL)
+         {
+           fprintf (stderr, "can't open database: %s\n",
+                    gdbm_strerror (gdbm_errno));
+         }
+
+       /*
+        * Prepare the lookup key.  Notice, that the terminating \0 character
+        * is not counted in the dsize computation.
+        */
+       key.dptr = argv[2];
+       key.dsize = strlen (argv[2]);
+
+       /*
+        * Look up the key in the database.
+        */
+       content = gdbm_fetch (gdbf, key);
+
+       /*
+        * Analyze the return.
+        */
+       if (content.dptr != NULL)
+         {
+           /*
+            * The key is found.  Print the content on the stdout and
+            * indicate success.
+            */
+           fwrite (content.dptr, content.dsize, 1, stdout);
+           putchar ('\n');
+           status = 0;
+         }
+       else if (gdbm_errno == GDBM_ITEM_NOT_FOUND)
+         {
+           /*
+            * There is no such key in the database.
+            */
+           fprintf (stderr, "no such key\n");
+           status = 1;
+         }
+       else
+         {
+           /*
+            * An error occurred.
+            */
+           fprintf (stderr, "%s\n", gdbm_db_strerror (gdbf));
+           status = 2;
+         }
+
+       /*
+        * Close the database and return.
+        */
+       gdbm_close (gdbf);
+       return status;
+     }
+
+   To compile this example, run
+
+     cc -oexample example.c -lgdbm
+
+   To run it, you will need an example database.  The easiest way to
+create it is by using the 'gdbtool' program, which is part of the 'gdbm'
+package (*note gdbmtool::):
+
+     $ gdbmtool test.gdbm store foo bar
+
+This creates database file 'test.gdbm' and stores a single record in it.
+The record's key is 'foo', and the value is 'bar'.  Now you can run the
+example program to see how it works:
+
+     $ ./example test.gdbm foo
+     bar
+     $ ./example test.gdbm baz
+     no such key
 
 
-File: gdbm.info,  Node: Open,  Next: Close,  Prev: List,  Up: Top
+File: gdbm.info,  Node: Open,  Next: Close,  Prev: Intro,  Up: Top
 
-4 Opening the database.
+3 Opening the database.
 ***********************
 
  -- gdbm interface: GDBM_FILE gdbm_open (const char *NAME, int
@@ -265,7 +345,7 @@ File: gdbm.info,  Node: Open,  Next: Close,  Prev: List,  Up: Top
 
      Alternative function for opening a GDBM database.  The FD argument
      is the file descriptor of the database file obtained by a call to
-     'open'(2), 'creat'(2) or similar funcionss.  The descriptor is not
+     'open'(2), 'creat'(2) or similar functions.  The descriptor is not
      dup'ed, and will be closed when the returned GDBM_FILE is closed.
      Use 'dup'(2) if that is not desirable.
 
@@ -275,7 +355,7 @@ File: gdbm.info,  Node: Open,  Next: Close,  Prev: List,  Up: Top
 
 File: gdbm.info,  Node: Close,  Next: Count,  Prev: Open,  Up: Top
 
-5 Closing the database.
+4 Closing the database.
 ***********************
 
 It is important that every file opened is also closed.  This is needed
@@ -295,19 +375,19 @@ to update the reader/writer count on the file:
 
 File: gdbm.info,  Node: Count,  Next: Store,  Prev: Close,  Up: Top
 
-6 Number of Records
+5 Number of Records
 *******************
 
  -- gdbm interface: int gdbm_count (GDBM_FILE DBF, gdbm_count_t *PCOUNT)
      Counts number of records in the database DBF.  On success, stores
-     it in the memory location pointed to by PCOUNT and return 0.  On
+     it in the memory location pointed to by PCOUNT and returns 0.  On
      error, sets 'gdbm_errno' (if relevant, also 'errno') and returns
      -1.
 
 
 File: gdbm.info,  Node: Store,  Next: Fetch,  Prev: Count,  Up: Top
 
-7 Inserting and replacing records in the database.
+6 Inserting and replacing records in the database.
 **************************************************
 
  -- gdbm interface: int gdbm_store (GDBM_FILE DBF, datum KEY, datum
@@ -332,6 +412,9 @@ File: gdbm.info,  Node: Store,  Next: Fetch,  Prev: Count,  Up: Top
 
      This function can return the following values:
 
+     0
+          Success.  The value of CONTENT is keyed by KEY in the
+          database.
      -1
           The item was not stored in the database because the caller was
           not an official writer or either KEY or CONTENT have a 'NULL'
@@ -343,23 +426,19 @@ File: gdbm.info,  Node: Store,  Next: Fetch,  Prev: Count,  Up: Top
      +1
           The item was not stored because the argument FLAG was
           'GDBM_INSERT' and the KEY was already in the database.
-     0
-          No error.  The value of CONTENT is keyed by KEY.  The file on
-          disk is updated to reflect the structure of the new database
-          before returning from this function.
 
    If you store data for a KEY that is already in the data base, 'gdbm'
 replaces the old data with the new data if called with 'GDBM_REPLACE'.
 You do not get two data items for the same 'key' and you do not get an
 error from 'gdbm_store'.
 
-   The size in 'gdbm' is not restricted like 'dbm' or 'ndbm'.  Your data
-can be as large as you want.
+   The size of datum in 'gdbm' is restricted only by the maximum value
+for an object of type 'int' (type of the 'dsize' member of 'datum').
 
 
 File: gdbm.info,  Node: Fetch,  Next: Delete,  Prev: Store,  Up: Top
 
-8 Searching for records in the database.
+7 Searching for records in the database.
 ****************************************
 
  -- gdbm interface: datum gdbm_fetch (GDBM_FILE DBF, datum KEY)
@@ -414,15 +493,14 @@ File: gdbm.info,  Node: Fetch,  Next: Delete,  Prev: Store,  Up: Top
 
 File: gdbm.info,  Node: Delete,  Next: Sequential,  Prev: Fetch,  Up: Top
 
-9 Removing records from the database.
+8 Removing records from the database.
 *************************************
 
 To remove some data from the database, use the 'gdbm_delete' function.
 
  -- gdbm interface: int gdbm_delete (GDBM_FILE DBF, datum KEY)
      Deletes the data associated with the given KEY, if it exists in the
-     database DBF.  The file on disk is updated to reflect the structure
-     of the new database before returning from this function.
+     database DBF.
 
      The parameters are:
 
@@ -438,8 +516,8 @@ To remove some data from the database, use the 'gdbm_delete' function.
 
 File: gdbm.info,  Node: Sequential,  Next: Reorganization,  Prev: Delete,  Up: Top
 
-10 Sequential access to records.
-********************************
+9 Sequential access to records.
+*******************************
 
 The next two functions allow for accessing all items in the database.
 This access is not 'key' sequential, but it is guaranteed to visit every
@@ -456,14 +534,14 @@ This access is not 'key' sequential, but it is guaranteed to visit every
      means that the database contains no data.  Other value means an
      error occurred.
 
-     Otherwise, 'dptr' points to a memory block obtained from 'malloc',
+     On success, 'dptr' points to a memory block obtained from 'malloc',
      which holds the key value.  The caller is responsible for freeing
      this memory block when no longer needed.
 
  -- gdbm interface: datum gdbm_nextkey (GDBM_FILE DBF, datum PREV)
-     This function continues the iteration over the keys in DBF,
-     initiated by 'gdbm_firstkey'.  The parameter PREV holds the value
-     returned from a previous call to 'gdbm_nextkey' or 'gdbm_firstkey'.
+     This function continues iteration over the keys in DBF, initiated
+     by 'gdbm_firstkey'.  The parameter PREV holds the value returned
+     from a previous call to 'gdbm_nextkey' or 'gdbm_firstkey'.
 
      The function returns next key from the database.  If the 'dptr'
      field in the returned datum is 'NULL' inspect the 'gdbm_errno'
@@ -475,7 +553,7 @@ This access is not 'key' sequential, but it is guaranteed to visit every
      which holds the key value.  The caller is responsible for freeing
      this memory block when no longer needed.
 
-   These functions were intended to visit the database in read-only
+   These functions are intended to visit the database in read-only
 algorithms, for instance, to validate the database or similar
 operations.  The usual algorithm for sequential access is:
 
@@ -495,13 +573,12 @@ operations.  The usual algorithm for sequential access is:
              key = nextkey;
           }
 
-   Care should be taken when the 'gdbm_delete' function is used in such
-a loop.  File visiting is based on a "hash table".  The 'gdbm_delete'
-function re-arranges the hash table to make sure that any collisions in
-the table do not leave some item "un-findable".  The original key order
-is _not_ guaranteed to remain unchanged in all instances.  So it is
-possible that some key will not be visited if a loop like the following
-is executed:
+   Don't use 'gdbm_delete' or 'gdbm_store' in such a loop.  File
+visiting is based on a "hash table".  The 'gdbm_delete' function
+re-arranges the hash table to make sure that any collisions in the table
+do not leave some item "un-findable".  The original key order is _not_
+guaranteed to remain unchanged in all instances.  So it is possible that
+some key will not be visited if a loop like the following is executed:
 
         key = gdbm_firstkey (dbf);
         while (key.dptr)
@@ -519,7 +596,7 @@ is executed:
 
 File: gdbm.info,  Node: Reorganization,  Next: Sync,  Prev: Sequential,  Up: Top
 
-11 Database reorganization.
+10 Database reorganization.
 ***************************
 
 The following function should be used very seldom.
@@ -547,7 +624,7 @@ after a successful reorganization.
 
 File: gdbm.info,  Node: Sync,  Next: Flat files,  Prev: Reorganization,  Up: Top
 
-12 Database Synchronization
+11 Database Synchronization
 ***************************
 
 Unless your database was opened with the 'GDBM_SYNC' flag, 'gdbm' does
@@ -575,7 +652,7 @@ current time.
 
 File: gdbm.info,  Node: Flat files,  Next: Errors,  Prev: Sync,  Up: Top
 
-13 Export and Import
+12 Export and Import
 ********************
 
 'Gdbm' databases can be converted into so-called "flat format" files.
@@ -599,13 +676,13 @@ databases are not portable between machines, unless you follow some
 stringent rules on what data is written to them and how it is
 interpreted.
 
-   The GDBM version 1.18.1 supports two flat file formats.  The "binary"
+   The GDBM version 1.19 supports two flat file formats.  The "binary"
 flat file format was first implemented in GDBM version 1.9.1.  This
 format stores only key/data pairs, it does not keep information about
 the database file itself.  As its name implies, files in this format are
 binary files.
 
-   The "ascii" flat file format encodes all data in base64 and stores
+   The "ascii" flat file format encodes all data in Base64 and stores
 not only key/data pairs, but also the original database file metadata,
 such as file name, mode and ownership.  Files in this format can be sent
 without additional encapsulation over transmission channels that
@@ -748,8 +825,7 @@ from a flat file is called "importing" or "loading" the database.
      earlier.  It dumps the database to a file in binary dump format and
      is entirely equivalent to
 
-          gdbm_dump(DBF, EXPORTFILE, GDBM_DUMP_FMT_BINARY,
-                    FLAG, MODE)
+          gdbm_dump(DBF, EXPORTFILE, GDBM_DUMP_FMT_BINARY, FLAG, MODE)
 
  -- gdbm interface: int gdbm_export_to_file (GDBM_FILE DBF, FILE *FP)
      This is an alternative entry point to 'gdbm_export'.  This function
@@ -785,7 +861,7 @@ from a flat file is called "importing" or "loading" the database.
 
 File: gdbm.info,  Node: Errors,  Next: Recovery,  Prev: Flat files,  Up: Top
 
-14 Error handling.
+13 Error handling.
 ******************
 
 The global variable 'gdbm_errno' (*note gdbm_errno: Variables.) keeps
@@ -843,7 +919,7 @@ particular database file, use the 'gdbm_db_strerror' function:
      function is called upon the entry to any GDBM function.
 
    Certain errors (such as write error when saving stored key) can leave
-database file in inconistent state.  When such a critical error occurs,
+database file in inconsistent state.  When such a critical error occurs,
 the database file is marked as needing recovery.  Subsequent calls to
 any GDBM functions for that database file (except 'gdbm_recover'), will
 return immediately with GDBM error value 'GDBM_NEED_RECOVERY'.
@@ -860,11 +936,11 @@ call the 'gdbm_recover' function (*note Recovery::).
 
 File: gdbm.info,  Node: Recovery,  Next: Options,  Prev: Errors,  Up: Top
 
-15 Recovery
+14 Recovery
 ***********
 
 Certain errors (such as write error when saving stored key) can leave
-database file in "inconistent state".  When such a critical error
+database file in "inconsistent state".  When such a critical error
 occurs, the database file is marked as needing recovery.  Subsequent
 calls to any GDBM functions for that database file (except
 'gdbm_recover'), will return immediately with GDBM error value
@@ -878,12 +954,12 @@ state, use the following function:
      Check the database file DBF and fix eventual errors.  The RCVR
      argument points to a structure that has "input members", providing
      additional information to alter the behavior of 'gdbm_recover', and
-     "output members", used to return additional statistics about the
-     recovery process (RCVR can be 'NULL' if no such information is
-     needed).
+     "output members", which are used to return additional statistics
+     about the recovery process (RCVR can be 'NULL' if no such
+     information is needed).
 
      Each input member has a corresponding flag bit, which must be set
-     in the FLAGS in order to instruct the function to use it.
+     in FLAGS, in order to instruct the function to use it.
 
      The 'gdbm_recover' type is defined as:
 
@@ -909,11 +985,15 @@ state, use the following function:
 
      The "input members" modify the behavior of 'gdbm_recover':
 
-      -- input member on gdbm_recovery: void (*errfun) (void *DATA, char
+      -- input member of gdbm_recovery: void (*errfun) (void *DATA, char
                const *FMT, ...)
           If the 'GDBM_RCVR_ERRFUN' flag bit is set, 'errfun' points to
           a function that will be called upon each recoverable or
-          non-fatal error that occurred during the recovery.
+          non-fatal error that occurred during the recovery.  The 'data'
+          field of 'gdbm_recovery' will be passed to it as its first
+          argument.  The FMT argument is a 'printf'-like (*note format
+          output: (printf(3))printf.), format string.  The rest of
+          arguments supply parameters for that format.
 
       -- input member of gdbm_recovery: void * data
           Supplies first argument for the 'errfun' invocations.
@@ -921,21 +1001,21 @@ state, use the following function:
       -- input member of gdbm_recovery: size_t max_failed_keys
           If 'GDBM_RCVR_MAX_FAILED_KEYS' is set, this member sets the
           limit on the number of keys that cannot be retrieved.  If the
-          number of failed keys grows bigger than 'max_failed_keys',
+          number of failed keys becomes equal to 'max_failed_keys',
           recovery is aborted and error is returned.
 
       -- input member of gdbm_recovery: size_t max_failed_buckets
           If 'GDBM_RCVR_MAX_FAILED_BUCKETS' is set, this member sets the
           limit on the number of buckets that cannot be retrieved or
           that contain bogus information.  If the number of failed
-          buckets grows bigger than 'max_failed_buckets', recovery is
+          buckets becomes equal to 'max_failed_buckets', recovery is
           aborted and error is returned.
 
       -- output member of gdbm_recovery: size_t max_failures
           If 'GDBM_RCVR_MAX_FAILURES' is set, this member sets the limit
           of failures that are tolerated during recovery.  If the number
-          of errors grows bigger than 'max_failures', recovery is
-          aborted and error is returned.
+          of errors becomes equal to 'max_failures', recovery is aborted
+          and error is returned.
 
      The following members are filled on output, upon successful return
      from the function:
@@ -959,15 +1039,15 @@ state, use the following function:
           the 'malloc' call.  The caller is responsible for freeing that
           memory when no longer needed.
 
-   By default, 'gdbm_recovery' first checks the database fo
+   By default, 'gdbm_recovery' first checks the database for
 inconsistencies and attempts recovery only if some were found.  The
 special flag bit 'GDBM_RCVR_FORCE' instructs 'gdbm_recovery' to omit
-this check and to force recovery unconditionally.
+this check and to perform database recovery unconditionally.
 
 
 File: gdbm.info,  Node: Options,  Next: Locking,  Prev: Recovery,  Up: Top
 
-16 Setting options
+15 Setting options
 ******************
 
 'Gdbm' supports the ability to set certain options on an already open
@@ -989,6 +1069,9 @@ database.
      SIZE
           The length of the data pointed to by VALUE.
 
+     The return value will be '-1' upon failure, or '0' upon success.
+     The global variable 'gdbm_errno' will be set upon failure.
+
    The valid options are:
 
 GDBM_SETCACHESIZE
@@ -1001,16 +1084,24 @@ GDBM_CACHESIZE
      The 'GDBM_CACHESIZE' option is provided for compatibility with
      earlier versions.
 
+     For instance, to set a database to use a cache of 10, after opening
+     it with 'gdbm_open', but prior to accessing it in any way, the
+     following code could be used:
+
+          int value = 10;
+          ret = gdbm_setopt (dbf, GDBM_SETCACHESIZE, &value, sizeof (int));
+
 GDBM_GETCACHESIZE
      Return the size of the internal bucket cache.  The VALUE should
      point to a 'size_t' variable, where the size will be stored.
 
 GDBM_GETFLAGS
      Return the flags describing the state of the database.  The VALUE
-     should point to a 'int' variable where to store the flags.  The
-     return is the same as the flags used when opening the database
-     (*note gdbm_open: Open.), except that it reflects the current state
-     (which may have been altered by another calls to 'gdbm_setopt'.
+     should point to an 'int' variable where to store the flags.  On
+     success, its value will be similar to the flags used when opening
+     the database (*note gdbm_open: Open.), except that it will reflect
+     the current state (which may have been altered by another calls to
+     'gdbm_setopt').
 
 GDBM_FASTMODE
      Enable or disable the "fast writes mode", i.e. writes without
@@ -1110,20 +1201,10 @@ GDBM_GETDBNAME
 GDBM_GETBLOCKSIZE
      Return the block size in bytes.  The VALUE should point to 'int'.
 
-   The return value will be '-1' upon failure, or '0' upon success.  The
-global variable 'gdbm_errno' will be set upon failure.
-
-   For instance, to set a database to use a cache of 10, after opening
-it with 'gdbm_open', but prior to accessing it in any way, the following
-code could be used:
-
-     int value = 10;
-     ret = gdbm_setopt (dbf, GDBM_CACHESIZE, &value, sizeof (int));
-
 
 File: gdbm.info,  Node: Locking,  Next: Variables,  Prev: Options,  Up: Top
 
-17 File Locking.
+16 File Locking.
 ****************
 
 With locking disabled (if 'gdbm_open' was called with 'GDBM_NOLOCK'),
@@ -1140,7 +1221,7 @@ simultaneously.
 
 File: gdbm.info,  Node: Variables,  Next: Error codes,  Prev: Locking,  Up: Top
 
-18 Useful global variables.
+17 Useful global variables.
 ***************************
 
 The following global variables and constants are available:
@@ -1222,7 +1303,7 @@ The following global variables and constants are available:
 
 File: gdbm.info,  Node: Error codes,  Next: Compatibility,  Prev: Variables,  Up: Top
 
-19 Error codes
+18 Error codes
 **************
 
 This chapter summarizes error codes which can be set by the functions in
@@ -1394,7 +1475,7 @@ GDBM_DIR_OVERFLOW
 
 File: gdbm.info,  Node: Compatibility,  Next: gdbmtool,  Prev: Error codes,  Up: Top
 
-20 Compatibility with standard 'dbm' and 'ndbm'.
+19 Compatibility with standard 'dbm' and 'ndbm'.
 ************************************************
 
 'Gdbm' includes a compatibility layer, which provides traditional 'ndbm'
@@ -1431,7 +1512,7 @@ words, you cannot access a standard UNIX 'dbm' file with GNU 'dbm'!
 
 File: gdbm.info,  Node: ndbm,  Next: dbm,  Up: Compatibility
 
-20.1 NDBM interface functions.
+19.1 NDBM interface functions.
 ==============================
 
 The functions below implement the POSIX 'ndbm' interface:
@@ -1509,9 +1590,7 @@ The functions below implement the POSIX 'ndbm' interface:
 
      The usual way of iterating over all the records in the database is:
 
-          for (key = dbm_firstkey (dbf);
-               key.ptr;
-               key = dbm_nextkey (dbf))
+          for (key = dbm_firstkey (dbf); key.ptr; key = dbm_nextkey (dbf))
             {
               /* do something with the key */
             }
@@ -1547,7 +1626,7 @@ The functions below implement the POSIX 'ndbm' interface:
 
 File: gdbm.info,  Node: dbm,  Prev: ndbm,  Up: Compatibility
 
-20.2 DBM interface functions.
+19.2 DBM interface functions.
 =============================
 
 The functions below are provided for compatibility with the old UNIX
@@ -1612,7 +1691,7 @@ them.
 
 File: gdbm.info,  Node: gdbmtool,  Next: gdbm_dump,  Prev: Compatibility,  Up: Top
 
-21 Examine and modify a GDBM database.
+20 Examine and modify a GDBM database.
 **************************************
 
 The 'gdbmtool' utility allows you to view and modify an existing GDBM
@@ -1630,7 +1709,7 @@ the program, e.g.:
 only for reading.
 
    If the database does not exist, 'gdbmtool' will create it.  There is
-a special option '-n' ('--newdb', which instructs the utility to create
+a special option '-n' ('--newdb'), which instructs the utility to create
 a new database.  If it is used and if the database already exists, it
 will be deleted, so use it sparingly.
 
@@ -1642,7 +1721,7 @@ will be deleted, so use it sparingly.
 
 File: gdbm.info,  Node: invocation,  Next: shell,  Up: gdbmtool
 
-21.1 gdbmtool invocation
+20.1 gdbmtool invocation
 ========================
 
 When started without additional arguments, 'gdbmtool' operates on the
@@ -1688,7 +1767,7 @@ will open that file and read commands from it.
      Disable file locking.
 '-m'
 '--no-mmap'
-     Disable mmap.
+     Disable memory mapping.
 '-q'
 '--quiet'
      Don't print the usual welcome banner at startup.  This is the same
@@ -1710,7 +1789,7 @@ will open that file and read commands from it.
 
 File: gdbm.info,  Node: shell,  Prev: invocation,  Up: gdbmtool
 
-21.2 gdbmtool interactive mode
+20.2 gdbmtool interactive mode
 ==============================
 
 After successful startup, 'gdbmtool' starts a loop, in which it reads
@@ -1750,7 +1829,7 @@ Sequence               Replaced with
 \\                     Single slash
 \"                     Double quote
 
-Table 21.1: Backslash escapes
+Table 20.1: Backslash escapes
 
    In addition, a backslash immediately followed by the end-of-line
 character effectively removes that character, allowing to split long
@@ -1785,10 +1864,11 @@ edited (*note Command Line Editing: (readline)Command Line Editing.).
 
 File: gdbm.info,  Node: variables,  Next: commands,  Up: shell
 
-21.2.1 Shell Variables
+20.2.1 Shell Variables
 ----------------------
 
-A number of 'gdbmtool' parameters is kept in its internal variables.
+A number of 'gdbmtool' parameters is kept in its internal variables.  To
+examine or modify variables, use the 'set' command (*note set::).
 
  -- gdbmtool variable: bool confirm
      Whether to ask for confirmation before certain destructive
@@ -1842,9 +1922,9 @@ A number of 'gdbmtool' parameters is kept in its internal variables.
      'PAGER'.  Unsetting this variable disables paging.
 
  -- gdbmtool variable: bool quiet
-     Whether to display a welcome banner at startup.  This variable
-     should be set in a startup script file (*note startup files::).
-     *Note -q option::.
+     Whether to display a welcome banner at startup.  To affect
+     'gdbmtool', this variable should be set in a startup script file
+     (*note startup files::).  *Note -q option::.
 
    The following variables control how the database is opened:
 
@@ -1878,8 +1958,8 @@ A number of 'gdbmtool' parameters is kept in its internal variables.
 
           This sets the 'GDBM_READER' flag (*note GDBM_READER: Open.).
 
-     Attempting to set any other value or to unset this variable
-     produces an error.
+     Attempting to set any other value or to unset this variable results
+     in error.
 
  -- gdbmtool variable: number filemode
      File mode (in octal) for creating new database files and database
@@ -1967,7 +2047,7 @@ A number of 'gdbmtool' parameters is kept in its internal variables.
 
 File: gdbm.info,  Node: commands,  Next: definitions,  Prev: variables,  Up: shell
 
-21.2.2 Gdbmtool Commands
+20.2.2 Gdbmtool Commands
 ------------------------
 
  -- command verb: avail
@@ -2151,7 +2231,7 @@ File: gdbm.info,  Node: commands,  Next: definitions,  Prev: variables,  Up: she
 
 File: gdbm.info,  Node: definitions,  Next: startup files,  Prev: commands,  Up: shell
 
-21.2.3 Data Definitions
+20.2.3 Data Definitions
 -----------------------
 
 GDBM databases are able to keep data of any type, both in the key and in
@@ -2239,7 +2319,7 @@ the closing curly brace.  For example:
      }
 
 This defines a structure consisting of three members: an integer
-'status', an array of 8 bytes 'id', and a null-terminated string 'name'.
+'status', an array of 3 bytes 'id', and an array of bytes 'name'.
 Notice the 'pad' statement: it allows to introduce padding between
 structure members.  Another useful statement is 'offset': it specifies
 that the member following it begins at the given offset in the
@@ -2268,15 +2348,33 @@ example:
      status=2,id={ a, u, x },name="quux"
 
    To supply a structured datum as an argument to a 'gdbmtool' command,
-use the same notation, but without field names, e.g.:
+use the same notation, e.g.:
 
-     gdbmtool> hash { 2, {a,u,x}, "quux" }
-     hash value = 13089969.
+     gdbmtool> store newkey { status=2, id={a,u,x}, name="quux" }
+
+   The order in which the fields are listed is not significant.  The
+above command can as well be written as:
+
+     gdbmtool> store newkey { id={a,u,x}, status=2, name="quux" }
+
+   You are not required to supply all defined fields.  Any number of
+them can be omitted, provided that at least one remains.  The omitted
+fields are filled with 0:
+
+     gdbmtool> store newkey { name="bar" }
+     gdbmtool> fetch newkey
+     status=0,id={ ,, },name=bar
+
+   Yet another way to supply structured data to a command is by listing
+the value for each field in the order they are defined, without field
+names:
+
+     gdbmtool> store newkey { 2, {a,u,x}, "quux" }
 
 
 File: gdbm.info,  Node: startup files,  Prev: definitions,  Up: shell
 
-21.2.4 Startup Files
+20.2.4 Startup Files
 --------------------
 
 Upon startup 'gdbmtool' looks for a file named '.gdbmtoolrc' first in
@@ -2303,7 +2401,7 @@ records:
 
 File: gdbm.info,  Node: gdbm_dump,  Next: gdbm_load,  Prev: gdbmtool,  Up: Top
 
-22 The 'gdbm_dump' utility
+21 The 'gdbm_dump' utility
 **************************
 
 The 'gdbm_dump' utility creates a flat file dump of a GDBM database
@@ -2345,7 +2443,7 @@ options:
 
 File: gdbm.info,  Node: gdbm_load,  Next: Exit codes,  Prev: gdbm_dump,  Up: Top
 
-23 The 'gdbm_load' utility
+22 The 'gdbm_load' utility
 **************************
 
 The 'gdbm_load' utility restores a GDBM database from a flat file.  The
@@ -2358,7 +2456,7 @@ original name, as stored in the input file.  It will fail to do so if
 the input is in binary format.  In that case, the name of the database
 must be given as the second argument.
 
-   In general, if two arguments are given the second one is treated as
+   In general, if two arguments are given, the second one is treated as
 the name of the database to create, overriding the file name specified
 in the flat file.
 
@@ -2414,7 +2512,7 @@ in the flat file.
 
 File: gdbm.info,  Node: Exit codes,  Next: Bugs,  Prev: gdbm_load,  Up: Top
 
-24 Exit codes
+23 Exit codes
 *************
 
 All GDBM utilities return uniform exit codes.  These are summarized in
@@ -2431,7 +2529,7 @@ Code                   Meaning
 
 File: gdbm.info,  Node: Bugs,  Next: Resources,  Prev: Exit codes,  Up: Top
 
-25 Problems and bugs.
+24 Problems and bugs.
 *********************
 
 If you have problems with GNU 'dbm' or think you've found a bug, please
@@ -2458,12 +2556,13 @@ questions about things that are unclear in the documentation or are just
 obscure features, please report them too.
 
    You may contact the authors and maintainers by e-mail:
-     <phil@cs.wwu.edu>, <downsj@downsj.com>, <gray@gnu.org.ua>
+<phil@cs.wwu.edu>, <downsj@downsj.com>, <gray@gnu.org> or
+<gray@gnu.org.ua>.
 
 
 File: gdbm.info,  Node: Resources,  Next: GNU Free Documentation License,  Prev: Bugs,  Up: Top
 
-26 Additional resources
+25 Additional resources
 ***********************
 
 For the latest updates and pointers to additional resources, visit
@@ -2474,7 +2573,8 @@ available online at <http://www.gnu.org/software/gdbm/manual.html>.
 
    Latest versions of 'gdbm' can be downloaded from anonymous FTP:
 <ftp://ftp.gnu.org/gnu/gdbm>, or via HTTP from
-<http://ftp.gnu.org/gnu/gdbm>, or from any GNU mirror worldwide.  See
+<http://ftp.gnu.org/gnu/gdbm>, or via HTTPS from
+<https://ftp.gnu.org/gnu/gdbm>, or from any GNU mirror worldwide.  See
 <http://www.gnu.org/order/ftp.html>, for a list of mirrors.
 
    To track 'gdbm' development, visit
@@ -2488,7 +2588,7 @@ Appendix A GNU Free Documentation License
 
                      Version 1.3, 3 November 2008
 
-     Copyright (C) 2000-2002, 2007-2008, 2011, 2017-2018 Free
+     Copyright (C) 2000-2002, 2007-2008, 2011, 2017-2020 Free
      Software Foundation, Inc.
      <http://fsf.org/>
 
@@ -2972,81 +3072,83 @@ Index
  [index ]
 * Menu:
 
-* (*errfun) on gdbm_recovery:            Recovery.            (line  52)
-* '--newdb', 'gdbmtool' option:          gdbmtool.            (line  20)
-* '--read-only', 'gdbmtool' option:      gdbmtool.            (line  16)
-* '-n', 'gdbmtool' option:               gdbmtool.            (line  20)
-* '-r', 'gdbmtool' option:               gdbmtool.            (line  16)
+* (*errfun) of gdbm_recovery:            Recovery.            (line  52)
+* --newdb, gdbmtool option:              gdbmtool.            (line  20)
+* --read-only, gdbmtool option:          gdbmtool.            (line  16)
+* -n, gdbmtool option:                   gdbmtool.            (line  20)
+* -r, gdbmtool option:                   gdbmtool.            (line  16)
 * .gdbmtoolrc:                           startup files.       (line   6)
 * ?:                                     commands.            (line  62)
 * _GDBM_MAX_ERRNO:                       Variables.           (line  31)
 * _GDBM_MIN_ERRNO:                       Variables.           (line  28)
 * avail:                                 commands.            (line   6)
-* backup_name of gdbm_recovery:          Recovery.            (line  95)
-* blocksize:                             variables.           (line  66)
+* backup_name of gdbm_recovery:          Recovery.            (line  99)
+* blocksize:                             variables.           (line  67)
 * bucket:                                commands.            (line   9)
 * cache:                                 commands.            (line  12)
-* cachesize:                             variables.           (line  69)
-* centfree:                              variables.           (line 129)
+* cachesize:                             variables.           (line  70)
+* centfree:                              variables.           (line 130)
 * close:                                 commands.            (line  15)
 * close-on-exec:                         Open.                (line  57)
 * closing database:                      Close.               (line   6)
-* coalesce:                              variables.           (line 119)
-* command line options, 'gdbmtool':      invocation.          (line   6)
+* coalesce:                              variables.           (line 120)
+* command line options, gdbmtool:        invocation.          (line   6)
 * compatibility layer:                   Compatibility.       (line   6)
-* confirm:                               variables.           (line   8)
+* confirm:                               variables.           (line   9)
 * count:                                 commands.            (line  18)
-* creating a database, 'gdbmtool':       gdbmtool.            (line  20)
+* creating a database, gdbmtool:         gdbmtool.            (line  20)
 * current:                               commands.            (line  21)
-* data of gdbm_recovery:                 Recovery.            (line  58)
+* data of gdbm_recovery:                 Recovery.            (line  62)
 * database options:                      Options.             (line   6)
 * database reorganization:               Reorganization.      (line   6)
 * database synchronization:              Sync.                (line   6)
 * database, closing:                     Close.               (line   6)
 * database, opening or creating:         Open.                (line   6)
+* datum:                                 Intro.               (line  12)
 * DBM functions:                         dbm.                 (line   6)
 * dbm.h:                                 Compatibility.       (line  10)
 * dbmclose:                              dbm.                 (line  22)
 * dbminit:                               dbm.                 (line  10)
-* dbm_clearerr:                          ndbm.                (line  97)
+* dbm_clearerr:                          ndbm.                (line  95)
 * dbm_close:                             ndbm.                (line  25)
 * dbm_delete:                            ndbm.                (line  56)
-* dbm_dirfno:                            ndbm.                (line 100)
-* dbm_error:                             ndbm.                (line  92)
+* dbm_dirfno:                            ndbm.                (line  98)
+* dbm_error:                             ndbm.                (line  90)
 * dbm_fetch:                             ndbm.                (line  29)
 * dbm_firstkey:                          ndbm.                (line  61)
 * DBM_INSERT:                            ndbm.                (line  49)
 * dbm_nextkey:                           ndbm.                (line  71)
 * dbm_open:                              ndbm.                (line   8)
-* dbm_pagfno:                            ndbm.                (line 108)
-* dbm_rdonly:                            ndbm.                (line 112)
+* dbm_pagfno:                            ndbm.                (line 106)
+* dbm_rdonly:                            ndbm.                (line 110)
 * DBM_REPLACE:                           ndbm.                (line  46)
 * dbm_store:                             ndbm.                (line  38)
 * debug:                                 commands.            (line  24)
-* default database, 'gdbmtool':          gdbmtool.            (line   9)
+* default database, gdbmtool:            gdbmtool.            (line   9)
 * delete:                                dbm.                 (line  41)
 * delete <1>:                            commands.            (line  30)
 * deleting records:                      Delete.              (line   6)
 * deletion in iteration loops:           Sequential.          (line  60)
-* delim1:                                variables.           (line  39)
-* delim2:                                variables.           (line  45)
+* delim1:                                variables.           (line  40)
+* delim2:                                variables.           (line  46)
 * dir:                                   commands.            (line  33)
-* 'dir' file:                            Compatibility.       (line  21)
+* dir file:                              Compatibility.       (line  21)
 * error code, most recent:               Errors.              (line  21)
 * error codes:                           Error codes.         (line   6)
 * error strings:                         Errors.              (line   6)
 * exit code:                             Exit codes.          (line   6)
 * export:                                Flat files.          (line   6)
 * export <1>:                            commands.            (line  36)
-* failed_buckets of gdbm_recovery:       Recovery.            (line  92)
-* failed_keys of gdbm_recovery:          Recovery.            (line  89)
+* failed_buckets of gdbm_recovery:       Recovery.            (line  96)
+* failed_keys of gdbm_recovery:          Recovery.            (line  93)
 * fetch:                                 dbm.                 (line  25)
 * fetch <1>:                             commands.            (line  47)
 * fetching records:                      Fetch.               (line   6)
-* filemode:                              variables.           (line  99)
+* filemode:                              variables.           (line 100)
 * first:                                 commands.            (line  50)
 * firstkey:                              dbm.                 (line  47)
 * Flat file format:                      Flat files.          (line   6)
+* gdbm.h:                                Intro.               (line  34)
 * gdbmtool:                              gdbmtool.            (line   6)
 * GDBM_BACKUP_FAILED:                    Error codes.         (line 165)
 * GDBM_BAD_FILE_OFFSET:                  Error codes.         (line 114)
@@ -3056,21 +3158,21 @@ Index
 * GDBM_BSEXACT:                          Open.                (line  52)
 * GDBM_BSEXACT <1>:                      Error codes.         (line  15)
 * GDBM_BYTE_SWAPPED:                     Error codes.         (line 110)
-* GDBM_CACHESIZE:                        Options.             (line  27)
+* GDBM_CACHESIZE:                        Options.             (line  30)
 * GDBM_CANNOT_REPLACE:                   Error codes.         (line  90)
 * GDBM_CANT_BE_READER:                   Error codes.         (line  57)
 * GDBM_CANT_BE_WRITER:                   Error codes.         (line  62)
-* GDBM_CENTFREE:                         Options.             (line  74)
+* GDBM_CENTFREE:                         Options.             (line  85)
 * gdbm_check_syserr:                     Errors.              (line  41)
 * gdbm_clear_error:                      Errors.              (line  56)
 * GDBM_CLOEXEC:                          Open.                (line  57)
 * gdbm_close:                            Close.               (line   9)
-* GDBM_COALESCEBLKS:                     Options.             (line  88)
+* GDBM_COALESCEBLKS:                     Options.             (line  99)
 * gdbm_copy_meta:                        Open.                (line  89)
 * gdbm_count:                            Count.               (line   6)
 * gdbm_db_strerror:                      Errors.              (line  48)
 * gdbm_delete:                           Delete.              (line   8)
-* 'gdbm_delete' and sequential access:   Sequential.          (line  60)
+* gdbm_delete and sequential access:     Sequential.          (line  60)
 * GDBM_DIR_OVERFLOW:                     Error codes.         (line 168)
 * gdbm_dump:                             gdbm_dump.           (line   6)
 * gdbm_dump <1>:                         Flat files.          (line  46)
@@ -3085,11 +3187,12 @@ Index
 * GDBM_ERR_FILE_OWNER <1>:               Error codes.         (line 146)
 * gdbm_exists:                           Fetch.               (line  39)
 * gdbm_export:                           Flat files.          (line 170)
-* gdbm_export_to_file:                   Flat files.          (line 179)
-* GDBM_FASTMODE:                         Options.             (line  48)
+* gdbm_export_to_file:                   Flat files.          (line 178)
+* GDBM_FASTMODE:                         Options.             (line  59)
 * gdbm_fdesc:                            Locking.             (line  13)
 * gdbm_fd_open:                          Open.                (line  79)
 * gdbm_fetch:                            Fetch.               (line   6)
+* GDBM_FILE:                             Intro.               (line  37)
 * GDBM_FILE_EOF:                         Error codes.         (line 129)
 * GDBM_FILE_OPEN_ERROR:                  Error codes.         (line  20)
 * GDBM_FILE_READ_ERROR:                  Error codes.         (line  42)
@@ -3097,17 +3200,17 @@ Index
 * GDBM_FILE_STAT_ERROR:                  Error codes.         (line 122)
 * GDBM_FILE_WRITE_ERROR:                 Error codes.         (line  28)
 * gdbm_firstkey:                         Sequential.          (line  13)
-* GDBM_GETBLOCKSIZE:                     Options.             (line 143)
-* GDBM_GETCACHESIZE:                     Options.             (line  37)
-* GDBM_GETCOALESCEBLKS:                  Options.             (line 100)
-* GDBM_GETDBNAME:                        Options.             (line 123)
-* GDBM_GETFLAGS:                         Options.             (line  41)
-* GDBM_GETMAXMAPSIZE:                    Options.             (line 110)
-* GDBM_GETMMAP:                          Options.             (line 119)
-* GDBM_GETSYNCMODE:                      Options.             (line  70)
+* GDBM_GETBLOCKSIZE:                     Options.             (line 154)
+* GDBM_GETCACHESIZE:                     Options.             (line  47)
+* GDBM_GETCOALESCEBLKS:                  Options.             (line 111)
+* GDBM_GETDBNAME:                        Options.             (line 134)
+* GDBM_GETFLAGS:                         Options.             (line  51)
+* GDBM_GETMAXMAPSIZE:                    Options.             (line 121)
+* GDBM_GETMMAP:                          Options.             (line 130)
+* GDBM_GETSYNCMODE:                      Options.             (line  81)
 * GDBM_ILLEGAL_DATA:                     Error codes.         (line  96)
-* gdbm_import:                           Flat files.          (line 183)
-* gdbm_import_from_file:                 Flat files.          (line 196)
+* gdbm_import:                           Flat files.          (line 182)
+* gdbm_import_from_file:                 Flat files.          (line 195)
 * GDBM_INSERT:                           Store.               (line  20)
 * GDBM_ITEM_NOT_FOUND:                   Error codes.         (line  81)
 * gdbm_last_errno:                       Errors.              (line  21)
@@ -3128,12 +3231,12 @@ Index
 * gdbm_open:                             Open.                (line   6)
 * GDBM_OPT_ALREADY_SET:                  Error codes.         (line 100)
 * GDBM_OPT_ILLEGAL:                      Error codes.         (line 105)
-* GDBM_RCVR_BACKUP:                      Recovery.            (line  96)
+* GDBM_RCVR_BACKUP:                      Recovery.            (line 100)
 * GDBM_RCVR_ERRFUN:                      Recovery.            (line  54)
-* GDBM_RCVR_FORCE:                       Recovery.            (line 102)
-* GDBM_RCVR_MAX_FAILED_BUCKETS:          Recovery.            (line  68)
-* GDBM_RCVR_MAX_FAILED_KEYS:             Recovery.            (line  62)
-* GDBM_RCVR_MAX_FAILURES:                Recovery.            (line  75)
+* GDBM_RCVR_FORCE:                       Recovery.            (line 106)
+* GDBM_RCVR_MAX_FAILED_BUCKETS:          Recovery.            (line  72)
+* GDBM_RCVR_MAX_FAILED_KEYS:             Recovery.            (line  66)
+* GDBM_RCVR_MAX_FAILURES:                Recovery.            (line  79)
 * GDBM_READER:                           Open.                (line  32)
 * GDBM_READER_CANT_DELETE:               Error codes.         (line  66)
 * GDBM_READER_CANT_REORGANIZE:           Error codes.         (line  76)
@@ -3142,19 +3245,19 @@ Index
 * gdbm_reorganize:                       Reorganization.      (line   8)
 * GDBM_REORGANIZE_FAILED:                Error codes.         (line  86)
 * GDBM_REPLACE:                          Store.               (line  20)
-* GDBM_SETCACHESIZE:                     Options.             (line  27)
-* GDBM_SETCENTFREE:                      Options.             (line  74)
-* GDBM_SETCOALESCEBLKS:                  Options.             (line  88)
-* GDBM_SETMAXMAPSIZE:                    Options.             (line 104)
-* GDBM_SETMMAP:                          Options.             (line 114)
+* GDBM_SETCACHESIZE:                     Options.             (line  30)
+* GDBM_SETCENTFREE:                      Options.             (line  85)
+* GDBM_SETCOALESCEBLKS:                  Options.             (line  99)
+* GDBM_SETMAXMAPSIZE:                    Options.             (line 115)
+* GDBM_SETMMAP:                          Options.             (line 125)
 * gdbm_setopt:                           Options.             (line   9)
-* GDBM_SETSYNCMODE:                      Options.             (line  57)
+* GDBM_SETSYNCMODE:                      Options.             (line  68)
 * gdbm_store:                            Store.               (line   6)
 * gdbm_strerror:                         Errors.              (line  12)
 * GDBM_SYNC:                             Open.                (line  44)
 * GDBM_SYNC <1>:                         Sync.                (line   6)
 * gdbm_sync:                             Sync.                (line  14)
-* GDBM_SYNCMODE:                         Options.             (line  57)
+* GDBM_SYNCMODE:                         Options.             (line  68)
 * gdbm_syserr[]:                         Variables.           (line  23)
 * gdbm_version:                          Variables.           (line  34)
 * gdbm_version_cmp:                      Variables.           (line  63)
@@ -3175,38 +3278,38 @@ Index
 * import:                                Flat files.          (line   6)
 * import <1>:                            commands.            (line  67)
 * init file, gdbmtool:                   startup files.       (line   6)
-* interactive mode, 'gdbmtool':          shell.               (line   6)
+* interactive mode, gdbmtool:            shell.               (line   6)
 * iterating over records:                Sequential.          (line   6)
-* iteration and 'gdbm_delete':           Sequential.          (line  60)
+* iteration and gdbm_delete:             Sequential.          (line  60)
 * iteration loop:                        Sequential.          (line  40)
-* iteration loop, using 'NDBM':          ndbm.                (line  79)
+* iteration loop, using NDBM:            ndbm.                (line  79)
 * junk.gdbm:                             gdbmtool.            (line   9)
 * libgdbm_compat:                        Compatibility.       (line  10)
 * list:                                  commands.            (line  88)
-* lock:                                  variables.           (line 103)
+* lock:                                  variables.           (line 104)
 * locking:                               Locking.             (line   6)
 * looking up records:                    Fetch.               (line   6)
-* max_failed_buckets of gdbm_recovery:   Recovery.            (line  67)
-* max_failed_keys of gdbm_recovery:      Recovery.            (line  61)
-* max_failures of gdbm_recovery:         Recovery.            (line  74)
-* mmap:                                  variables.           (line 109)
+* max_failed_buckets of gdbm_recovery:   Recovery.            (line  71)
+* max_failed_keys of gdbm_recovery:      Recovery.            (line  65)
+* max_failures of gdbm_recovery:         Recovery.            (line  78)
+* mmap:                                  variables.           (line 110)
 * most recent error code:                Errors.              (line  21)
 * NDBM functions:                        ndbm.                (line   6)
 * ndbm.h:                                Compatibility.       (line  10)
 * next:                                  commands.            (line  91)
 * nextkey:                               dbm.                 (line  57)
 * number of records:                     Count.               (line   6)
-* open:                                  variables.           (line  73)
+* open:                                  variables.           (line  74)
 * open <1>:                              commands.            (line 105)
 * opening the database:                  Open.                (line   6)
 * options, database:                     Options.             (line   6)
-* 'pag' file:                            Compatibility.       (line  21)
-* pager:                                 variables.           (line  51)
-* ps1:                                   variables.           (line  14)
-* ps2:                                   variables.           (line  32)
-* quiet:                                 variables.           (line  59)
+* pag file:                              Compatibility.       (line  21)
+* pager:                                 variables.           (line  52)
+* ps1:                                   variables.           (line  15)
+* ps2:                                   variables.           (line  33)
+* quiet:                                 variables.           (line  60)
 * quit:                                  commands.            (line 129)
-* read-only mode, 'gdbmtool':            gdbmtool.            (line  16)
+* read-only mode, gdbmtool:              gdbmtool.            (line  16)
 * readline:                              shell.               (line  65)
 * record, deleting:                      Delete.              (line   6)
 * record, fetching:                      Fetch.               (line   6)
@@ -3214,22 +3317,22 @@ Index
 * records, storing:                      Store.               (line   6)
 * records, testing existence:            Fetch.               (line  37)
 * recover:                               commands.            (line 132)
-* recovered_buckets of gdbm_recovery:    Recovery.            (line  86)
-* recovered_keys of gdbm_recovery:       Recovery.            (line  83)
+* recovered_buckets of gdbm_recovery:    Recovery.            (line  90)
+* recovered_keys of gdbm_recovery:       Recovery.            (line  87)
 * reorganization, database:              Reorganization.      (line   6)
 * reorganize:                            commands.            (line 158)
 * sequential access:                     Sequential.          (line   6)
-* sequential access, using 'NDBM':       ndbm.                (line  79)
-* set:                                   variables.           (line 138)
+* sequential access, using NDBM:         ndbm.                (line  79)
+* set:                                   variables.           (line 139)
 * source:                                commands.            (line 161)
 * startup file, gdbmtool:                startup files.       (line   6)
 * status:                                commands.            (line 164)
 * store:                                 dbm.                 (line  34)
 * store <1>:                             commands.            (line 177)
 * storing records:                       Store.               (line   6)
-* sync:                                  variables.           (line 115)
+* sync:                                  variables.           (line 116)
 * synchronization, database:             Sync.                (line   6)
-* unset:                                 variables.           (line 175)
+* unset:                                 variables.           (line 176)
 * variables, gdbmtool:                   variables.           (line   6)
 * version:                               commands.            (line 181)
 * version number:                        Variables.           (line  34)
@@ -3237,52 +3340,57 @@ Index
 
 
 Tag Table:
-Node: Top972
-Node: Copying3099
-Node: Intro4882
-Node: List6303
-Node: Open7596
-Node: Close12115
-Node: Count12731
-Node: Store13137
-Node: Fetch15118
-Node: Delete16793
-Node: Sequential17560
-Node: Reorganization20878
-Node: Sync21888
-Node: Flat files23138
-Ref: gdbm_load function26662
-Node: Errors32110
-Ref: gdbm_check_syserr33580
-Node: Recovery35219
-Node: Options39833
-Node: Locking45654
-Node: Variables46248
-Node: Error codes48901
-Node: Compatibility55165
-Node: ndbm56728
-Node: dbm61569
-Node: gdbmtool64229
-Node: invocation65198
-Ref: -q option66778
-Node: shell67268
-Ref: backslash-interpretation68521
-Node: variables70270
-Ref: quiet72497
-Ref: open parameters72693
-Ref: openvar73015
-Ref: filemode73878
-Node: commands77138
-Ref: gdbmtool export78115
-Ref: gdbmtool import79336
-Node: definitions83481
-Node: startup files87673
-Node: gdbm_dump88475
-Node: gdbm_load89716
-Node: Exit codes91593
-Node: Bugs92140
-Node: Resources93492
-Node: GNU Free Documentation License94211
-Node: Index119367
+Node: Top969
+Node: Copying3045
+Node: Intro4828
+Node: Open9664
+Node: Close14184
+Node: Count14800
+Node: Store15207
+Node: Fetch17120
+Node: Delete18795
+Node: Sequential19446
+Node: Reorganization22737
+Node: Sync23747
+Node: Flat files24997
+Ref: gdbm_load function28519
+Node: Errors33947
+Ref: gdbm_check_syserr35417
+Node: Recovery37057
+Node: Options41962
+Node: Locking47840
+Node: Variables48434
+Node: Error codes51087
+Node: Compatibility57351
+Node: ndbm58914
+Node: dbm63725
+Node: gdbmtool66385
+Node: invocation67355
+Ref: -q option68945
+Node: shell69435
+Ref: backslash-interpretation70688
+Node: variables72437
+Ref: quiet74734
+Ref: open parameters74953
+Ref: openvar75275
+Ref: filemode76137
+Ref: set77589
+Node: commands79397
+Ref: gdbmtool export80374
+Ref: gdbmtool import81595
+Node: definitions85740
+Node: startup files90546
+Node: gdbm_dump91348
+Node: gdbm_load92589
+Node: Exit codes94467
+Node: Bugs95014
+Node: Resources96380
+Node: GNU Free Documentation License97149
+Node: Index122305
 
 End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:
