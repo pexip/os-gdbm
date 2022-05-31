@@ -1,5 +1,5 @@
 /* This file is part of GDBM test suite.
-   Copyright (C) 2018 Free Software Foundation, Inc.
+   Copyright (C) 2018-2020 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include <string.h>
 #include <errno.h>
 #include <assert.h>
+#include <unistd.h>
 #include "gdbm.h"
 
 int
@@ -28,7 +29,6 @@ main (int argc, char **argv)
 {
   GDBM_FILE dbf;
   char dbname[] = "junk.gdbm";
-  int rc;
   
   assert (argc == 1);
   

@@ -1,5 +1,5 @@
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 2011, 2013, 2016-2018 Free Software Foundation, Inc.
+   Copyright (C) 2011, 2013, 2016-2020 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,8 +29,8 @@ int mode;
 uid_t owner_uid;
 gid_t owner_gid;
 
-char *parseopt_program_doc = "load a GDBM database from a file";
-char *parseopt_program_args = "FILE [DB_FILE]";
+char *parseopt_program_doc = N_("load a GDBM database from a file");
+char *parseopt_program_args = N_("FILE [DB_FILE]");
 struct gdbm_option optab[] = {
   { 'r', "replace", NULL, N_("replace records in the existing database") },
   { 'm', "mode", N_("MODE"), N_("set file mode") },

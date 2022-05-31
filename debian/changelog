@@ -1,3 +1,41 @@
+gdbm (1.19-2) unstable; urgency=medium
+
+  * Import again 1.18.1-5.1 NMU
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Mon, 18 Jan 2021 18:21:30 +0100
+
+gdbm (1.19-1) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Set upstream metadata fields: Bug-Submit (from ./configure).
+
+  [ Gianfranco Costamagna ]
+  * New upstream version 1.19 (Closes: #965191)
+  * Drop spelling error patch now upstream
+  * Update copyright years
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Fri, 15 Jan 2021 19:21:16 +0100
+
+gdbm (1.18.1-5.1) unstable; urgency=medium
+
+  * QA upload
+  [ Steve Langasek ]
+  * Mark gdbm-l10n Multi-Arch: foreign to satisfy cross-test-dependencies.
+  * Add build-essential as a test dependency; should be implied by
+    @builddeps@ but seems not to be working.
+  * Invoke compiler in a cross-test-friendly manner.
+  * debian/patches/gcc-10-ftbfs.patch: fix ftbfs with gcc-10 due to
+    duplicate definitions.  Closes: #957259.
+
+ -- Gianfranco Costamagna <locutusofborg@debian.org>  Fri, 21 Aug 2020 16:02:35 +0200
+
+gdbm (1.18.1-5) unstable; urgency=medium
+
+  * Fix gettext-related build non-reproducibility.
+  * Pass CFLAGS and CPPFLAGS to diet/no-lfs builds.
+
+ -- Dmitry Bogatov <KAction@debian.org>  Thu, 22 Aug 2019 12:40:26 +0000
+
 gdbm (1.18.1-4pexip2) pexip; urgency=medium
 
   * Rebuild in buster environment

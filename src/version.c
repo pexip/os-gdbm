@@ -1,7 +1,7 @@
 /* version.c - This is file contains the version number for gdbm source. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2017-2018 Free
+   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2017-2020 Free
    Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
@@ -24,7 +24,7 @@
    The DIST_DATE magic below is replaced by the actual date when
    making the distdir. */
 const char * gdbm_version = "GDBM version " PACKAGE_VERSION ". "
-"27/10/2018"
+"23/12/2020"
 #if defined(__STDC__) && defined(__DATE__) && defined(__TIME__)
 		" (built " __DATE__ " " __TIME__ ")"
 #endif

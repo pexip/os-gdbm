@@ -1,7 +1,7 @@
 /* gdbmconst.h - The constants defined for use in gdbm. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2018 Free
+   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2020 Free
    Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
@@ -54,5 +54,7 @@
 /* The size of the bucket cache. */
 #define DEFAULT_CACHESIZE  100
 
+#ifndef SIZE_T_MAX
 /* Maximum size representable by a size_t variable */
-#define SIZE_T_MAX ((size_t)-1)
+# define SIZE_T_MAX ((size_t)-1)
+#endif

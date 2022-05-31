@@ -1,5 +1,5 @@
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2018 Free
+   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2020 Free
    Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
@@ -207,6 +207,8 @@ struct kvpair
 
 struct kvpair *kvpair_string (struct locus *loc, char *val);
 struct kvpair *kvpair_list (struct locus *loc, struct slist *s);
+struct kvpair *kvlist_find (struct kvpair *kv, char const *tag);
+void kvlist_free (struct kvpair *kvp);
 
 
 #define GDBM_ARG_STRING 0
@@ -304,7 +306,8 @@ struct dsegm
 
 struct dsegm *dsegm_new (int type);
 struct dsegm *dsegm_new_field (struct datadef *type, char *id, int dim);
-void dsegm_free_list (struct dsegm *dp);
+void dsegm_list_free (struct dsegm *dp);
+struct dsegm *dsegm_list_find (struct dsegm *dp, char const *name);
 
 #define DS_KEY     0
 #define DS_CONTENT 1

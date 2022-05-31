@@ -15,7 +15,7 @@
 @SET_MAKE@
 
 # This file is part of GDBM.                                   -*- autoconf -*-
-# Copyright (C) 2011, 2017-2018 Free Software Foundation, Inc.
+# Copyright (C) 2011, 2017-2020 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -332,6 +332,7 @@ LN_S = @LN_S@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
+LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
