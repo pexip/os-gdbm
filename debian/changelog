@@ -1,3 +1,9 @@
+gdbm (1.19-2pexip1) pexip; urgency=medium
+
+  * Initial bullseye build
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Thu, 02 Jun 2022 14:42:13 +0100
+
 gdbm (1.19-2) unstable; urgency=medium
 
   * Import again 1.18.1-5.1 NMU
