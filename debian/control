@@ -1,14 +1,14 @@
 Source: gdbm
 Section: libs
 Priority: optional
-Maintainer: Dmitry Bogatov <KAction@debian.org>
+Maintainer: Nicolas Mora <babelouest@debian.org>
 Build-Depends: texinfo,
-               debhelper-compat (= 11),
+               debhelper-compat (= 13),
                dh-exec,
-               dietlibc-dev (>= 0.34~cvs20160606-3) [alpha amd64 arm64 armeb armel armhf hppa i386 mips mipsel mips64el powerpc powerpcspe ppc64 ppc64el s390x sparc64 x32] <!pkg.gdbm.nodietlibc>,
+               dietlibc-dev [alpha amd64 arm64 armeb armel armhf hppa i386 mips mipsel mips64el powerpc powerpcspe ppc64 ppc64el s390x sparc64 x32] <!pkg.gdbm.nodietlibc>,
                libreadline-dev,
                bison
-Standards-Version: 4.2.1
+Standards-Version: 4.6.1
 Homepage: https://gnu.org/software/gdbm
 Vcs-Browser: https://salsa.debian.org/debian/gdbm
 Vcs-Git: https://salsa.debian.org/debian/gdbm.git
@@ -42,14 +42,16 @@ Description: ${S:X-Short-Desc} (translation files) ${S:X-Long-Desc}
 
 Package: libgdbm-dev
 Architecture: any
-Depends: libc6-dev | libc-dev, libgdbm6 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends: libc6-dev | libc-dev
+       , libgdbm6 (= ${binary:Version})
+       , ${shlibs:Depends}
+       , ${misc:Depends}
 Provides: ${libgdbm-dietlibc:Provides}
 Section: libdevel
 Multi-Arch: same
 Built-Using: ${Built-Using}
 Replaces: libgdbm4 (= 1.12-1)
 Description: ${S:X-Short-Desc} (development files) ${S:X-Long-Desc}
- .
  Note, that to build old programs, that use legacy 'dbm' interface,
  you have to install libgdbm-compat-dev binary package.
 
@@ -59,7 +61,6 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: gdbm-l10n (= ${source:Version})
 Section: utils
 Description: ${S:X-Short-Desc} (command line tools) ${S:X-Long-Desc}
- .
  This package includes following command line tools:
  .
   * gdbm_dump -- dump database content into system-independant format
@@ -72,19 +73,19 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
 Description: ${S:X-Short-Desc} (legacy support runtime version) ${S:X-Long-Desc}
- .
  This package includes library files, required to run old programs,
  that use legacy 'dbm' interface. For new programs, please use modern
  interface, provided by libgdbm6 and libgdbm-dev.
 
 Package: libgdbm-compat-dev
 Architecture: any
-Depends: libc6-dev | libc-dev, libgdbm-compat4 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends: libc6-dev | libc-dev
+       , libgdbm-dev
+       , libgdbm-compat4 (= ${binary:Version})
+       , ${shlibs:Depends}, ${misc:Depends}
+Multi-Arch: same
 Section: libdevel
-Replaces: libgdbm-dev (<< 1.12-1)
-Breaks: libgdbm-dev (<< 1.12-1)
 Description: ${S:X-Short-Desc} (legacy support development files) ${S:X-Long-Desc}
- .
  This package includes development files, required to build old
  programs, that use legacy 'dbm' interface. For new programs, please
  use modern interface, provided by libgdbm6 and libgdbm-dev.

@@ -1,0 +1,29 @@
+Description: Fix file descriptor leak
+Author: Tamás Kőrösi <tamas.koeroesi@radarcs.com>
+Forwarded: not-needed
+--- a/src/recover.c
++++ b/src/recover.c
+@@ -167,15 +167,20 @@
+ 
+   dbf->file_size = -1;
+   
+-  free (new_dbf->name);
+-  free (new_dbf);
+-   
+  #if HAVE_MMAP
+   /* Re-initialize mapping if required */
+   if (dbf->memory_mapping)
+     _gdbm_mapped_init (dbf);
++
++  /* remove the old memory mapping to the temporary file name */
++  if (new_dbf->mapped_region){
++    _gdbm_mapped_unmap(new_dbf);
++  }
+  #endif
+ 
++  free (new_dbf->name);
++  free (new_dbf);
++   
+   /* Make sure the new database is all on disk. */
+   gdbm_file_sync (dbf);
+   

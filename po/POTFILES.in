@@ -1,5 +1,5 @@
 # List of GDBM source files which contain translatable strings.
-# Copyright (C) 2011, 2017-2020 Free Software Foundation, Inc.
+# Copyright (C) 2011-2022 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,17 +15,22 @@
 # along with GDBM. If not, see <http://www.gnu.org/licenses/>.
 
 src/bucket.c
-src/datconv.c
 src/falloc.c
 src/findkey.c
-src/gdbm_dump.c
-src/gdbm_load.c
 src/gdbmerrno.c
 src/gdbmstore.c
-src/gdbmtool.c
-src/gram.y
-src/lex.l
-src/parseopt.c
 src/recover.c
 src/update.c
-src/util.c
+
+tools/datconv.c
+tools/gdbm_dump.c
+tools/gdbm_load.c
+tools/gdbmshell.c
+tools/gdbmtool.c
+tools/gram.y
+tools/input-file.c
+tools/lex.l
+tools/parseopt.c
+tools/util.c
+tools/var.c
+

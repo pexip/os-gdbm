@@ -15,8 +15,7 @@
 @SET_MAKE@
 
 # This file is part of GDBM.                                   -*- Makefile -*-
-# Copyright (C) 2007, 2011, 2013, 2016-2020 Free Software Foundation,
-# Inc.
+# Copyright (C) 2007-2022 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -181,7 +180,7 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 CSCOPE = cscope
-DIST_SUBDIRS = po src doc compat tests
+DIST_SUBDIRS = po src tools doc compat tests
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/autoconf.h.in \
 	$(top_srcdir)/build-aux/compile \
 	$(top_srcdir)/build-aux/config.guess \
@@ -193,8 +192,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/autoconf.h.in \
 	ChangeLog INSTALL NEWS README THANKS build-aux/compile \
 	build-aux/config.guess build-aux/config.rpath \
 	build-aux/config.sub build-aux/install-sh build-aux/ltmain.sh \
-	build-aux/mdate-sh build-aux/missing build-aux/texinfo.tex \
-	build-aux/ylwrap
+	build-aux/mdate-sh build-aux/missing build-aux/texinfo.tex
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -247,6 +245,7 @@ AUTOM4TE = @AUTOM4TE@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 BASE64_BIN = @BASE64_BIN@
+BISON = @BISON@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -266,6 +265,7 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+FLEX = @FLEX@
 GDBM_COUNT_T = @GDBM_COUNT_T@
 GDBM_DEBUG_ENABLE = @GDBM_DEBUG_ENABLE@
 GDBM_VERSION_MAJOR = @GDBM_VERSION_MAJOR@
@@ -285,9 +285,6 @@ INTLLIBS = @INTLLIBS@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
-LEX = @LEX@
-LEXLIB = @LEXLIB@
-LEX_OUTPUT_ROOT = @LEX_OUTPUT_ROOT@
 LFLAGS_DEBUG = @LFLAGS_DEBUG@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
@@ -332,8 +329,6 @@ VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
-YACC = @YACC@
-YFLAGS = @YFLAGS@
 YFLAGS_DEBUG = @YFLAGS_DEBUG@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -387,9 +382,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-EXTRA_DIST = build-aux/config.rpath NOTE-WARNING git2chg.awk
+EXTRA_DIST = build-aux/config.rpath NOTE-WARNING
 @COMPAT_OPT_TRUE@MAYBE_COMPAT = compat
-SUBDIRS = po src doc $(MAYBE_COMPAT) tests
+SUBDIRS = po src tools doc $(MAYBE_COMPAT) tests
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-libgdbm-compat
 gen_start_date = 2016-07-08
 prev_change_log = ChangeLog.cvs
@@ -907,10 +902,20 @@ dist-hook: ChangeLog set-dist-date
 .PHONY: ChangeLog
 ChangeLog:
 	$(AM_V_GEN)if test -d .git; then                                    \
-                git log --pretty='format:%ct  %an  <%ae>%n%n%s%n%n%b%n'     \
-                        --since=$(gen_start_date) |                         \
-                awk -f $(top_srcdir)/git2chg.awk                            \
-                    -v append=$(top_srcdir)/$(prev_change_log) > ChangeLog; \
+          (git log --pretty='format:%ad  %cn  <%ae>%n%n%w(72,8,8)%s%n%n%b'  \
+                   --date=short                                             \
+                   --since=$(gen_start_date);                               \
+           echo "";                                                         \
+           cat $(prev_change_log);                                          \
+           echo "";                                                         \
+           echo "Local Variables:";                                         \
+           echo "mode: change-log";                                         \
+           echo "version-control: never";                                   \
+           echo "buffer-read-only: t";                                      \
+           echo "End:") > ChangeLog.tmp;                                    \
+          cmp ChangeLog ChangeLog.tmp > /dev/null 2>&1 ||                   \
+            mv ChangeLog.tmp ChangeLog;                                     \
+          rm -f ChangeLog.tmp;                                              \
         fi
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

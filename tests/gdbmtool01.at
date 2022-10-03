@@ -1,5 +1,5 @@
 # This file is part of GDBM.                                   -*- autoconf -*-
-# Copyright (C) 2018-2020 Free Software Foundation, Inc.
+# Copyright (C) 2018-2022 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ quit
 gdbmtool < input | sed 's/^GDBM version.*/GDBM version/'
 ],
 [0],
-[No database name
+[Database file: junk.gdbm
 Database is not open
 define key string
 define content string

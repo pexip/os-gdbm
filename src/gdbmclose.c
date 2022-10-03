@@ -1,8 +1,7 @@
 /* gdbmclose.c - Close a previously opened dbm file. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2017-2020 Free
-   Software Foundation, Inc.
+   Copyright (C) 1990-2022 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,13 +22,11 @@
 #include "gdbmdefs.h"
 
 /* Close the dbm file and free all memory associated with the file DBF.
-   Before freeing members of DBF, check and make sure that they were
-   allocated.  */
+ */
 
 int
 gdbm_close (GDBM_FILE dbf)
 {
-  int index;	/* For freeing the bucket cache. */
   int syserrno;
   
   gdbm_set_errno (dbf, GDBM_NO_ERROR, FALSE);
@@ -40,6 +37,8 @@ gdbm_close (GDBM_FILE dbf)
       if (dbf->read_write != GDBM_READER)
 	gdbm_file_sync (dbf);
 
+      _gdbmsync_done (dbf);
+      
       /* Close the file and free all malloced memory. */
 #if HAVE_MMAP
       _gdbm_mapped_unmap (dbf);
@@ -58,15 +57,8 @@ gdbm_close (GDBM_FILE dbf)
   free (dbf->name);
   free (dbf->dir);
 
-  if (dbf->bucket_cache != NULL)
-    {
-      for (index = 0; index < dbf->cache_size; index++)
-	{
-	  free (dbf->bucket_cache[index].ca_bucket);
-	  free (dbf->bucket_cache[index].ca_data.dptr);
-	}
-      free (dbf->bucket_cache);
-    }
+  _gdbm_cache_free (dbf);
+  
   free (dbf->header);
   free (dbf);
   if (gdbm_errno)

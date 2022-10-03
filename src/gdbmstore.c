@@ -1,8 +1,7 @@
 /* gdbmstore.c - Add a new key/data pair to the database. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2020 Free
-   Software Foundation, Inc.
+   Copyright (C) 1990-2022 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -65,7 +64,7 @@ gdbm_store (GDBM_FILE dbf, datum key, datum content, int flags)
      NULL dptr returned by a lookup procedure indicates an error. */
   if ((key.dptr == NULL) || (content.dptr == NULL))
     {
-      GDBM_SET_ERRNO2 (dbf, GDBM_ILLEGAL_DATA, FALSE,
+      GDBM_SET_ERRNO2 (dbf, GDBM_MALFORMED_DATA, FALSE,
 		       GDBM_DEBUG_STORE);
       return -1;
     }
@@ -191,8 +190,7 @@ gdbm_store (GDBM_FILE dbf, datum key, datum content, int flags)
     }
 
   /* Current bucket has changed. */
-  dbf->cache_entry->ca_changed = TRUE;
-  dbf->bucket_changed = TRUE;
+  _gdbm_current_bucket_changed (dbf);
 
   /* Write everything that is needed to the disk. */
   return _gdbm_end_update (dbf);
