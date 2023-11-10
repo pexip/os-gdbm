@@ -15,7 +15,7 @@
 @SET_MAKE@
 
 # This file is part of GDBM.                                   -*- autoconf -*-
-# Copyright (C) 2011, 2017-2020 Free Software Foundation, Inc.
+# Copyright (C) 2011-2022 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -105,9 +105,10 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 check_PROGRAMS = closerr$(EXEEXT) fdop$(EXEEXT) g_open_ce$(EXEEXT) \
-	g_reorg_ce$(EXEEXT) gtdel$(EXEEXT) gtdump$(EXEEXT) \
-	gtfetch$(EXEEXT) gtload$(EXEEXT) gtopt$(EXEEXT) \
-	gtrecover$(EXEEXT) gtver$(EXEEXT) num2word$(EXEEXT) \
+	g_reorg_ce$(EXEEXT) gtcacheopt$(EXEEXT) gtconv$(EXEEXT) \
+	gtdel$(EXEEXT) gtdump$(EXEEXT) gtfetch$(EXEEXT) \
+	gtload$(EXEEXT) gtopt$(EXEEXT) gtrecover$(EXEEXT) \
+	gtver$(EXEEXT) num2word$(EXEEXT) t_wordwrap$(EXEEXT) \
 	$(am__EXEEXT_1)
 subdir = tests
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -167,6 +168,14 @@ g_reorg_ce_SOURCES = g_reorg_ce.c
 g_reorg_ce_OBJECTS = g_reorg_ce.$(OBJEXT)
 g_reorg_ce_LDADD = $(LDADD)
 g_reorg_ce_DEPENDENCIES = ../src/libgdbm.la
+gtcacheopt_SOURCES = gtcacheopt.c
+gtcacheopt_OBJECTS = gtcacheopt.$(OBJEXT)
+gtcacheopt_LDADD = $(LDADD)
+gtcacheopt_DEPENDENCIES = ../src/libgdbm.la
+gtconv_SOURCES = gtconv.c
+gtconv_OBJECTS = gtconv.$(OBJEXT)
+gtconv_LDADD = $(LDADD)
+gtconv_DEPENDENCIES = ../src/libgdbm.la
 gtdel_SOURCES = gtdel.c
 gtdel_OBJECTS = gtdel.$(OBJEXT)
 gtdel_LDADD = $(LDADD)
@@ -199,6 +208,9 @@ num2word_SOURCES = num2word.c
 num2word_OBJECTS = num2word.$(OBJEXT)
 num2word_LDADD = $(LDADD)
 num2word_DEPENDENCIES = ../src/libgdbm.la
+t_wordwrap_SOURCES = t_wordwrap.c
+t_wordwrap_OBJECTS = t_wordwrap.$(OBJEXT)
+t_wordwrap_DEPENDENCIES = ../tools/libgdbmapp.a
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -234,17 +246,35 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = closerr.c d_creat_ce.c dtdel.c dtdump.c dtfetch.c dtload.c \
-	fdop.c g_open_ce.c g_reorg_ce.c gtdel.c gtdump.c gtfetch.c \
-	gtload.c gtopt.c gtrecover.c gtver.c num2word.c
+	fdop.c g_open_ce.c g_reorg_ce.c gtcacheopt.c gtconv.c gtdel.c \
+	gtdump.c gtfetch.c gtload.c gtopt.c gtrecover.c gtver.c \
+	num2word.c t_wordwrap.c
 DIST_SOURCES = closerr.c d_creat_ce.c dtdel.c dtdump.c dtfetch.c \
-	dtload.c fdop.c g_open_ce.c g_reorg_ce.c gtdel.c gtdump.c \
-	gtfetch.c gtload.c gtopt.c gtrecover.c gtver.c num2word.c
+	dtload.c fdop.c g_open_ce.c g_reorg_ce.c gtcacheopt.c gtconv.c \
+	gtdel.c gtdump.c gtfetch.c gtload.c gtopt.c gtrecover.c \
+	gtver.c num2word.c t_wordwrap.c
+RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
+	ctags-recursive dvi-recursive html-recursive info-recursive \
+	install-data-recursive install-dvi-recursive \
+	install-exec-recursive install-html-recursive \
+	install-info-recursive install-pdf-recursive \
+	install-ps-recursive install-recursive installcheck-recursive \
+	installdirs-recursive pdf-recursive ps-recursive \
+	tags-recursive uninstall-recursive
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
 HEADERS = $(noinst_HEADERS)
+RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
+  distclean-recursive maintainer-clean-recursive
+am__recursive_targets = \
+  $(RECURSIVE_TARGETS) \
+  $(RECURSIVE_CLEAN_TARGETS) \
+  $(am__extra_recursive_targets)
+AM_RECURSIVE_TARGETS = $(am__recursive_targets:-recursive=) TAGS CTAGS \
+	distdir
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -264,12 +294,35 @@ am__define_uniq_tagged_files = \
   done | $(am__uniquify_input)`
 ETAGS = etags
 CTAGS = ctags
-RUNTESTDEFAULTFLAGS = --tool $$tool --srcdir $$srcdir
-EXPECT = expect
-RUNTEST = runtest
+DIST_SUBDIRS = $(SUBDIRS)
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/atlocal.in \
 	$(top_srcdir)/build-aux/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+am__relativize = \
+  dir0=`pwd`; \
+  sed_first='s,^\([^/]*\)/.*$$,\1,'; \
+  sed_rest='s,^[^/]*/*,,'; \
+  sed_last='s,^.*/\([^/]*\)$$,\1,'; \
+  sed_butlast='s,/*[^/]*$$,,'; \
+  while test -n "$$dir1"; do \
+    first=`echo "$$dir1" | sed -e "$$sed_first"`; \
+    if test "$$first" != "."; then \
+      if test "$$first" = ".."; then \
+        dir2=`echo "$$dir0" | sed -e "$$sed_last"`/"$$dir2"; \
+        dir0=`echo "$$dir0" | sed -e "$$sed_butlast"`; \
+      else \
+        first2=`echo "$$dir2" | sed -e "$$sed_first"`; \
+        if test "$$first2" = "$$first"; then \
+          dir2=`echo "$$dir2" | sed -e "$$sed_rest"`; \
+        else \
+          dir2="../$$dir2"; \
+        fi; \
+        dir0="$$dir0"/"$$first"; \
+      fi; \
+    fi; \
+    dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
+  done; \
+  reldir="$$dir2"
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
@@ -280,6 +333,7 @@ AUTOM4TE = @AUTOM4TE@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 BASE64_BIN = @BASE64_BIN@
+BISON = @BISON@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -299,6 +353,7 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+FLEX = @FLEX@
 GDBM_COUNT_T = @GDBM_COUNT_T@
 GDBM_DEBUG_ENABLE = @GDBM_DEBUG_ENABLE@
 GDBM_VERSION_MAJOR = @GDBM_VERSION_MAJOR@
@@ -318,9 +373,6 @@ INTLLIBS = @INTLLIBS@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
-LEX = @LEX@
-LEXLIB = @LEXLIB@
-LEX_OUTPUT_ROOT = @LEX_OUTPUT_ROOT@
 LFLAGS_DEBUG = @LFLAGS_DEBUG@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
@@ -365,8 +417,6 @@ VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
-YACC = @YACC@
-YFLAGS = @YFLAGS@
 YFLAGS_DEBUG = @YFLAGS_DEBUG@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
@@ -420,8 +470,11 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-EXTRA_DIST = $(TESTSUITE_AT) testsuite package.m4 gdbmtool/base.exp \
-	config/default.exp
+EXTRA_DIST = \
+ $(TESTSUITE_AT)\
+ testsuite\
+ package.m4
+
 DISTCLEANFILES = atconfig
 MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 
@@ -436,6 +489,7 @@ TESTSUITE_AT = \
  cloexec02.at\
  cloexec03.at\
  closerr.at\
+ conv.at\
  dbmcreate00.at\
  dbmdel00.at\
  dbmdel01.at\
@@ -457,7 +511,9 @@ TESTSUITE_AT = \
  fetch01.at\
  setopt00.at\
  setopt01.at\
- version.at
+ setopt02.at\
+ version.at\
+ wordwrap.at
 
 TESTSUITE = $(srcdir)/testsuite
 M4 = m4
@@ -468,7 +524,7 @@ AUTOTEST = $(AUTOM4TE) --language=autotest
 #	$(SHELL) $(TESTSUITE) AUTOTEST_PATH=$(exec_prefix)/bin
 @COMPAT_OPT_TRUE@DBMINCLUDES = -I$(top_srcdir)/compat
 @COMPAT_OPT_TRUE@DBMPROGS = dtload dtdump dtfetch dtdel d_creat_ce
-AM_CPPFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src $(DBMINCLUDES)
+AM_CPPFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src -I$(top_srcdir)/tools $(DBMINCLUDES)
 noinst_HEADERS = progname.h
 LDADD = ../src/libgdbm.la
 dtload_LDADD = ../src/libgdbm.la ../compat/libgdbm_compat.la
@@ -476,11 +532,9 @@ dtdump_LDADD = ../src/libgdbm.la ../compat/libgdbm_compat.la
 dtfetch_LDADD = ../src/libgdbm.la ../compat/libgdbm_compat.la
 dtdel_LDADD = ../src/libgdbm.la ../compat/libgdbm_compat.la
 d_creat_ce_LDADD = ../src/libgdbm.la ../compat/libgdbm_compat.la
-AUTOMAKE_OPTIONS = dejagnu
-DEJATOOL = gdbmtool
-RUNTESTFLAGS = 
-CLEANFILES = *.log
-all: all-am
+t_wordwrap_LDADD = ../tools/libgdbmapp.a
+SUBDIRS = gdbmtool
+all: all-recursive
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
@@ -561,6 +615,14 @@ g_reorg_ce$(EXEEXT): $(g_reorg_ce_OBJECTS) $(g_reorg_ce_DEPENDENCIES) $(EXTRA_g_
 	@rm -f g_reorg_ce$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(g_reorg_ce_OBJECTS) $(g_reorg_ce_LDADD) $(LIBS)
 
+gtcacheopt$(EXEEXT): $(gtcacheopt_OBJECTS) $(gtcacheopt_DEPENDENCIES) $(EXTRA_gtcacheopt_DEPENDENCIES) 
+	@rm -f gtcacheopt$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(gtcacheopt_OBJECTS) $(gtcacheopt_LDADD) $(LIBS)
+
+gtconv$(EXEEXT): $(gtconv_OBJECTS) $(gtconv_DEPENDENCIES) $(EXTRA_gtconv_DEPENDENCIES) 
+	@rm -f gtconv$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(gtconv_OBJECTS) $(gtconv_LDADD) $(LIBS)
+
 gtdel$(EXEEXT): $(gtdel_OBJECTS) $(gtdel_DEPENDENCIES) $(EXTRA_gtdel_DEPENDENCIES) 
 	@rm -f gtdel$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(gtdel_OBJECTS) $(gtdel_LDADD) $(LIBS)
@@ -593,6 +655,10 @@ num2word$(EXEEXT): $(num2word_OBJECTS) $(num2word_DEPENDENCIES) $(EXTRA_num2word
 	@rm -f num2word$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(num2word_OBJECTS) $(num2word_LDADD) $(LIBS)
 
+t_wordwrap$(EXEEXT): $(t_wordwrap_OBJECTS) $(t_wordwrap_DEPENDENCIES) $(EXTRA_t_wordwrap_DEPENDENCIES) 
+	@rm -f t_wordwrap$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(t_wordwrap_OBJECTS) $(t_wordwrap_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -608,6 +674,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fdop.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/g_open_ce.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/g_reorg_ce.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtcacheopt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtconv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtdel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtdump.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtfetch.Po@am__quote@
@@ -616,6 +684,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtrecover.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/num2word.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/t_wordwrap.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -644,14 +713,61 @@ mostlyclean-libtool:
 clean-libtool:
 	-rm -rf .libs _libs
 
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run 'make' without going through this Makefile.
+# To change the values of 'make' variables: instead of editing Makefiles,
+# (1) if the variable is set in 'config.status', edit 'config.status'
+#     (which will cause the Makefiles to be regenerated when you run 'make');
+# (2) otherwise, pass the desired values on the 'make' command line.
+$(am__recursive_targets):
+	@fail=; \
+	if $(am__make_keepgoing); then \
+	  failcom='fail=yes'; \
+	else \
+	  failcom='exit 1'; \
+	fi; \
+	dot_seen=no; \
+	target=`echo $@ | sed s/-recursive//`; \
+	case "$@" in \
+	  distclean-* | maintainer-clean-*) list='$(DIST_SUBDIRS)' ;; \
+	  *) list='$(SUBDIRS)' ;; \
+	esac; \
+	for subdir in $$list; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    dot_seen=yes; \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  ($(am__cd) $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	  || eval $$failcom; \
+	done; \
+	if test "$$dot_seen" = "no"; then \
+	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+	fi; test -z "$$fail"
+
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
-tags: tags-am
+tags: tags-recursive
 TAGS: tags
 
 tags-am: $(TAGS_DEPENDENCIES) $(am__tagged_files)
 	set x; \
 	here=`pwd`; \
+	if ($(ETAGS) --etags-include --version) >/dev/null 2>&1; then \
+	  include_option=--etags-include; \
+	  empty_fix=.; \
+	else \
+	  include_option=--include; \
+	  empty_fix=; \
+	fi; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    test ! -f $$subdir/TAGS || \
+	      set "$$@" "$$include_option=$$here/$$subdir/TAGS"; \
+	  fi; \
+	done; \
 	$(am__define_uniq_tagged_files); \
 	shift; \
 	if test -z "$(ETAGS_ARGS)$$*$$unique"; then :; else \
@@ -664,7 +780,7 @@ tags-am: $(TAGS_DEPENDENCIES) $(am__tagged_files)
 	      $$unique; \
 	  fi; \
 	fi
-ctags: ctags-am
+ctags: ctags-recursive
 
 CTAGS: ctags
 ctags-am: $(TAGS_DEPENDENCIES) $(am__tagged_files)
@@ -677,7 +793,7 @@ GTAGS:
 	here=`$(am__cd) $(top_builddir) && pwd` \
 	  && $(am__cd) $(top_srcdir) \
 	  && gtags -i $(GTAGS_ARGS) "$$here"
-cscopelist: cscopelist-am
+cscopelist: cscopelist-recursive
 
 cscopelist-am: $(am__tagged_files)
 	list='$(am__tagged_files)'; \
@@ -695,24 +811,6 @@ cscopelist-am: $(am__tagged_files)
 
 distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
-
-check-DEJAGNU: site.exp
-	srcdir='$(srcdir)'; export srcdir; \
-	EXPECT=$(EXPECT); export EXPECT; \
-	if $(SHELL) -c "$(RUNTEST) --version" > /dev/null 2>&1; then \
-	  exit_status=0; l='$(DEJATOOL)'; for tool in $$l; do \
-	    if $(RUNTEST) $(AM_RUNTESTFLAGS) $(RUNTESTDEFAULTFLAGS) $(RUNTESTFLAGS); \
-	    then :; else exit_status=1; fi; \
-	  done; \
-	else echo "WARNING: could not find '$(RUNTEST)'" 1>&2; :;\
-	fi; \
-	exit $$exit_status
-
-distclean-DEJAGNU:
-	-rm -f site.exp site.bak
-	-l='$(DEJATOOL)'; for tool in $$l; do \
-	  rm -f $$tool.sum $$tool.log; \
-	done
 
 distdir: $(DISTFILES)
 	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
@@ -744,21 +842,47 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
+	@list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	  if test "$$subdir" = .; then :; else \
+	    $(am__make_dryrun) \
+	      || test -d "$(distdir)/$$subdir" \
+	      || $(MKDIR_P) "$(distdir)/$$subdir" \
+	      || exit 1; \
+	    dir1=$$subdir; dir2="$(distdir)/$$subdir"; \
+	    $(am__relativize); \
+	    new_distdir=$$reldir; \
+	    dir1=$$subdir; dir2="$(top_distdir)"; \
+	    $(am__relativize); \
+	    new_top_distdir=$$reldir; \
+	    echo " (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir="$$new_top_distdir" distdir="$$new_distdir" \\"; \
+	    echo "     am__remove_distdir=: am__skip_length_check=: am__skip_mode_fix=: distdir)"; \
+	    ($(am__cd) $$subdir && \
+	      $(MAKE) $(AM_MAKEFLAGS) \
+	        top_distdir="$$new_top_distdir" \
+	        distdir="$$new_distdir" \
+		am__remove_distdir=: \
+		am__skip_length_check=: \
+		am__skip_mode_fix=: \
+	        distdir) \
+	      || exit 1; \
+	  fi; \
+	done
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) $(check_PROGRAMS)
-	$(MAKE) $(AM_MAKEFLAGS) check-DEJAGNU check-local
-check: check-am
+	$(MAKE) $(AM_MAKEFLAGS) check-local
+check: check-recursive
 all-am: Makefile $(HEADERS)
-installdirs:
-install: install-am
-install-exec: install-exec-am
-install-data: install-data-am
-uninstall: uninstall-am
+installdirs: installdirs-recursive
+installdirs-am:
+install: install-recursive
+install-exec: install-exec-recursive
+install-data: install-data-recursive
+uninstall: uninstall-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 
-installcheck: installcheck-am
+installcheck: installcheck-recursive
 install-strip:
 	if test -z '$(STRIP)'; then \
 	  $(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
@@ -772,7 +896,6 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
-	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -783,90 +906,90 @@ maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
-clean: clean-am
+clean: clean-recursive
 
 clean-am: clean-checkPROGRAMS clean-generic clean-libtool clean-local \
 	mostlyclean-am
 
-distclean: distclean-am
+distclean: distclean-recursive
 	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
-distclean-am: clean-am distclean-DEJAGNU distclean-compile \
-	distclean-generic distclean-tags
+distclean-am: clean-am distclean-compile distclean-generic \
+	distclean-tags
 
-dvi: dvi-am
+dvi: dvi-recursive
 
 dvi-am:
 
-html: html-am
+html: html-recursive
 
 html-am:
 
-info: info-am
+info: info-recursive
 
 info-am:
 
 install-data-am:
 
-install-dvi: install-dvi-am
+install-dvi: install-dvi-recursive
 
 install-dvi-am:
 
 install-exec-am:
 
-install-html: install-html-am
+install-html: install-html-recursive
 
 install-html-am:
 
-install-info: install-info-am
+install-info: install-info-recursive
 
 install-info-am:
 
 install-man:
 
-install-pdf: install-pdf-am
+install-pdf: install-pdf-recursive
 
 install-pdf-am:
 
-install-ps: install-ps-am
+install-ps: install-ps-recursive
 
 install-ps-am:
 
 installcheck-am:
 
-maintainer-clean: maintainer-clean-am
+maintainer-clean: maintainer-clean-recursive
 	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
-mostlyclean: mostlyclean-am
+mostlyclean: mostlyclean-recursive
 
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
-pdf: pdf-am
+pdf: pdf-recursive
 
 pdf-am:
 
-ps: ps-am
+ps: ps-recursive
 
 ps-am:
 
 uninstall-am:
 
-.MAKE: check-am install-am install-strip
+.MAKE: $(am__recursive_targets) check-am install-am install-strip
 
-.PHONY: CTAGS GTAGS TAGS all all-am check check-DEJAGNU check-am \
-	check-local clean clean-checkPROGRAMS clean-generic \
+.PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am check \
+	check-am check-local clean clean-checkPROGRAMS clean-generic \
 	clean-libtool clean-local cscopelist-am ctags ctags-am \
-	distclean distclean-DEJAGNU distclean-compile \
-	distclean-generic distclean-libtool distclean-tags distdir dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs installdirs-am maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags tags-am uninstall uninstall-am
@@ -898,28 +1021,6 @@ clean-local:
 
 check-local: atconfig atlocal $(TESTSUITE)
 	$(SHELL) $(TESTSUITE)
-
-site.exp: Makefile
-	@echo 'Making a new site.exp file...'
-	@test ! -f site.bak || rm -f site.bak
-	@echo '## these variables are automatically generated by make ##' > $@-t
-	@echo '# Do not edit here.  If you wish to override these values' >> $@-t
-	@echo '# edit the last section' >> $@-t
-	@echo 'set tool $(DEJATOOL)' >> $@-t
-	@echo "set top_srcdir `cd $(top_srcdir); pwd`" >> $@-t
-	@echo "set top_builddir `cd $(top_builddir); pwd`" >> $@-t
-	@echo "set srcdir `cd $(srcdir); pwd`" >> $@-t
-	@echo 'set objdir' `pwd` >> $@-t
-	@echo 'set host_alias "$(host_alias)"' >> $@-t
-	@echo 'set host_triplet $(host_triplet)' >> $@-t
-	@echo 'set target_alias "$(target_alias)"' >> $@-t
-	@echo 'set target_triplet $(target_triplet)' >> $@-t
-	@echo 'set build_alias "$(build_alias)"' >> $@-t
-	@echo 'set build_triplet $(build_triplet)' >> $@-t
-	@echo '## All variables above are generated by configure. Do Not Edit ##' >> $@-t
-	@test ! -f site.exp || sed '1,/^## All variables above are.*##/ d' site.exp >> $@-t
-	@test ! -f site.exp || mv site.exp site.bak
-	@mv $@-t site.exp
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

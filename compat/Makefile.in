@@ -15,8 +15,7 @@
 @SET_MAKE@
 
 # This file is part of GDBM.                                   -*- Makefile -*-
-# Copyright (C) 2007, 2011, 2014, 2017-2020 Free Software Foundation,
-# Inc.
+# Copyright (C) 2007-2022 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -244,6 +243,7 @@ AUTOM4TE = @AUTOM4TE@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 BASE64_BIN = @BASE64_BIN@
+BISON = @BISON@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -263,6 +263,7 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+FLEX = @FLEX@
 GDBM_COUNT_T = @GDBM_COUNT_T@
 GDBM_DEBUG_ENABLE = @GDBM_DEBUG_ENABLE@
 GDBM_VERSION_MAJOR = @GDBM_VERSION_MAJOR@
@@ -282,9 +283,6 @@ INTLLIBS = @INTLLIBS@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
-LEX = @LEX@
-LEXLIB = @LEXLIB@
-LEX_OUTPUT_ROOT = @LEX_OUTPUT_ROOT@
 LFLAGS_DEBUG = @LFLAGS_DEBUG@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
@@ -329,8 +327,6 @@ VERSION = @VERSION@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
-YACC = @YACC@
-YFLAGS = @YFLAGS@
 YFLAGS_DEBUG = @YFLAGS_DEBUG@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@

@@ -1,5 +1,5 @@
 # This file is part of GDBM.                                   -*- Makefile -*-
-# Copyright (C) 2007, 2011, 2014-2020 Free Software Foundation, Inc.
+# Copyright (C) 2007-2022 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ gdbm_TEXINFOS=\
 dist_man_MANS   = gdbm.3 gdbm_dump.1 gdbm_load.1 gdbmtool.1
 
 GENDOCS = perl gendocs.pl
-EXTRA_DIST = gendocs.pl webdoc.init
+EXTRA_DIST = gendocs.pl webdoc.init htmlxref.cnf
 
 TEXI2DVI=texi2dvi -t '@set $(RENDITION)'
 

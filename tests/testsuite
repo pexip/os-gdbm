@@ -612,14 +612,17 @@ at_help_all="1;version.at:17;gdbm version;;
 20;dbmdel02.at:17;delete: all records;dbm delete delete02 dbmdel02;
 21;setopt00.at:17;setopt;setopt setopt00;
 22;setopt01.at:17;setopt: mmap options;setopt setopt01 mmap;
-23;cloexec00.at:17;cloexec: gdbm_open;gdbm gdbm_open cloexec cloexec00;
-24;cloexec01.at:17;cloexec: gdbm_reorganize;gdbm gdbm_reorganize cloexec cloexec01;
-25;cloexec02.at:17;cloexec: dbm_open;ndbm dbm_open cloexec cloexec02;
-26;cloexec03.at:17;cloexec: dbm_open -creat;ndbm dbm_open cloexec cloexec03;
-27;gdbmtool00.at:17;Input from file;gdbmtool;
-28;gdbmtool01.at:17;Input from stdin;gdbmtool;
-29;gdbmtool02.at:17;Input from command line;gdbmtool;
-30;gdbmtool03.at:17;Initialization file;gdbmtool;
+23;setopt02.at:17;GDBM_GETCACHESIZE/GDBM_SETCACHESIZE;setopt setopt02 cachesize;
+24;cloexec00.at:17;cloexec: gdbm_open;gdbm gdbm_open cloexec cloexec00;
+25;cloexec01.at:17;cloexec: gdbm_reorganize;gdbm gdbm_reorganize cloexec cloexec01;
+26;cloexec02.at:17;cloexec: dbm_open;ndbm dbm_open cloexec cloexec02;
+27;cloexec03.at:17;cloexec: dbm_open -creat;ndbm dbm_open cloexec cloexec03;
+28;wordwrap.at:17;wordwrap;;
+29;gdbmtool00.at:17;Input from file;gdbmtool;
+30;gdbmtool01.at:17;Input from stdin;gdbmtool;
+31;gdbmtool02.at:17;Input from command line;gdbmtool;
+32;gdbmtool03.at:17;Initialization file;gdbmtool;
+33;conv.at:17;Database format conversion;conv;
 "
 # List of the all the test groups.
 at_groups_all=`$as_echo "$at_help_all" | sed 's/;.*//'`
@@ -633,7 +636,7 @@ at_fn_validate_ranges ()
   for at_grp
   do
     eval at_value=\$$at_grp
-    if test $at_value -lt 1 || test $at_value -gt 30; then
+    if test $at_value -lt 1 || test $at_value -gt 33; then
       $as_echo "invalid test group: $at_value" >&2
       exit 1
     fi
@@ -931,7 +934,7 @@ fi
 # List of tests.
 if $at_list_p; then
   cat <<_ATEOF || at_write_fail=1
-gdbm 1.19 test suite test groups:
+gdbm 1.23 test suite test groups:
 
  NUM: FILE-NAME:LINE     TEST-GROUP-NAME
       KEYWORDS
@@ -972,7 +975,7 @@ _ATEOF
   exit $at_write_fail
 fi
 if $at_version_p; then
-  $as_echo "$as_me (gdbm 1.19)" &&
+  $as_echo "$as_me (gdbm 1.23)" &&
   cat <<\_ATEOF || at_write_fail=1
 
 Copyright (C) 2012 Free Software Foundation, Inc.
@@ -1001,12 +1004,18 @@ at_banner_text_3="Compatibility library (dbm/ndbm)"
 # Banner 4. testsuite.at:68
 # Category starts at test group 21.
 at_banner_text_4="DB options"
-# Banner 5. testsuite.at:73
-# Category starts at test group 23.
+# Banner 5. testsuite.at:74
+# Category starts at test group 24.
 at_banner_text_5="Cloexec"
-# Banner 6. testsuite.at:80
-# Category starts at test group 27.
-at_banner_text_6="gdbmtool"
+# Banner 6. testsuite.at:81
+# Category starts at test group 28.
+at_banner_text_6="Wordwrap"
+# Banner 7. testsuite.at:84
+# Category starts at test group 29.
+at_banner_text_7="gdbmtool"
+# Banner 8. testsuite.at:90
+# Category starts at test group 33.
+at_banner_text_8="Database formats"
 
 # Take any -C into account.
 if $at_change_dir ; then
@@ -1167,11 +1176,11 @@ exec 5>>"$at_suite_log"
 
 # Banners and logs.
 $as_echo "## --------------------- ##
-## gdbm 1.19 test suite. ##
+## gdbm 1.23 test suite. ##
 ## --------------------- ##"
 {
   $as_echo "## --------------------- ##
-## gdbm 1.19 test suite. ##
+## gdbm 1.23 test suite. ##
 ## --------------------- ##"
   echo
 
@@ -2015,7 +2024,7 @@ _ASBOX
   $as_echo "Please send $at_msg and all information you think might help:
 
    To: <bug-gdbm@gnu.org>
-   Subject: [gdbm 1.19] $as_me: $at_fail_list${at_fail_list:+ failed${at_xpass_list:+, }}$at_xpass_list${at_xpass_list:+ passed unexpectedly}
+   Subject: [gdbm 1.23] $as_me: $at_fail_list${at_fail_list:+ failed${at_xpass_list:+, }}$at_xpass_list${at_xpass_list:+ passed unexpectedly}
 
 You may investigate any problem if you feel able to do so, in which
 case the test suite provides a good starting point.  Its output may
@@ -2046,8 +2055,8 @@ at_fn_check_prepare_trace "version.at:19"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
-echo >>"$at_stdout"; $as_echo "1.19.0
-1.19.0
+echo >>"$at_stdout"; $as_echo "1.23.0
+1.23.0
 " | \
   $at_diff - "$at_stdout" || at_failed=:
 at_fn_check_status 0 $at_status "$at_srcdir/version.at:19"
@@ -2948,7 +2957,7 @@ echo >>"$at_stdout"; $as_echo "GDBM_GETFLAGS: PASS
 * CACHESIZE:
 initial GDBM_SETCACHESIZE: PASS
 GDBM_GETCACHESIZE: PASS
-second GDBM_SETCACHESIZE: XFAIL
+second GDBM_SETCACHESIZE: PASS
 * SYNCMODE:
 initial GDBM_GETSYNCMODE: PASS
 GDBM_SETSYNCMODE: PASS
@@ -3034,11 +3043,38 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_22
 #AT_START_23
-at_fn_group_banner 23 'cloexec00.at:17' \
-  "cloexec: gdbm_open" "                             " 5
+at_fn_group_banner 23 'setopt02.at:17' \
+  "GDBM_GETCACHESIZE/GDBM_SETCACHESIZE" "            " 4
 at_xfail=no
 (
   $as_echo "23. $at_setup_line: testing $at_desc ..."
+  $at_traceon
+
+
+{ set +x
+$as_echo "$at_srcdir/setopt02.at:19: gtcacheopt"
+at_fn_check_prepare_trace "setopt02.at:19"
+( $at_check_trace; gtcacheopt
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+at_fn_diff_devnull "$at_stderr" || at_failed=:
+at_fn_diff_devnull "$at_stdout" || at_failed=:
+at_fn_check_status 0 $at_status "$at_srcdir/setopt02.at:19"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+  set +x
+  $at_times_p && times >"$at_times_file"
+) 5>&1 2>&1 7>&- | eval $at_tee_pipe
+read at_status <"$at_status_file"
+#AT_STOP_23
+#AT_START_24
+at_fn_group_banner 24 'cloexec00.at:17' \
+  "cloexec: gdbm_open" "                             " 5
+at_xfail=no
+(
+  $as_echo "24. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -3065,13 +3101,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_23
-#AT_START_24
-at_fn_group_banner 24 'cloexec01.at:17' \
+#AT_STOP_24
+#AT_START_25
+at_fn_group_banner 25 'cloexec01.at:17' \
   "cloexec: gdbm_reorganize" "                       " 5
 at_xfail=no
 (
-  $as_echo "24. $at_setup_line: testing $at_desc ..."
+  $as_echo "25. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -3098,13 +3134,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_24
-#AT_START_25
-at_fn_group_banner 25 'cloexec02.at:17' \
+#AT_STOP_25
+#AT_START_26
+at_fn_group_banner 26 'cloexec02.at:17' \
   "cloexec: dbm_open" "                              " 5
 at_xfail=no
 (
-  $as_echo "25. $at_setup_line: testing $at_desc ..."
+  $as_echo "26. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -3139,13 +3175,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_25
-#AT_START_26
-at_fn_group_banner 26 'cloexec03.at:17' \
+#AT_STOP_26
+#AT_START_27
+at_fn_group_banner 27 'cloexec03.at:17' \
   "cloexec: dbm_open -creat" "                       " 5
 at_xfail=no
 (
-  $as_echo "26. $at_setup_line: testing $at_desc ..."
+  $as_echo "27. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -3178,13 +3214,224 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_26
-#AT_START_27
-at_fn_group_banner 27 'gdbmtool00.at:17' \
-  "Input from file" "                                " 6
+#AT_STOP_27
+#AT_START_28
+at_fn_group_banner 28 'wordwrap.at:17' \
+  "wordwrap" "                                       " 6
 at_xfail=no
 (
-  $as_echo "27. $at_setup_line: testing $at_desc ..."
+  $as_echo "28. $at_setup_line: testing $at_desc ..."
+  $at_traceon
+
+
+{ set +x
+$as_echo "$at_srcdir/wordwrap.at:19: t_wordwrap -right=10 abcdefghi"
+at_fn_check_prepare_trace "wordwrap.at:19"
+( $at_check_trace; t_wordwrap -right=10 abcdefghi
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+at_fn_diff_devnull "$at_stderr" || at_failed=:
+echo >>"$at_stdout"; $as_echo "abcdefghi
+" | \
+  $at_diff - "$at_stdout" || at_failed=:
+at_fn_check_status 0 $at_status "$at_srcdir/wordwrap.at:19"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+
+{ set +x
+$as_echo "$at_srcdir/wordwrap.at:24: t_wordwrap -right=10 abcdefghijklmn"
+at_fn_check_prepare_trace "wordwrap.at:24"
+( $at_check_trace; t_wordwrap -right=10 abcdefghijklmn
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+at_fn_diff_devnull "$at_stderr" || at_failed=:
+echo >>"$at_stdout"; $as_echo "abcdefghi
+jklmn
+" | \
+  $at_diff - "$at_stdout" || at_failed=:
+at_fn_check_status 0 $at_status "$at_srcdir/wordwrap.at:24"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+
+{ set +x
+$as_echo "$at_srcdir/wordwrap.at:30: t_wordwrap -right=10 abcd efg hijklmn"
+at_fn_check_prepare_trace "wordwrap.at:30"
+( $at_check_trace; t_wordwrap -right=10 abcd efg hijklmn
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+at_fn_diff_devnull "$at_stderr" || at_failed=:
+echo >>"$at_stdout"; $as_echo "abcd efg
+hijklmn
+" | \
+  $at_diff - "$at_stdout" || at_failed=:
+at_fn_check_status 0 $at_status "$at_srcdir/wordwrap.at:30"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+
+{ set +x
+$as_echo "$at_srcdir/wordwrap.at:36: t_wordwrap -left=2 -right=10 Donec condimentum orciluctus facilisis interdum"
+at_fn_check_prepare_trace "wordwrap.at:36"
+( $at_check_trace; t_wordwrap -left=2 -right=10 Donec condimentum orciluctus facilisis interdum
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+at_fn_diff_devnull "$at_stderr" || at_failed=:
+echo >>"$at_stdout"; $as_echo "  Donec
+  condime
+  ntum
+  orciluc
+  tus
+  facilis
+  is
+  interdu
+  m
+" | \
+  $at_diff - "$at_stdout" || at_failed=:
+at_fn_check_status 0 $at_status "$at_srcdir/wordwrap.at:36"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+
+cat >1.in <<'_ATEOF'
+Cras non est eleifend diam placerat aliquet. Phasellus sem dui, tincidunt eget interdum sed, auctor nec nibh. Donec condimentum orci luctus facilisis interdum. Nam sed rhoncus neque. Aliquam pellentesque ligula massa, et maximus augue commodo et. Sed et mi dolor.
+_ATEOF
+
+
+{ set +x
+$as_echo "$at_srcdir/wordwrap.at:53: t_wordwrap -left=10 -right=30 -file=1.in"
+at_fn_check_prepare_trace "wordwrap.at:53"
+( $at_check_trace; t_wordwrap -left=10 -right=30 -file=1.in
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+at_fn_diff_devnull "$at_stderr" || at_failed=:
+echo >>"$at_stdout"; $as_echo "          Cras non est
+          eleifend diam
+          placerat aliquet.
+          Phasellus sem dui,
+          tincidunt eget
+          interdum sed,
+          auctor nec nibh.
+          Donec condimentum
+          orci luctus
+          facilisis interdum.
+          Nam sed rhoncus
+          neque. Aliquam
+          pellentesque ligula
+          massa, et maximus
+          augue commodo et.
+          Sed et mi dolor.
+" | \
+  $at_diff - "$at_stdout" || at_failed=:
+at_fn_check_status 0 $at_status "$at_srcdir/wordwrap.at:53"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+
+cat >2.in <<'_ATEOF'
+Cras non est eleifend diam placerat aliquet. Phasellus sem dui,
+tincidunt eget interdum sed, auctor nec
+nibh.
+Donec condimentum orci luctus facilisis interdum.
+
+Nam sed rhoncus neque.
+Aliquam pellentesque ligula massa,
+et maximus augue commodo et. Sed et mi dolor.
+_ATEOF
+
+
+{ set +x
+$as_echo "$at_srcdir/wordwrap.at:84: t_wordwrap -left=10 -right=30 -file=2.in"
+at_fn_check_prepare_trace "wordwrap.at:84"
+( $at_check_trace; t_wordwrap -left=10 -right=30 -file=2.in
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+at_fn_diff_devnull "$at_stderr" || at_failed=:
+echo >>"$at_stdout"; $as_echo "          Cras non est
+          eleifend diam
+          placerat aliquet.
+          Phasellus sem dui,
+          tincidunt eget
+          interdum sed,
+          auctor nec
+          nibh.
+          Donec condimentum
+          orci luctus
+          facilisis interdum.
+
+          Nam sed rhoncus
+          neque.
+          Aliquam
+          pellentesque ligula
+          massa,
+          et maximus augue
+          commodo et. Sed et
+          mi dolor.
+" | \
+  $at_diff - "$at_stdout" || at_failed=:
+at_fn_check_status 0 $at_status "$at_srcdir/wordwrap.at:84"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+
+{ set +x
+$as_echo "$at_srcdir/wordwrap.at:108: t_wordwrap -left=10 -right=64 \\
+ -- '-a, --aenean' -left=30 'aenean quis posuere lacus a suscipit erat, donec sit amet pretium ligula, non ex et nisi placerat suscipit.' \\
+ -left=10 \\
+ -- -b \\
+ -left=30 pulvinar tempor erat \\
+ -left=10 \\
+ -- '--porttitor, --ullamcore, --diam-velit-consecretur' \\
+ -left=30 \\
+ lorem ipsum uis aute irure dolor in reprehenderit in voluptate velit esse"
+at_fn_check_prepare_notrace 'an embedded newline' "wordwrap.at:108"
+( $at_check_trace; t_wordwrap -left=10 -right=64 \
+ -- '-a, --aenean' -left=30 'aenean quis posuere lacus a suscipit erat, donec sit amet pretium ligula, non ex et nisi placerat suscipit.' \
+ -left=10 \
+ -- -b \
+ -left=30 pulvinar tempor erat \
+ -left=10 \
+ -- '--porttitor, --ullamcore, --diam-velit-consecretur' \
+ -left=30 \
+ lorem ipsum uis aute irure dolor in reprehenderit in voluptate velit esse
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+at_fn_diff_devnull "$at_stderr" || at_failed=:
+echo >>"$at_stdout"; $as_echo "          -a, --aenean        aenean quis posuere lacus a
+                              suscipit erat, donec sit amet
+                              pretium ligula, non ex et nisi
+                              placerat suscipit.
+          -b                  pulvinar tempor erat
+          --porttitor, --ullamcore, --diam-velit-consecretur
+                              lorem ipsum uis aute irure dolor
+                              in reprehenderit in voluptate
+                              velit esse
+" | \
+  $at_diff - "$at_stdout" || at_failed=:
+at_fn_check_status 0 $at_status "$at_srcdir/wordwrap.at:108"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+
+  set +x
+  $at_times_p && times >"$at_times_file"
+) 5>&1 2>&1 7>&- | eval $at_tee_pipe
+read at_status <"$at_status_file"
+#AT_STOP_28
+#AT_START_29
+at_fn_group_banner 29 'gdbmtool00.at:17' \
+  "Input from file" "                                " 7
+at_xfail=no
+(
+  $as_echo "29. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -3219,7 +3466,7 @@ gdbmtool -f input | sed 's/^GDBM version.*/GDBM version/'
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
-echo >>"$at_stdout"; $as_echo "No database name
+echo >>"$at_stdout"; $as_echo "Database file: junk.gdbm
 Database is not open
 define key string
 define content string
@@ -3234,13 +3481,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_27
-#AT_START_28
-at_fn_group_banner 28 'gdbmtool01.at:17' \
-  "Input from stdin" "                               " 6
+#AT_STOP_29
+#AT_START_30
+at_fn_group_banner 30 'gdbmtool01.at:17' \
+  "Input from stdin" "                               " 7
 at_xfail=no
 (
-  $as_echo "28. $at_setup_line: testing $at_desc ..."
+  $as_echo "30. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -3275,7 +3522,7 @@ gdbmtool < input | sed 's/^GDBM version.*/GDBM version/'
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
-echo >>"$at_stdout"; $as_echo "No database name
+echo >>"$at_stdout"; $as_echo "Database file: junk.gdbm
 Database is not open
 define key string
 define content string
@@ -3290,13 +3537,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_28
-#AT_START_29
-at_fn_group_banner 29 'gdbmtool02.at:17' \
-  "Input from command line" "                        " 6
+#AT_STOP_30
+#AT_START_31
+at_fn_group_banner 31 'gdbmtool02.at:17' \
+  "Input from command line" "                        " 7
 at_xfail=no
 (
-  $as_echo "29. $at_setup_line: testing $at_desc ..."
+  $as_echo "31. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -3330,13 +3577,13 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_29
-#AT_START_30
-at_fn_group_banner 30 'gdbmtool03.at:17' \
-  "Initialization file" "                            " 6
+#AT_STOP_31
+#AT_START_32
+at_fn_group_banner 32 'gdbmtool03.at:17' \
+  "Initialization file" "                            " 7
 at_xfail=no
 (
-  $as_echo "30. $at_setup_line: testing $at_desc ..."
+  $as_echo "32. $at_setup_line: testing $at_desc ..."
   $at_traceon
 
 
@@ -3378,4 +3625,31 @@ $at_traceon; }
   $at_times_p && times >"$at_times_file"
 ) 5>&1 2>&1 7>&- | eval $at_tee_pipe
 read at_status <"$at_status_file"
-#AT_STOP_30
+#AT_STOP_32
+#AT_START_33
+at_fn_group_banner 33 'conv.at:17' \
+  "Database format conversion" "                     " 8
+at_xfail=no
+(
+  $as_echo "33. $at_setup_line: testing $at_desc ..."
+  $at_traceon
+
+
+{ set +x
+$as_echo "$at_srcdir/conv.at:19: gtconv"
+at_fn_check_prepare_trace "conv.at:19"
+( $at_check_trace; gtconv
+) >>"$at_stdout" 2>>"$at_stderr" 5>&-
+at_status=$? at_failed=false
+$at_check_filter
+at_fn_diff_devnull "$at_stderr" || at_failed=:
+at_fn_diff_devnull "$at_stdout" || at_failed=:
+at_fn_check_status 0 $at_status "$at_srcdir/conv.at:19"
+$at_failed && at_fn_log_failure
+$at_traceon; }
+
+  set +x
+  $at_times_p && times >"$at_times_file"
+) 5>&1 2>&1 7>&- | eval $at_tee_pipe
+read at_status <"$at_status_file"
+#AT_STOP_33

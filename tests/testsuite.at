@@ -1,5 +1,5 @@
 # This file is part of GDBM.                                   -*- autoconf -*-
-# Copyright (C) 2011, 2017-2020 Free Software Foundation, Inc.
+# Copyright (C) 2011-2022 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -69,6 +69,7 @@ AT_BANNER([DB options])
 
 m4_include([setopt00.at])
 m4_include([setopt01.at])
+m4_include([setopt02.at])
 
 AT_BANNER([Cloexec])
 
@@ -77,10 +78,16 @@ m4_include([cloexec01.at])
 m4_include([cloexec02.at])
 m4_include([cloexec03.at])
 
+AT_BANNER([Wordwrap])
+m4_include([wordwrap.at])
+
 AT_BANNER([gdbmtool])
 m4_include([gdbmtool00.at])
 m4_include([gdbmtool01.at])
 m4_include([gdbmtool02.at])
 m4_include([gdbmtool03.at])
+
+AT_BANNER([Database formats])
+m4_include([conv.at])
 
 # End of testsuite.at

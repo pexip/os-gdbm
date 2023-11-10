@@ -1,8 +1,7 @@
 /* gdbmopen.c - Open the dbm file and initialize data structures for use. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2020 Free
-   Software Foundation, Inc.
+   Copyright (C) 1990-2022 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,15 +22,6 @@
 #include "gdbmdefs.h"
 #include <stddef.h>
 
-/* Determine our native magic number and bail if we can't. */
-#if SIZEOF_OFF_T == 4
-# define GDBM_MAGIC	GDBM_MAGIC32
-#elif SIZEOF_OFF_T == 8
-# define GDBM_MAGIC	GDBM_MAGIC64
-#else
-# error "Unsupported off_t size, contact GDBM maintainer.  What crazy system is this?!?"
-#endif
-
 static void
 compute_directory_size (blksize_t block_size,
 			int *ret_dir_size, int *ret_dir_bits)
@@ -40,6 +30,8 @@ compute_directory_size (blksize_t block_size,
   int dir_size = 8 * sizeof (off_t);
   int dir_bits = 3;
 
+  if (block_size > INT_MAX / 2)
+    block_size = INT_MAX / 2;
   while (dir_size < block_size && dir_bits < GDBM_HASH_BITS - 3)
     {
       dir_size <<= 1;
@@ -56,115 +48,40 @@ bucket_element_count (size_t bucket_size)
   return (bucket_size - sizeof (hash_bucket)) / sizeof (bucket_element) + 1;
 }
 
-static int
-avail_comp (void const *a, void const *b)
+static void
+gdbm_header_avail (gdbm_file_header *hdr,
+		   avail_block **avail_ptr, size_t *avail_size,
+		   gdbm_ext_header **exhdr)
 {
-  avail_elem const *ava = a;
-  avail_elem const *avb = b;
-  return ava->av_size - avb->av_size;
-}
-
-/* Returns true if the avail array AV[0]@COUNT is valid.
-
-   As a side effect, ensures the array is sorted by element size
-   in increasing order and restores the ordering if necessary.
-
-   The proper ordering could have been clobbered in versions of GDBM<=1.15,
-   by a call to _gdbm_put_av_elem with the can_merge parameter set to
-   TRUE. This happened in two cases: either because the GDBM_COALESCEBLKS
-   was set, and (quite unfortunately) when _gdbm_put_av_elem was called
-   from pop_avail_block in falloc.c. The latter case is quite common,
-   which means that there can be lots of existing databases with broken
-   ordering of avail arrays. Thus, restoring of the proper ordering
-   is essential for people to be able to use their existing databases.
-*/
-int
-gdbm_avail_table_valid_p (GDBM_FILE dbf, avail_elem *av, int count)
-{
-  off_t prev = 0;
-  int i;
-  int needs_sorting = 0;
-  avail_elem *p = av;
-  
-  prev = 0;
-  for (i = 0; i < count; i++, p++)
-    {
-      if (!(p->av_adr >= dbf->header->bucket_size
-	    && p->av_adr + p->av_size <= dbf->header->next_block))
-	return 0;
-      if (p->av_size < prev)
-	needs_sorting = 1;
-      prev = p->av_size;
+  switch (hdr->header_magic)
+    { 
+    case GDBM_OMAGIC:
+    case GDBM_MAGIC: 
+      *exhdr = NULL;
+      *avail_ptr = &((gdbm_file_standard_header*)hdr)->avail;
+      *avail_size = (hdr->block_size -
+		     offsetof (gdbm_file_standard_header, avail));
+      break;
+      
+    case GDBM_NUMSYNC_MAGIC:
+      *exhdr = &((gdbm_file_extended_header*)hdr)->ext;
+      *avail_ptr = &((gdbm_file_extended_header*)hdr)->avail;
+      *avail_size = (hdr->block_size -
+		     offsetof (gdbm_file_extended_header, avail));
+      break;
     }
-
-  if (needs_sorting && dbf->read_write)
-    {
-      GDBM_DEBUG (GDBM_DEBUG_ERR, "%s", "restoring sort order");
-      qsort (av, count, sizeof av[0], avail_comp);
-    }
-  
-  return 1;
-}
-
-int
-gdbm_avail_block_validate (GDBM_FILE dbf, avail_block *avblk)
-{
-  if (!(gdbm_avail_block_valid_p (avblk)
-	&& gdbm_avail_table_valid_p (dbf, avblk->av_table, avblk->count)))
-    {
-      GDBM_SET_ERRNO (dbf, GDBM_BAD_AVAIL, TRUE);
-      return -1;
-    }
-  return 0;
-}
-
-int
-gdbm_bucket_avail_table_validate (GDBM_FILE dbf, hash_bucket *bucket)
-{
-  if (!(bucket->av_count >= 0
-	&& bucket->av_count <= BUCKET_AVAIL
-	&& gdbm_avail_table_valid_p (dbf, bucket->bucket_avail,
-				     bucket->av_count)))
-    {
-      GDBM_SET_ERRNO (dbf, GDBM_BAD_AVAIL, TRUE);
-      return -1;
-    }
-  return 0;
 }
 
 static int
-validate_header (gdbm_file_header const *hdr, struct stat const *st)
+validate_header_std (gdbm_file_header const *hdr, struct stat const *st)
 {
-  int dir_size, dir_bits;
   int result = GDBM_NO_ERROR;
-  
-  /* Is the magic number good? */
-  if (hdr->header_magic != GDBM_MAGIC)
-    {
-      switch (hdr->header_magic)
-	{
-	case GDBM_OMAGIC:
-	  /* OK */
-	  break;
-
-	case GDBM_OMAGIC_SWAP:
-	case GDBM_MAGIC32_SWAP:
-	case GDBM_MAGIC64_SWAP:
-	  return GDBM_BYTE_SWAPPED;
-
-	case GDBM_MAGIC32:
-	case GDBM_MAGIC64:
-	  return GDBM_BAD_FILE_OFFSET;
-
-	default:
-	  return GDBM_BAD_MAGIC_NUMBER;
-	}
-    }
+  int dir_size, dir_bits;
   
   if (!(hdr->block_size > 0
 	&& hdr->block_size > sizeof (gdbm_file_header)
 	&& hdr->block_size - sizeof (gdbm_file_header) >=
-	sizeof(hdr->avail.av_table[0])))
+	sizeof(avail_block)))
     {
       return GDBM_BLOCK_SIZE_ERROR;
     }
@@ -192,28 +109,112 @@ validate_header (gdbm_file_header const *hdr, struct stat const *st)
   if (hdr->dir_bits != dir_bits)
     return GDBM_BAD_HEADER;
   
-  if (!(hdr->bucket_size > sizeof(hash_bucket)))
+  if (!(hdr->bucket_size > 0 && hdr->bucket_size > sizeof (hash_bucket)))
     return GDBM_BAD_HEADER;
 
   if (hdr->bucket_elems != bucket_element_count (hdr->bucket_size))
     return GDBM_BAD_HEADER;
 
-  if (((hdr->block_size - sizeof (gdbm_file_header)) / sizeof(avail_elem) + 1)
-      != hdr->avail.size)
-    return GDBM_BAD_HEADER;    
-  
   return result;
+}
+
+static int
+validate_header_numsync (gdbm_file_header const *hdr, struct stat const *st)
+{
+  int result = GDBM_NO_ERROR;
+  int dir_size, dir_bits;
+  
+  if (!(hdr->block_size > 0
+	&& hdr->block_size > (sizeof (gdbm_file_header) + sizeof (gdbm_ext_header))
+	&& hdr->block_size - (sizeof (gdbm_file_header) + sizeof (gdbm_ext_header)) >=
+	sizeof(avail_block)))
+    {
+      return GDBM_BLOCK_SIZE_ERROR;
+    }
+
+  /* Technically speaking, the condition below should read
+         hdr->next_block != st->st_size
+     However, gdbm versions prior to commit 4e819c98 could leave
+     hdr->next_block pointing beyond current end of file. To ensure
+     backward compatibility with these versions, the condition has been
+     slackened to this: */
+  if (hdr->next_block < st->st_size)
+    result = GDBM_NEED_RECOVERY;
+
+  /* Make sure dir and dir + dir_size fall within the file boundary */
+  if (!(hdr->dir > 0
+	&& hdr->dir < st->st_size
+	&& hdr->dir_size > 0
+	&& hdr->dir + hdr->dir_size < st->st_size))
+    return GDBM_BAD_HEADER;
+
+  compute_directory_size (hdr->block_size, &dir_size, &dir_bits);
+  if (!(hdr->dir_size >= dir_size))
+    return GDBM_BAD_HEADER;
+  compute_directory_size (hdr->dir_size, &dir_size, &dir_bits);
+  if (hdr->dir_bits != dir_bits)
+    return GDBM_BAD_HEADER;
+  
+  if (!(hdr->bucket_size > 0 && hdr->bucket_size > sizeof (hash_bucket)))
+    return GDBM_BAD_HEADER;
+
+  if (hdr->bucket_elems != bucket_element_count (hdr->bucket_size))
+    return GDBM_BAD_HEADER;
+
+  return result;
+}
+
+static int
+validate_header (gdbm_file_header const *hdr, struct stat const *st)
+{
+  /* Is the magic number good? */
+  switch (hdr->header_magic)
+    {
+    case GDBM_OMAGIC:
+    case GDBM_MAGIC:
+      return validate_header_std (hdr, st);
+      
+    case GDBM_NUMSYNC_MAGIC:
+      return validate_header_numsync (hdr, st);
+
+    default:
+      switch (hdr->header_magic)
+	{
+	case GDBM_OMAGIC_SWAP:
+	case GDBM_MAGIC32_SWAP:
+	case GDBM_MAGIC64_SWAP:
+	case GDBM_NUMSYNC_MAGIC32_SWAP:
+	case GDBM_NUMSYNC_MAGIC64_SWAP:
+	  return GDBM_BYTE_SWAPPED;
+
+	case GDBM_MAGIC32:
+	case GDBM_MAGIC64:
+	case GDBM_NUMSYNC_MAGIC32:
+	case GDBM_NUMSYNC_MAGIC64:
+	  return GDBM_BAD_FILE_OFFSET;
+
+	default:
+	  return GDBM_BAD_MAGIC_NUMBER;
+	}
+    }
 }
 
 int
 _gdbm_validate_header (GDBM_FILE dbf)
 {
   struct stat file_stat;
-    
+  int rc;
+  
   if (fstat (dbf->desc, &file_stat))
     return GDBM_FILE_STAT_ERROR;
 
-  return validate_header (dbf->header, &file_stat);
+  rc = validate_header (dbf->header, &file_stat);
+  if (rc == 0)
+    {
+      if (gdbm_avail_block_validate (dbf, dbf->avail, dbf->avail_size))
+	rc = GDBM_BAD_AVAIL;
+    }
+  return rc;
 }
 
 /* Do we have ftruncate? */
@@ -269,8 +270,8 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
   dbf->dir  = NULL;
   dbf->bucket = NULL;
   dbf->header = NULL;
-  dbf->bucket_cache = NULL;
-  dbf->cache_size = 0;
+
+  dbf->file_size = -1;
 
   dbf->memory_mapping = FALSE;
   dbf->mapped_size_max = SIZE_T_MAX;
@@ -285,6 +286,7 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
     {
       if (flags & GDBM_CLOERROR)
 	close (fd);
+      _gdbm_cache_free (dbf);
       free (dbf);
       GDBM_SET_ERRNO2 (NULL, GDBM_MALLOC_ERROR, FALSE, GDBM_DEBUG_OPEN);
       return NULL;
@@ -302,6 +304,8 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
   dbf->last_error = GDBM_NO_ERROR;
   dbf->last_syserror = 0;
   dbf->last_errstr = NULL;
+
+  _gdbmsync_init (dbf);
   
   /* GDBM_FAST used to determine whether or not we set fast_write. */
   if (flags & GDBM_SYNC)
@@ -319,10 +323,9 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
   /* Zero-length file can't be a reader... */
   if (((flags & GDBM_OPENMASK) == GDBM_READER) && (file_stat.st_size == 0))
     {
-      if (flags & GDBM_CLOERROR)
-	close (dbf->desc);
-      free (dbf->name);
-      free (dbf);
+      if (!(flags & GDBM_CLOERROR))
+	dbf->desc = -1;
+      gdbm_close (dbf);
       GDBM_SET_ERRNO2 (NULL, GDBM_EMPTY_DATABASE, FALSE, GDBM_DEBUG_OPEN);
       return NULL;
     }
@@ -335,10 +338,9 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
     {
       if (_gdbm_lock_file (dbf) == -1)
 	{
-	  if (flags & GDBM_CLOERROR)
-	    close (dbf->desc);
-	  free (dbf->name);
-	  free (dbf);
+	  if (!(flags & GDBM_CLOERROR))
+	    dbf->desc = -1;
+	  SAVE_ERRNO (gdbm_close (dbf));
           GDBM_SET_ERRNO2 (NULL,
 			   (flags & GDBM_OPENMASK) == GDBM_READER
 			     ? GDBM_CANT_BE_READER : GDBM_CANT_BE_WRITER,
@@ -364,10 +366,9 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
 
       if (gdbm_last_errno (dbf))
 	{
-	  if (flags & GDBM_CLOERROR)
-	    close (dbf->desc);
-	  free (dbf->name);
-	  free (dbf);
+	  if (!(flags & GDBM_CLOERROR))
+	    dbf->desc = -1;
+	  SAVE_ERRNO (gdbm_close (dbf));
 	  return NULL;
 	}
     }
@@ -417,8 +418,16 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
 	}
 
       /* Set the magic number and the block_size. */
-      dbf->header->header_magic = GDBM_MAGIC;
+      if (flags & GDBM_NUMSYNC)
+	dbf->header->header_magic = GDBM_NUMSYNC_MAGIC;
+      else
+	dbf->header->header_magic = GDBM_MAGIC;
+
+      /*
+       * Set block size.  It must be initialized for gdbm_header_avail to work.
+       */
       dbf->header->block_size = block_size;
+      gdbm_header_avail (dbf->header, &dbf->avail, &dbf->avail_size, &dbf->xheader);
       dbf->header->dir_size = dir_size;
       dbf->header->dir_bits = dir_bits;
 
@@ -456,11 +465,11 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
 	dbf->dir[index] = 2*dbf->header->block_size;
 
       /* Initialize the active avail block. */
-      dbf->header->avail.size
-	= ( (dbf->header->block_size - sizeof (gdbm_file_header))
-	 / sizeof (avail_elem)) + 1;
-      dbf->header->avail.count = 0;
-      dbf->header->avail.next_block = 0;
+      dbf->avail->size = (dbf->avail_size - offsetof(avail_block, av_table))
+	                  / sizeof (avail_elem);
+      dbf->avail->count = 0;
+      dbf->avail->next_block = 0;
+      
       dbf->header->next_block  = 4*dbf->header->block_size;
 
       /* Write initial configuration to the file. */
@@ -525,7 +534,7 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
       int rc;
       
       /* Read the partial file header. */
-      if (_gdbm_full_read (dbf, &partial_header, sizeof (gdbm_file_header)))
+      if (_gdbm_full_read (dbf, &partial_header, sizeof (partial_header)))
 	{
 	  GDBM_DEBUG (GDBM_DEBUG_ERR|GDBM_DEBUG_OPEN,
 		      "%s: error reading partial header: %s",
@@ -562,27 +571,36 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
 	  return NULL;
 	}
       
-      memcpy (dbf->header, &partial_header, sizeof (gdbm_file_header));
-      if (_gdbm_full_read (dbf, &dbf->header->avail.av_table[1],
+      memcpy (dbf->header, &partial_header, sizeof (partial_header));
+      if (_gdbm_full_read (dbf, dbf->header + 1,
 			   dbf->header->block_size - sizeof (gdbm_file_header)))
 	{
-	  GDBM_DEBUG (GDBM_DEBUG_ERR|GDBM_DEBUG_OPEN,
-		      "%s: error reading av_table: %s",
-		      dbf->name, gdbm_db_strerror (dbf));
 	  if (!(flags & GDBM_CLOERROR))
 	    dbf->desc = -1;
 	  SAVE_ERRNO (gdbm_close (dbf));
 	  return NULL;
 	}
+      gdbm_header_avail (dbf->header, &dbf->avail, &dbf->avail_size, &dbf->xheader);
 
-      if (gdbm_avail_block_validate (dbf, &dbf->header->avail))
+      if (((dbf->header->block_size -
+	    (GDBM_HEADER_AVAIL_OFFSET (dbf) +
+	     sizeof (avail_block))) / sizeof (avail_elem) + 1) != dbf->avail->size)
+	{
+	  if (!(flags & GDBM_CLOERROR))
+	    dbf->desc = -1;
+	  gdbm_close (dbf);
+	  GDBM_SET_ERRNO2 (NULL, GDBM_BAD_HEADER, FALSE, GDBM_DEBUG_OPEN);
+	  return NULL;
+	}
+      
+      if (gdbm_avail_block_validate (dbf, dbf->avail, dbf->avail_size))
 	{
 	  if (!(flags & GDBM_CLOERROR))
 	    dbf->desc = -1;
 	  SAVE_ERRNO (gdbm_close (dbf));
 	  return NULL;
-	}	  
-	
+	}
+      
       /* Allocate space for the hash table directory.  */
       dbf->dir = malloc (dbf->header->dir_size);
       if (dbf->dir == NULL)
@@ -618,9 +636,21 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
 
     }
 
+  if (_gdbm_cache_init (dbf, DEFAULT_CACHESIZE))
+    {
+      GDBM_DEBUG (GDBM_DEBUG_ERR|GDBM_DEBUG_OPEN,
+		  "%s: error initializing cache: %s",
+		  dbf->name, gdbm_db_strerror (dbf));
+      if (!(flags & GDBM_CLOERROR))
+	dbf->desc = -1;
+      SAVE_ERRNO (gdbm_close (dbf));
+      return NULL;
+    }
+      
 #if HAVE_MMAP
   if (!(flags & GDBM_NOMMAP))
     {
+      dbf->mmap_preread = (flags & GDBM_PREREAD) != 0;
       if (_gdbm_mapped_init (dbf) == 0)
 	dbf->memory_mapping = TRUE;
       else
@@ -639,15 +669,16 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
 #endif
 
   /* Finish initializing dbf. */
-  dbf->last_read = -1;
   dbf->bucket = NULL;
   dbf->bucket_dir = 0;
-  dbf->cache_entry = NULL;
   dbf->header_changed = FALSE;
   dbf->directory_changed = FALSE;
-  dbf->bucket_changed = FALSE;
-  dbf->second_changed = FALSE;
 
+  if (flags & GDBM_XVERIFY)
+    {
+      gdbm_avail_verify (dbf);
+    }
+  
   GDBM_DEBUG (GDBM_DEBUG_ALL, "%s: opened %s", dbf->name,
 	      dbf->need_recovery ? "for recovery" : "successfully");
 
@@ -671,7 +702,7 @@ gdbm_fd_open (int fd, const char *file_name, int block_size,
    not exist, create a new one.  If FLAGS is GDBM_NEWDB, the user want a
    new database created, regardless of whether one existed, and wants read
    and write access to the new database.  Any error detected will cause a 
-   return value of null and an approprate value will be in gdbm_errno.  If
+   return value of null and an appropriate value will be in gdbm_errno.  If
    no errors occur, a pointer to the "gdbm file descriptor" will be
    returned. */
    
@@ -717,46 +748,179 @@ gdbm_open (const char *file, int block_size, int flags, int mode,
 		       fatal_func);
 }
 
-/* Initialize the bucket cache. */
 int
-_gdbm_init_cache (GDBM_FILE dbf, size_t size)
+_gdbm_file_size (GDBM_FILE dbf, off_t *psize)
 {
-  int index;
-
-  if (dbf->bucket_cache == NULL)
+  if (dbf->file_size == -1)
     {
-      dbf->bucket_cache = calloc (size, sizeof(cache_elem));
-      if (dbf->bucket_cache == NULL)
-        {
-          GDBM_SET_ERRNO (dbf, GDBM_MALLOC_ERROR, TRUE);
-          return -1;
-        }
-      dbf->cache_size = size;
-
-      for (index = 0; index < size; index++)
-        {
-	  (dbf->bucket_cache[index]).ca_bucket =
-	    malloc (dbf->header->bucket_size);
-          if ((dbf->bucket_cache[index]).ca_bucket == NULL)
-	    {
-              GDBM_SET_ERRNO (dbf, GDBM_MALLOC_ERROR, TRUE);
-	      return -1;
-            }
-	  dbf->bucket_cache[index].ca_data.dptr = NULL;
-	  dbf->bucket_cache[index].ca_data.dsize = 0;
-	  _gdbm_cache_entry_invalidate (dbf, index);
-        }
-      dbf->bucket = dbf->bucket_cache[0].ca_bucket;
-      dbf->cache_entry = &dbf->bucket_cache[0];
+      struct stat sb;
+      if (fstat (dbf->desc, &sb))
+	{
+	  GDBM_SET_ERRNO (dbf, GDBM_FILE_STAT_ERROR, FALSE);
+	  return -1;
+	}
+      dbf->file_size = sb.st_size;
     }
+  *psize = dbf->file_size;
+  return 0;
+}
+
+/*
+ * Convert from numsync to the standard GDBM format.  This is pretty
+ * straightforward: the avail block gets expanded by
+ * sizeof(gdbm_ext_header), so we only need to shift the avail block
+ * up this number of bytes, change the avail and avail_size pointers
+ * and update the magic number.
+ */
+static int
+_gdbm_convert_from_numsync (GDBM_FILE dbf)
+{
+  avail_block *old_avail = dbf->avail;
+
+  /* Change the magic number */
+  dbf->header->header_magic = GDBM_MAGIC;
+  /* Update avail pointer and size */
+  gdbm_header_avail (dbf->header, &dbf->avail, &dbf->avail_size, &dbf->xheader);
+  
+  /* Move data up */
+  memmove (dbf->avail, old_avail, dbf->avail_size - sizeof (gdbm_ext_header));
+
+  /* Fix up the avail table size */
+  dbf->avail->size = (dbf->avail_size - offsetof (avail_block, av_table))
+	                  / sizeof (avail_elem);
+
+  dbf->header_changed = TRUE;
+  
   return 0;
 }
 
-void
-_gdbm_cache_entry_invalidate (GDBM_FILE dbf, int index)
+/*
+ * Convert the database from the standard to extended (numsync) format.
+ * The avail block shrinks by sizeof(gdbm_ext_header) bytes.  The av_table
+ * entries that don't fit into the new size need to be returned to the
+ * avail pool using the _gdbm_free call.
+ */
+static int
+_gdbm_convert_to_numsync (GDBM_FILE dbf)
 {
-  dbf->bucket_cache[index].ca_adr = 0;
-  dbf->bucket_cache[index].ca_changed = FALSE;
-  dbf->bucket_cache[index].ca_data.hash_val = -1;
-  dbf->bucket_cache[index].ca_data.elem_loc = -1;
+  avail_block *old_avail = dbf->avail;
+  size_t old_avail_size = dbf->avail->size;
+  size_t n; /* Number of elements to return to the pool */
+  int rc;
+  avail_elem *av = NULL;
+  
+  /* Change the magic number */
+  dbf->header->header_magic = GDBM_NUMSYNC_MAGIC;
+  /* Update avail pointer and size */
+  gdbm_header_avail (dbf->header, &dbf->avail, &dbf->avail_size, &dbf->xheader);
+  /*
+   * Compute new av_table size.
+   * NOTE: Don't try to modify dbf->avail until the final move, otherwise
+   * the available block would end up clobbered.  All modifications are
+   * applied to old_avail.
+   */
+  old_avail->size = (dbf->avail_size - offsetof (avail_block, av_table))
+	                  / sizeof (avail_elem);
+  /* Compute the number of avail elements that don't fit in the new table. */
+  n = old_avail_size - old_avail->size;
+  if (n > 0)
+    {
+      /* Stash them away */
+      av = calloc (n, sizeof (av[0]));
+      if (!av)
+	{
+	  GDBM_SET_ERRNO (dbf, GDBM_MALLOC_ERROR, FALSE);
+	  return -1;
+	}
+      n = 0;
+      while (old_avail->count > old_avail->size)
+	{
+	  old_avail->count--;
+	  av[n++] = old_avail->av_table[old_avail->count];
+	}
+    }
+
+  /*
+   * Move the modified avail block into its new place.  From now on,
+   * old_avail may not be used.  The database header is in consistent
+   * state and all modifications should be applied to it directly.
+   */
+  memmove (dbf->avail, old_avail, dbf->avail_size);
+
+  /* Initialize the extended header */
+  memset (dbf->xheader, 0, sizeof (dbf->xheader[0]));
+
+  rc = 0; /* Assume success */
+  
+  if (av)
+    {
+      /* Return stashed av_table elements to the available pool. */
+      /* _gdbm_free needs a non-NULL bucket, so get one: */
+      if (!dbf->bucket)
+	rc = _gdbm_get_bucket (dbf, 0);
+      if (rc == 0)
+	{
+	  size_t i;
+	  
+	  for (i = 0; i < n; i++)
+	    {
+	      rc = _gdbm_free (dbf, av[i].av_adr, av[i].av_size);
+	      if (rc)
+		break;
+	    }
+	}
+      free (av);
+    }
+
+  dbf->header_changed = TRUE;
+  
+  return rc;
+}
+
+int
+gdbm_convert (GDBM_FILE dbf, int flag)
+{
+  int rc;
+  
+  /* Return immediately if the database needs recovery */	
+  GDBM_ASSERT_CONSISTENCY (dbf, -1);
+  
+  /* First check to make sure this guy is a writer. */
+  if (dbf->read_write == GDBM_READER)
+    {
+      GDBM_SET_ERRNO2 (dbf, GDBM_READER_CANT_STORE, FALSE,
+		       GDBM_DEBUG_STORE);
+      return -1;
+    }
+
+  switch (flag)
+    {
+    case 0:
+    case GDBM_NUMSYNC:
+      break;
+
+    default:
+      GDBM_SET_ERRNO2 (dbf, GDBM_MALFORMED_DATA, FALSE,
+		       GDBM_DEBUG_STORE);
+      return -1;
+    }
+
+  rc = 0;
+  switch (dbf->header->header_magic)
+    {
+    case GDBM_OMAGIC:
+    case GDBM_MAGIC:
+      if (flag == GDBM_NUMSYNC)
+	rc = _gdbm_convert_to_numsync (dbf);
+      break;
+      
+    case GDBM_NUMSYNC_MAGIC:
+      if (flag == 0)
+	rc = _gdbm_convert_from_numsync (dbf);	
+    }
+
+  if (rc == 0)
+    rc = _gdbm_end_update (dbf);
+  
+  return 0;
 }

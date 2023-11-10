@@ -1,8 +1,7 @@
 /* gdbmseq.c - Routines to visit all keys.  Not in sorted order. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2020 Free
-   Software Foundation, Inc.
+   Copyright (C) 1990-2022 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -21,6 +20,23 @@
 #include "autoconf.h"
 
 #include "gdbmdefs.h"
+
+static inline int
+gdbm_valid_key_p (GDBM_FILE dbf, char *key_ptr, int key_size, int elem_loc)
+{
+  datum key;
+  int hash, bucket, offset;
+  
+  key.dptr = key_ptr;
+  key.dsize = key_size;
+  _gdbm_hash_key (dbf, key, &hash, &bucket, &offset);
+  if (gdbm_dir_entry_valid_p (dbf, bucket) &&
+      dbf->dir[bucket] == dbf->dir[dbf->bucket_dir] &&
+      hash == dbf->bucket->h_table[elem_loc].hash_value)
+    return 1;
+  GDBM_SET_ERRNO (dbf, GDBM_BAD_HASH_ENTRY, TRUE);
+  return 0;
+}
 
 /* Find and read the next entry in the hash structure for DBF starting
    at ELEM_LOC of the current bucket and using RETURN_VAL as the place to
@@ -52,7 +68,7 @@ get_next_key (GDBM_FILE dbf, int elem_loc, datum *return_val)
 	  /* Find the next bucket.  It is possible several entries in
 	     the bucket directory point to the same bucket. */
 	  while (dbf->bucket_dir < GDBM_DIR_COUNT (dbf)
-		 && dbf->cache_entry->ca_adr == dbf->dir[dbf->bucket_dir])
+		 && dbf->cache_mru->ca_adr == dbf->dir[dbf->bucket_dir])
 	    dbf->bucket_dir++;
 
 	  /* Check to see if there was a next bucket. */
@@ -75,6 +91,11 @@ get_next_key (GDBM_FILE dbf, int elem_loc, datum *return_val)
   /* Found the next key, read it into return_val. */
   find_data = _gdbm_read_entry (dbf, elem_loc);
   if (!find_data)
+    return;
+  /* Verify if computed hash and bucket address for the key match the
+     actual ones.  Bail out if not. */
+  if (!gdbm_valid_key_p (dbf, find_data,
+			 dbf->bucket->h_table[elem_loc].key_size, elem_loc))
     return;
   return_val->dsize = dbf->bucket->h_table[elem_loc].key_size;
   if (return_val->dsize == 0)
