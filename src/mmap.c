@@ -1,6 +1,5 @@
 /* This file is part of GDBM.
-   Copyright (C) 2007, 2011, 2013, 2016-2020 Free Software Foundation,
-   Inc.
+   Copyright (C) 2007-2022 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -34,16 +33,16 @@
 # endif
 
 # if defined(MAP_POPULATE)
-#  define GDBM_MMAP_FLAGS MAP_POPULATE
+#  define GDBM_MMAP_PREREAD MAP_POPULATE
 # elif defined(MAP_PREFAULT_READ)
-#  define GDBM_MMAP_FLAGS MAP_PREFAULT_READ
+#  define GDBM_MMAP_PREREAD MAP_PREFAULT_READ
 # else
-#  define GDBM_MMAP_FLAGS 0
+#  define GDBM_MMAP_PREREAD 0
 # endif
 
 /* Translate current offset in the mapped region into the absolute position */
 # define _GDBM_MMAPPED_POS(dbf) ((dbf)->mapped_off + (dbf)->mapped_pos)
-/* Return true if the absolute offset OFF lies within the currentlty mmapped
+/* Return true if the absolute offset OFF lies within the currently mmapped
    region */
 # define _GDBM_IN_MAPPED_REGION_P(dbf, off) \
   ((off) >= (dbf)->mapped_off \
@@ -60,21 +59,6 @@ SUM_FILE_SIZE (GDBM_FILE dbf, off_t delta)
       && off_t_sum_ok (dbf->mapped_off + dbf->mapped_size, delta))
     return dbf->mapped_off + dbf->mapped_size + delta;
   return -1;
-}
-
-/* Store the size of the GDBM file DBF in *PSIZE.
-   Return 0 on success and -1 on failure. */
-int
-_gdbm_file_size (GDBM_FILE dbf, off_t *psize)
-{
-  struct stat sb;
-  if (fstat (dbf->desc, &sb))
-    {
-      GDBM_SET_ERRNO (dbf, GDBM_FILE_STAT_ERROR, FALSE);
-      return -1;
-    }
-  *psize = sb.st_size;
-  return 0;
 }
 
 /* Unmap the region. Reset all mapped fields to initial values. */
@@ -98,6 +82,7 @@ int
 _gdbm_internal_remap (GDBM_FILE dbf, size_t size)
 {
   void *p;
+  int flags = MAP_SHARED;
   int prot = PROT_READ;
   size_t page_size = sysconf (_SC_PAGESIZE);
 
@@ -116,9 +101,13 @@ _gdbm_internal_remap (GDBM_FILE dbf, size_t size)
 
   if (dbf->read_write)
     prot |= PROT_WRITE;
+
+  if (dbf->mmap_preread)
+    {
+      flags |= GDBM_MMAP_PREREAD;
+    }
   
-  p = mmap (NULL, dbf->mapped_size, prot, MAP_SHARED | GDBM_MMAP_FLAGS,
-	    dbf->desc, dbf->mapped_off);
+  p = mmap (NULL, dbf->mapped_size, prot, flags, dbf->desc, dbf->mapped_off);
   if (p == MAP_FAILED)
     {
       dbf->mapped_region = NULL;
@@ -138,7 +127,7 @@ _gdbm_internal_remap (GDBM_FILE dbf, size_t size)
    If the file is opened with write permissions, FLAG controls how
    it is expanded.  The value _REMAP_DEFAULT truncates SIZE to the
    actual file size.  The value _REMAP_EXTEND extends the file, if
-   necessary, to accomodate max(SIZE,dbf->header->next_block) bytes.
+   necessary, to accommodate max(SIZE,dbf->header->next_block) bytes.
    Finally, the value _REMAP_END instructs the function to use 
    max(SIZE, file_size) as the upper bound of the mapped region.
 

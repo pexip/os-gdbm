@@ -1,5 +1,5 @@
 .\" This file is part of GDBM.  -*- nroff -*-
-.\" Copyright (C) 2013, 2016-2020 Free Software Foundation, Inc.
+.\" Copyright (C) 2013-2022 Free Software Foundation, Inc.
 .\"
 .\" GDBM is free software; you can redistribute it and/or modify
 .\" it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 .\"
 .\" You should have received a copy of the GNU General Public License
 .\" along with GDBM. If not, see <http://www.gnu.org/licenses/>. */
-.TH GDBMTOOL 1 "June 27, 2018" "GDBM" "GDBM User Reference"
+.TH GDBMTOOL 1 "August 1, 2021" "GDBM" "GDBM User Reference"
 .SH NAME
 gdbmtool \- examine and modify a GDBM database
 .SH SYNOPSIS
@@ -179,6 +179,10 @@ Delete record with the given \fIKEY\fR.
 .BR dir
 Print hash directory.
 .TP
+.BR downgrade
+Downgrade the database from the extended \fInumsync\fR format to the
+standard format.
+.TP
 \fBexport\fR \fIFILE\-NAME\fR [\fBtruncate\fR] [\fBbinary\fR|\fBascii\fR]
 Export the database to the flat file \fIFILE\-NAME\fR.  This is equivalent to
 .BR gdbm_dump (1).
@@ -258,7 +262,16 @@ Reorganize the database.
 \fBset\fR [\fIVAR\fR=\fIVALUE\fR...]
 Without arguments, lists variables and their values.  If arguments are
 specified, sets variables.   Boolean variables can be set by specifying
-variable name, optionally prefixed with \fBno\fR, to set it to \fBfalse\fR.
+variable name, optionally prefixed with \fBno\fR, to set it to
+\fBfalse\fR.
+.TP
+\fBsnapshot\fR \fIFILE\fR \fIFILE\fR
+Analyzes two database snapshots and selects the most recent of them.
+In case of error, prints a detailed diagnostics.  Use this command to
+manually recover from a crash.  For details, please refer to the chapter
+.B "Crash Tolerance"
+in the
+.BR "GDBM manual" .
 .TP
 \fBsource\fR \fIFILE\fR
 Read commands from the given \fIFILE\fR.
@@ -269,6 +282,13 @@ Print current program status.
 \fBstore\fR \fIKEY\fR \fIDATA\fR
 Store the \fIDATA\fR with the given \fIKEY\fR in the database.  If the
 \fIKEY\fR already exists, its data will be replaced.
+.TP
+.B sync
+Synchronize the database file with the disk storage.
+.TP
+.B upgrade
+Upgrade the database from the standard to the extended \fInumsync\fR
+format.
 .TP
 \fBunset\fR \fIVARIABLE\fR...
 Unsets listed variables.
@@ -471,7 +491,7 @@ data space.
 .SH "REPORTING BUGS"
 Report bugs to <bug\-gdbm@gnu.org>.
 .SH COPYRIGHT
-Copyright \(co 2013-2018 Free Software Foundation, Inc
+Copyright \(co 2013-2021 Free Software Foundation, Inc
 .br
 .na
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>

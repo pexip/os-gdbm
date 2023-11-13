@@ -1,8 +1,7 @@
 /* gdbmexists.c - Check to see if a key exists */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1993, 2007, 2011, 2013, 2016-2020 Free Software
-   Foundation, Inc.
+   Copyright (C) 1993-2022 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,7 +22,7 @@
 #include "gdbmdefs.h"
 
 /* This is nothing more than a wrapper around _gdbm_findkey().  The
-   point?  It doesn't alloate any memory. */
+   point?  It doesn't allocate any memory. */
 
 int
 gdbm_exists (GDBM_FILE dbf, datum key)

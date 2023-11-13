@@ -1,8 +1,7 @@
 /* gdbmimp.c - Import a GDBM database. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 2007, 2011, 2013, 2016-2020 Free Software Foundation,
-   Inc.
+   Copyright (C) 2007-2022 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -43,7 +42,7 @@ gdbm_import_from_file (GDBM_FILE dbf, FILE *fp, int flag)
   kbuffer = NULL;
   dbuffer = NULL;
 
-  /* Read (and discard) four lines begining with ! and ending with \n. */
+  /* Read (and discard) four lines beginning with ! and ending with \n. */
   while (1)
     {
       if ((rret = fgetc (fp)) == -1)
@@ -90,7 +89,7 @@ gdbm_import_from_file (GDBM_FILE dbf, FILE *fp, int flag)
       size = ntohl (rsize);
       if (size > INT_MAX)
 	{
-	  ec = GDBM_ILLEGAL_DATA;
+	  ec = GDBM_MALFORMED_DATA;
 	  break;
 	}
       
@@ -123,7 +122,7 @@ gdbm_import_from_file (GDBM_FILE dbf, FILE *fp, int flag)
       size = ntohl (rsize);
       if (size > INT_MAX)
 	{
-	  ec = GDBM_ILLEGAL_DATA;
+	  ec = GDBM_MALFORMED_DATA;
 	  break;
 	}
       if (size > dbufsize)

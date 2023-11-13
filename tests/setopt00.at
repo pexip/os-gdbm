@@ -1,5 +1,5 @@
 # This file is part of GDBM.                                   -*- autoconf -*-
-# Copyright (C) 2011, 2017-2020 Free Software Foundation, Inc.
+# Copyright (C) 2011-2022 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ gtopt test.db '!MMAP'
 * CACHESIZE:
 initial GDBM_SETCACHESIZE: PASS
 GDBM_GETCACHESIZE: PASS
-second GDBM_SETCACHESIZE: XFAIL
+second GDBM_SETCACHESIZE: PASS
 * SYNCMODE:
 initial GDBM_GETSYNCMODE: PASS
 GDBM_SETSYNCMODE: PASS

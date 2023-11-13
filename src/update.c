@@ -1,8 +1,7 @@
 /* update.c - The routines for updating the file to a consistent state. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2016-2020 Free
-   Software Foundation, Inc.
+   Copyright (C) 1990-2022 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -64,32 +63,8 @@ _gdbm_end_update (GDBM_FILE dbf)
   off_t file_pos;	/* Return value for lseek. */
   int rc;
   
-  /* Write the current bucket. */
-  if (dbf->bucket_changed && (dbf->cache_entry != NULL))
-    {
-      if (_gdbm_write_bucket (dbf, dbf->cache_entry))
-	return -1;
-      dbf->bucket_changed = FALSE;
-    }
-
-  /* Write the other changed buckets if there are any. */
-  if (dbf->second_changed)
-    {
-      if (dbf->bucket_cache != NULL)
-        {
-          int index;
-
-          for (index = 0; index < dbf->cache_size; index++)
-	    {
-	      if (dbf->bucket_cache[index].ca_changed)
-		{
-		  if (_gdbm_write_bucket (dbf, &dbf->bucket_cache[index]))
-		    return -1;
-		}
-            }
-        }
-      dbf->second_changed = FALSE;
-    }
+  /* Write the changed buckets if there are any. */
+  _gdbm_cache_flush (dbf);
   
   /* Write the directory. */
   if (dbf->directory_changed)

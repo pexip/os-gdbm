@@ -1,8 +1,7 @@
 /* hash.c - The gdbm hash function. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2017-2020 Free
-   Software Foundation, Inc.
+   Copyright (C) 1990-2022 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -34,11 +33,11 @@ _gdbm_hash (datum key)
   int   index;		/* Used to cycle through random values. */
 
   /* Set the initial value from key. */
-  value = 0x238F13AF * key.dsize;
+  value = 0x238F13AFu * key.dsize;
   for (index = 0; index < key.dsize; index++)
-    value = (value + (key.dptr[index] << (index*5 % 24))) & 0x7FFFFFFF;
+    value = (value + (((unsigned)key.dptr[index]) << ((unsigned) index * 5 % 24))) & 0x7FFFFFFF;
 
-  value = (1103515243 * value + 12345) & 0x7FFFFFFF;  
+  value = (1103515243u * value + 12345) & 0x7FFFFFFF;  
 
   /* Return the value. */
   return((int) value);

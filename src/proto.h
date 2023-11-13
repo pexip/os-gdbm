@@ -1,8 +1,7 @@
 /* proto.h - The prototypes for the dbm routines. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-1991, 1993, 2007, 2011, 2013, 2017-2020 Free
-   Software Foundation, Inc.
+   Copyright (C) 1990-2022 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -21,16 +20,41 @@
 /* From bucket.c */
 void _gdbm_new_bucket	(GDBM_FILE, hash_bucket *, int);
 int _gdbm_get_bucket	(GDBM_FILE, int);
-int _gdbm_read_bucket_at (GDBM_FILE dbf, off_t off, hash_bucket *bucket,
-			  size_t size);
 
 int _gdbm_split_bucket (GDBM_FILE, int);
 int _gdbm_write_bucket (GDBM_FILE, cache_elem *);
+int _gdbm_cache_init   (GDBM_FILE, size_t);
+void _gdbm_cache_free  (GDBM_FILE dbf);
+int _gdbm_cache_flush  (GDBM_FILE dbf);
+
+/* Mark current bucket as changed. */
+static inline void
+_gdbm_current_bucket_changed (GDBM_FILE dbf)
+{
+  dbf->cache_mru->ca_changed = TRUE;
+}
+
+/* Return true if the directory entry at DIR_INDEX can be considered
+   valid. This means that DIR_INDEX is in the valid range for addressing
+   the dir array, and the offset stored in dir[DIR_INDEX] points past
+   first two blocks in file. This does not necessarily mean that there's
+   a valid bucket or data block at that offset. All this implies is that
+   it is safe to use the offset for look up in the bucket cache and to
+   attempt to read a block at that offset. */
+static inline int
+gdbm_dir_entry_valid_p (GDBM_FILE dbf, int dir_index)
+{
+  return dir_index >= 0
+         && dir_index < GDBM_DIR_COUNT (dbf)
+         && dbf->dir[dir_index] >= dbf->header->block_size;
+}
+
 
 /* From falloc.c */
 off_t _gdbm_alloc       (GDBM_FILE, int);
 int  _gdbm_free         (GDBM_FILE, off_t, int);
 void _gdbm_put_av_elem  (avail_elem, avail_elem [], int *, int);
+int _gdbm_avail_block_read (GDBM_FILE dbf, avail_block *avblk, size_t size);
 
 /* From findkey.c */
 char *_gdbm_read_entry  (GDBM_FILE, int);
@@ -47,13 +71,12 @@ int _gdbm_end_update   (GDBM_FILE);
 void _gdbm_fatal	(GDBM_FILE, const char *);
 
 /* From gdbmopen.c */
-int _gdbm_init_cache	(GDBM_FILE, size_t);
-void _gdbm_cache_entry_invalidate (GDBM_FILE, int);
-
-int gdbm_avail_block_validate (GDBM_FILE dbf, avail_block *avblk);
-int gdbm_bucket_avail_table_validate (GDBM_FILE dbf, hash_bucket *bucket);
-
 int _gdbm_validate_header (GDBM_FILE dbf);
+
+int _gdbm_file_size (GDBM_FILE dbf, off_t *psize);
+
+/* From gdbmload.c */
+int _gdbm_str2fmt (char const *str);
 
 /* From mmap.c */
 int _gdbm_mapped_init	(GDBM_FILE);
@@ -86,6 +109,15 @@ int _gdbm_dump (GDBM_FILE dbf, FILE *fp);
 /* From recover.c */
 int _gdbm_next_bucket_dir (GDBM_FILE dbf, int bucket_dir);
 
+
+/* avail.c */
+int gdbm_avail_block_validate (GDBM_FILE dbf, avail_block *avblk, size_t size);
+int gdbm_bucket_avail_table_validate (GDBM_FILE dbf, hash_bucket *bucket);
+int gdbm_avail_traverse (GDBM_FILE dbf,
+			 int (*cb) (avail_block *, off_t, void *),
+			 void *data);
+
+
 /* I/O functions */
 static inline ssize_t
 gdbm_file_read (GDBM_FILE dbf, void *buf, size_t size)
@@ -117,21 +149,29 @@ gdbm_file_seek (GDBM_FILE dbf, off_t off, int whence)
 #endif
 }
 
-static inline int
-gdbm_file_sync (GDBM_FILE dbf)
+/* From gdbmsync.c */
+int gdbm_file_sync (GDBM_FILE dbf);
+#ifdef GDBM_FAILURE_ATOMIC
+extern int _gdbm_snapshot(GDBM_FILE);
+#endif /* GDBM_FAILURE_ATOMIC */
+
+static inline void
+_gdbmsync_init (GDBM_FILE dbf)
 {
-#if HAVE_MMAP
-  return _gdbm_mapped_sync (dbf);
-#elif HAVE_FSYNC
-  if (fsync (dbf->desc))
-    {
-      GDBM_SET_ERRNO (dbf, GDBM_FILE_SYNC_ERROR, TRUE);
-      return 1;
-    }
-#else
-  sync ();
-  sync ();
-  return 0;
+#ifdef GDBM_FAILURE_ATOMIC
+  dbf->snapfd[0] = dbf->snapfd[1] = -1;
+  dbf->eo = 0;
+#endif
+}
+
+static inline void
+_gdbmsync_done (GDBM_FILE dbf)
+{
+#ifdef GDBM_FAILURE_ATOMIC
+  if (dbf->snapfd[0] >= 0)
+    close (dbf->snapfd[0]);
+  if (dbf->snapfd[1] >= 0)
+    close (dbf->snapfd[1]);
 #endif
 }
 

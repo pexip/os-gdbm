@@ -1,8 +1,156 @@
-GNU dbm NEWS -- history of user-visible changes. 2020-12-23
-Copyright (C) 1990-2020 Free Software Foundation, Inc.
+GNU dbm NEWS -- history of user-visible changes. 2022-02-04
+Copyright (C) 1990-2022 Free Software Foundation, Inc.
 See the end of file for copying conditions.
 
 Please send gdbm bug reports to <bug-gdbm@gnu.org>.
+
+Version 1.23, 2022-02-04
+
+* Bucket cache switched from balanced tree to hash table
+
+Change suggested by Terence Kelly.
+
+* Speed up flushing the changed buckets on disk
+
+* New option codes for gdbm_setopt
+
+** GDBM_GETDBFORMAT
+
+Return the database format.
+
+** GDBM_GETDIRDEPTH
+
+Return the directory depth, i.e. the number of initial (most significant)
+bits in hash value that are interpreted as index to the directory.
+
+** GDBM_GETBUCKETSIZE
+
+Return maximum number of keys per bucket.
+
+** GDBM_GETCACHEAUTO
+
+Return the status of the automatic cache adjustment.
+
+** GDBM_SETCACHEAUTO
+
+Enable or disable automatic cache adjustment.
+
+Version 1.22, 2021-10-19
+
+* Fix file header validation
+
+* Fix key verification in sequential access
+
+* Fix testing with DejaGNU 1.6.3
+
+* Fix stack overflow in print_usage
+
+* Fix a leak of avail entry on pushing a new avail block
+
+The leak would occur if the original avail table had odd number of entries.
+
+* New gdbmtool variables: errorexit, errormask, trace, timing
+
+"Errorexit" and "errormask" control which GDBM errors would cause the
+program termination and emitting a diagnostic message,
+correspondingly.  Both variables are comma-delimited lists of error
+codes.
+
+The "trace" variable enables tracing of the gdbmtool commands.
+
+The "timing" variable, when set, instructs gdbmtool to print time
+spent in each command it runs.
+
+* New gdbmtool options: -t (--trace), and -T (--timing)
+
+
+Version 1.21, 2021-09-02
+
+* Crash tolerance
+
+By default it is possible for an abrupt crash (e.g., power failure,
+OS kernel panic, or application process crash) to corrupt the gdbm
+database file.  A new Linux-only mechanism enables applications to
+recover the database state corresponding to the most recent
+successful gdbm_sync() call before the crash.  See the chapter 17
+"Crash Tolerance" in the GDBM manual.
+
+* New database file format: numsync
+
+The new "numsync" database format is designed to better support
+crash tolerance.  To create a database in numsync format, the gdbm_open 
+(or gdbm_fd_open) function must be given the GDBM_NEWDB|GDBM_NUMSYNC
+flags.  The GDBM_NUMSYNC flag also takes effect when used together
+with GDBM_WRCREAT, provided that the new file is created.
+
+New function gdbm_convert() is provided for converting the databases
+from standard GDBM format to numsync and vice versa.
+
+The gdbmtool tool can also be used for converting databases between
+these two formats.
+
+* Changes in gdbmtool
+
+** Fix string output in non-ASCII encodings
+
+Printable multi-byte sequences are correctly represented on output.
+This also fixes octal representation of unprintable characters.
+
+** The filename variable
+
+This variable supplies the name of database file for use in "open"
+command, if the latter is called without arguments.  If "open" is
+called with the file name argument, the "filename" variable is
+initialized to this value.
+
+** The fd variable
+
+If set, its value must be an open file descriptor referring to a
+GDBM database file.  The "open" command will use gdbm_fd_open
+function to use this file.   Upon closing the database, this
+descriptor will be closed and the variable will be unset.
+
+The file descriptor to use can also be supplied using the
+-d (--db-descriptor) command line option.
+
+** The format variable
+
+Defines the format in which new databases will be created.  Allowed
+values are: "standard" (default) and "numsync".
+
+** New commands: upgrade and downgrade
+
+The "upgrade" command converts current database to the numsync
+(extended) format.  The "downgrade" command converts current database
+to the standard format.
+
+** New command: snapshot
+
+The "snapshot" command is part of the new crash tolerance support.
+Given the names of two snapshot files, it analyzes them and selects
+the one to be used for database recovery.  See the GDBM manual,
+section 17.5 "Manual crash recovery" for a detailed discussion of its
+use.
+
+Version 1.20, 2021-06-17
+
+* New bucket cache
+
+The bucket cache support has been rewritten from scratch.  The new
+bucket cache code provides for significant speed up of search
+operations.
+
+* Change mmap prereading strategy 
+
+Pre-reading of the memory mapper regions, introduced in version 1.19
+can be advantageous only when doing intensive look-ups on a read-only
+database.  It degrades performance otherwise, especially if doing
+multiple inserts.  Therefore, this version introduces a new flag
+to gdbm_open: GDBM_PREREAD.  When given, it enables pre-reading of
+memory mapped regions.
+
+See https://github.com/Perl/perl5/issues/18884 for details.
+
 
 Version 1.19 - 2020-12-23
 
@@ -45,9 +193,9 @@ See https://puszcza.gnu.org.ua/bugs/?401
 
 ** Fix spurious error from gdbm_dump and gdbm_export
 
-The functions incorrectly reported as error the GDBM_ITEM_NOT_FOUND
-status, which is reported when upon normal termination of iteration
-over the database keys.
+The functions incorrectly treated as error the GDBM_ITEM_NOT_FOUND
+status, which is reported upon normal termination of iteration
+over database keys.
 
 ** Make sure gdbm_sync always returns a meaningful value
 See https://puszcza.gnu.org.ua/bugs/?400
@@ -522,7 +670,7 @@ Version 0.9
 ----------------------------------------------------------------------
 Copyright information:
 
-Copyright (C) 1990-2020 Free Software Foundation, Inc.
+Copyright (C) 1990-2021 Free Software Foundation, Inc.
 
    Permission is granted to anyone to make or distribute verbatim copies
    of this document as received, in any medium, provided that the

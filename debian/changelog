@@ -1,3 +1,65 @@
+gdbm (1.23-3) unstable; urgency=medium
+
+  * libgdbm-compat-dev: Add dependency libgdbm-dev (Closes: #1021123)
+
+ -- Nicolas Mora <babelouest@debian.org>  Sun, 02 Oct 2022 20:24:12 -0400
+
+gdbm (1.23-2) unstable; urgency=medium
+
+  [ Samuel Thibault ]
+  * d/symbols: fix ftbfs on !linux (Closes: #1018234)
+
+  [ Nicolas Mora ]
+  * d/control: Update standards version to 4.6.1 (no change)
+
+ -- Nicolas Mora <babelouest@debian.org>  Sun, 04 Sep 2022 09:42:54 -0400
+
+gdbm (1.23-1) unstable; urgency=medium
+
+  * New upstream release
+  * d/copyright: update copyright year
+  * d/symbols: update symbols file
+
+ -- Nicolas Mora <babelouest@debian.org>  Sat, 05 Feb 2022 09:28:32 -0500
+
+gdbm (1.22-1) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Remove empty leading paragraph in Description.
+  * Remove constraints unnecessary since buster:
+    + Build-Depends: Drop versioned constraint on dietlibc-dev.
+    + libgdbm-compat-dev: Drop versioned constraint on libgdbm-dev in Replaces.
+    + libgdbm-compat-dev: Drop versioned constraint on libgdbm-dev in Breaks.
+
+  [ Nicolas Mora ]
+  * New upstream release
+  * d/control: Add 'Multi-Arch: same' for libgdbm-compat-dev
+  * d/copyright: Remove git2chg.awk
+  * d/patches: remove patches string-h.patch and struct-stat.patch,
+    applied upstream
+
+ -- Nicolas Mora <babelouest@debian.org>  Wed, 20 Oct 2021 07:34:42 -0400
+
+gdbm (1.21-1) unstable; urgency=medium
+
+  * New upstream release
+  * Update Standards-Version to 4.6.0
+  * d/patches: Apply upstream patches to support diet libc compilation
+
+ -- Nicolas Mora <babelouest@debian.org>  Tue, 07 Sep 2021 09:52:45 -0400
+
+gdbm (1.20-1) unstable; urgency=medium
+
+  * New maintainer upload (Closes: #991028)
+  * New upstream version 1.20
+  * Update Standards-Version to 4.5.1
+  * d/control: Update debhelper version to 13
+  * d/upstream/metadata: Add Repository and Repository-Browse
+  * d/patches/recover.patch: Fix file descriptor leak (Closes: #983914)
+  * libgdbm-compat-dev: Install libgdbm_compat.a
+
+ -- Nicolas Mora <babelouest@debian.org>  Fri, 16 Jul 2021 09:05:53 -0400
+
 gdbm (1.19-2pexip3) pexip-bullseye; urgency=medium
 
   * Bullseye rebuild for ARM64 inclusion
