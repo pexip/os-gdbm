@@ -1,5 +1,5 @@
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 2011-2022 Free Software Foundation, Inc.
+   Copyright (C) 2011-2024 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -32,8 +32,9 @@ gid_t owner_gid;
 char *parseopt_program_doc = N_("load a GDBM database from a file");
 char *parseopt_program_args = N_("FILE [DB_FILE]");
 struct gdbm_option optab[] = {
-  { 'r', "replace", NULL, N_("replace records in the existing database") },
+  { 'r', "replace", NULL, N_("replace records in the existing database (needs -U)") },
   { 'm', "mode", N_("MODE"), N_("set file mode") },
+  { 'U', "update", NULL, N_("update the existing database") },
   { 'u', "user", N_("NAME|UID[:NAME|GID]"), N_("set file owner") },
   { 'n', "no-meta", NULL, N_("do not attempt to set file meta-data") },
   { 'M', "mmap", NULL, N_("use memory mapping") },
@@ -139,13 +140,18 @@ main (int argc, char **argv)
 	}
 	break;
 
+      case 'U':
+	oflags = (oflags & ~GDBM_OPENMASK) | GDBM_WRCREAT;
+	break;
+
       case 'u':
 	{
 	  size_t len;
 	  struct passwd *pw;
+	  int delim;
 	  
 	  len = strcspn (optarg, ".:");
-	  if (optarg[len])
+	  if ((delim = optarg[len]) != 0)
 	    optarg[len++] = 0;
 	  pw = getpwnam (optarg);
 	  if (pw)
@@ -182,7 +188,7 @@ main (int argc, char **argv)
 		    }
 		}
 	    }
-	  else
+	  else if (delim)
 	    {
 	      if (!pw)
 		{
@@ -194,6 +200,10 @@ main (int argc, char **argv)
 		    }
 		}
 	      owner_gid = pw->pw_gid;
+	    }
+	  else
+	    {
+	      owner_gid = getgid();
 	    }
 	  meta_mask |= GDBM_META_MASK_OWNER;
 	}
@@ -229,6 +239,12 @@ main (int argc, char **argv)
   if (argc > 2)
     {
       error (_("too many arguments; try `%s -h' for more info"), progname);
+      exit (EXIT_USAGE);
+    }
+
+  if (replace && (oflags & GDBM_OPENMASK) != GDBM_WRCREAT)
+    {
+      error (_("-r is useless without -U"));
       exit (EXIT_USAGE);
     }
   
@@ -267,11 +283,11 @@ main (int argc, char **argv)
 	error (_("gdbm_setopt failed: %s"), gdbm_strerror (gdbm_errno));
     }
   
-  rc = gdbm_load_from_file (&dbf, fp, replace,
-			    no_meta_option ?
-			      (GDBM_META_MASK_MODE | GDBM_META_MASK_OWNER) :
-			      meta_mask,
-			    &err_line);
+  rc = gdbm_load_from_file_ext (&dbf, fp, oflags, replace,
+				no_meta_option ?
+				(GDBM_META_MASK_MODE | GDBM_META_MASK_OWNER) :
+				meta_mask,
+				&err_line);
   if (rc)
     {
       switch (gdbm_errno)
@@ -307,7 +323,7 @@ main (int argc, char **argv)
 	    gdbm_perror (_("gdbm_setopt failed"));
 	  else
 	    {
-	      printf ("%s: created %s\n", progname, dbname);
+	      printf ("%s: loaded %s\n", progname, dbname);
 	      free (dbname);
 	    }
 	}

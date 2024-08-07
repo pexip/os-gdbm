@@ -1,5 +1,5 @@
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 2011-2022 Free Software Foundation, Inc.
+   Copyright (C) 2011-2024 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -73,8 +73,8 @@ getparm (const char *buf, const char *parm)
   return NULL;
 }
 
-static size_t
-get_dump_line (struct dump_file *file)
+static int
+get_dump_line (struct dump_file *file, size_t *nread)
 {
   char buf[80];
   
@@ -83,8 +83,8 @@ get_dump_line (struct dump_file *file)
       while (fgets (buf, sizeof buf, file->fp))
 	{
 	  size_t n = strlen (buf);
-	  
-	  if (buf[n-1] == '\n')
+
+	  if (n > 0 && buf[n-1] == '\n')
 	    {
 	      file->line++;
 	      --n;
@@ -111,21 +111,26 @@ get_dump_line (struct dump_file *file)
 	    }
 	}
     }
-  return file->lblevel;
+  if (ferror (file->fp))
+    return GDBM_FILE_READ_ERROR;
+  if ((*nread = file->lblevel) == 0)
+    return GDBM_FILE_EOF;
+  return GDBM_NO_ERROR;
 }
 
 static int
 get_data (struct dump_file *file)
 {
   size_t n;
+  int rc;
 
   file->buflevel = 0;
   file->parmc = 0;
   
-  while ((n = get_dump_line (file)))
+  while ((rc = get_dump_line (file, &n)) == GDBM_NO_ERROR)
     {
       if (file->linebuf[0] == '#')
-	return 0;
+	return GDBM_NO_ERROR;
       if (n + file->buflevel > file->bufsize)
 	{
 	  size_t s = ((file->buflevel + n + _GDBM_MAX_DUMP_LINE_LEN - 1)
@@ -141,24 +146,27 @@ get_data (struct dump_file *file)
       file->buflevel += n;
       file->lblevel = 0;
     }
-  return ferror (file->fp) ? GDBM_FILE_READ_ERROR : 0;
+  if (rc == GDBM_FILE_EOF && file->buflevel > 0)
+    rc = GDBM_NO_ERROR;
+  return rc;
 }
 
 static int
 get_parms (struct dump_file *file)
 {
   size_t n;
+  int rc;
 
   file->buflevel = 0;
   file->parmc = 0;
-  while ((n = get_dump_line (file)))
+  while ((rc = get_dump_line (file, &n)) == GDBM_NO_ERROR)
     {
       char *p;
 
       p = file->linebuf;
       if (*p != '#')
 	return 0;
-      if (n == 0 || *++p != ':')
+      if (*++p != ':')
 	{
 	  file->lblevel = 0;
 	  continue;
@@ -220,10 +228,12 @@ get_parms (struct dump_file *file)
       file->lblevel = 0;
     }
 
+  if (rc == GDBM_FILE_EOF && file->buflevel > 0)
+    rc = GDBM_NO_ERROR;
   if (file->buffer)
     file->buffer[file->buflevel] = 0;
   
-  return ferror (file->fp) ? GDBM_FILE_READ_ERROR : 0;
+  return rc;
 }
 
 static int
@@ -402,7 +412,7 @@ _gdbm_str2fmt (char const *str)
 
 static int
 _gdbm_load_file (struct dump_file *file, GDBM_FILE dbf, GDBM_FILE *ofp,
-		 int replace, int meta_mask)
+		 int mode, int replace, int meta_mask)
 {
   char *param = NULL;
   int rc;
@@ -433,13 +443,12 @@ _gdbm_load_file (struct dump_file *file, GDBM_FILE dbf, GDBM_FILE *ofp,
       
   if (!dbf)
     {
-      int flags = replace ? GDBM_WRCREAT : GDBM_NEWDB;
       const char *filename = getparm (file->header, "file");
       
       if (!filename)
 	return GDBM_NO_DBNAME;
 
-      tmp = gdbm_open (filename, 0, flags | format, 0600, NULL);
+      tmp = gdbm_open (filename, 0, mode | format, 0600, NULL);
       if (!tmp)
 	return gdbm_errno;
       dbf = tmp;
@@ -604,15 +613,19 @@ gdbm_load_bdb_dump (struct dump_file *file, GDBM_FILE dbf, int replace)
 }
 
 int
-gdbm_load_from_file (GDBM_FILE *pdbf, FILE *fp, int replace,
-		     int meta_mask,
-		     unsigned long *line)
+gdbm_load_from_file_ext (GDBM_FILE *pdbf, FILE *fp,
+			 int mode, int replace,
+			 int meta_mask,
+			 unsigned long *line)
 {
   struct dump_file df;
   int rc;
 
-  if (!pdbf || !fp)
-    return EINVAL;
+  if (!pdbf || !fp || (mode & GDBM_OPENMASK) == GDBM_READER)
+    {
+      GDBM_SET_ERRNO (NULL, GDBM_ERR_USAGE, FALSE);
+      return -1;
+    }
 
   /* Guess input file format */
   rc = fgetc (fp);
@@ -644,7 +657,7 @@ gdbm_load_from_file (GDBM_FILE *pdbf, FILE *fp, int replace,
       rc = gdbm_load_bdb_dump (&df, *pdbf, replace);
     }
   else
-    rc = _gdbm_load_file (&df, *pdbf, pdbf, replace, meta_mask);
+    rc = _gdbm_load_file (&df, *pdbf, pdbf, mode, replace, meta_mask);
   dump_file_free (&df);
   if (rc)
     {
@@ -654,6 +667,18 @@ gdbm_load_from_file (GDBM_FILE *pdbf, FILE *fp, int replace,
       return -1;
     }
   return 0;
+}
+
+int
+gdbm_load_from_file (GDBM_FILE *pdbf, FILE *fp, int replace,
+		     int meta_mask,
+		     unsigned long *line)
+{
+  return gdbm_load_from_file_ext (pdbf, fp,
+				  replace ? GDBM_WRCREAT : GDBM_NEWDB,
+				  replace,
+				  meta_mask,
+				  line);
 }
 
 int

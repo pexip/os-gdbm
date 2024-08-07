@@ -1,7 +1,7 @@
 /* bucket.c - The routines for playing with hash buckets. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-2022 Free Software Foundation, Inc.
+   Copyright (C) 1990-2024 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -638,8 +638,9 @@ _gdbm_split_bucket (GDBM_FILE dbf, int next_insert)
       dbf->bucket_dir = _gdbm_bucket_dir (dbf, next_insert);
       
       /* Invalidate old cache entry. */
-      old_bucket.av_adr  = dbf->cache_mru->ca_adr;
-      old_bucket.av_size = dbf->header->bucket_size;
+      avail_elem_init (&old_bucket,
+		       dbf->header->bucket_size,
+		       dbf->cache_mru->ca_adr);
       cache_elem_free (dbf, dbf->cache_mru);
       
       /* Set dbf->bucket to the proper bucket. */

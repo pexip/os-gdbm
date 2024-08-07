@@ -6,58 +6,22 @@ include /usr/share/dpkg/default.mk
 
 export CFLAGS += -U__DATE__ -U__TIME__
 
-HAVE_DIETLIBC=no
-ifeq ($(shell dpkg -s dietlibc-dev | grep -o installed), installed)
-  HAVE_DIETLIBC=yes
-  BUILT_USING := $(shell dpkg-query -f'$${source:Package} (= $${source:Version})' -W dietlibc-dev)
-  DIET_LIBDIR := $(shell diet -L gcc)
-endif
-ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
-  HAVE_DIETLIBC=no
-endif
-
 %:
 	dh $@
 
 override_dh_auto_configure:
 	sed -ri '/^POT-Creation-Date:/ d' po/*.po
-ifeq ($(HAVE_DIETLIBC),yes)
-	dh_auto_configure -B diet-build --  \
-	    --libdir $(DIET_LIBDIR) \
-	    --disable-shared \
-	    --enable-static \
-	    --enable-largefile \
-	    --enable-memory-mapped-io=no \
-	    CC='diet gcc' CPPFLAGS='-UHAVE_MMAP $(CPPFLAGS)' CFLAGS='$(CFLAGS)'
-endif
 	dh_auto_configure -B glibc-build -- --enable-libgdbm-compat --enable-largefile
-	dh_auto_configure -B glibc-nolfs-build -- \
-	    CFLAGS='-static -O2 -g $(CFLAGS)' --program-suffix=-nolfs --disable-largefile
 
 override_dh_auto_build:
-ifeq ($(HAVE_DIETLIBC),yes)
-	dh_auto_build -B diet-build
-endif
 	dh_auto_build -B glibc-build
-	dh_auto_build -B glibc-nolfs-build
 
 override_dh_auto_install:
-ifeq ($(HAVE_DIETLIBC),yes)
-	dh_auto_install -B diet-build
-endif
-	dh_auto_install -B glibc-nolfs-build
 	dh_auto_install -B glibc-build
-
-ifeq ($(HAVE_DIETLIBC),yes)
-override_dh_gencontrol:
-	dh_gencontrol -- -VBuilt-Using="$(BUILT_USING)" -Vlibgdbm-dietlibc:Provides=libgdbm-dietlibc-dev
-endif
-
-override_dh_install:
-	dh_install
-ifeq ($(HAVE_DIETLIBC),yes)
-	dh_install -plibgdbm-dev /usr/lib/*/diet/*/libgdbm.a
-endif
 
 override_dh_missing:
 	dh_missing --list-missing
+
+override_dh_auto_clean:
+	rm -rf glibc-build/
+	dh_auto_clean --

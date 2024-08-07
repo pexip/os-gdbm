@@ -1,4 +1,4 @@
-libgdbm.so.6 libgdbm6 #MINVER#
+libgdbm.so.6 libgdbm6t64 #MINVER#
 * Build-Depends-Package: libgdbm-dev
  _gdbm_alloc@Base 1.16
  _gdbm_avail_block_read@Base 1.20
@@ -73,6 +73,7 @@ libgdbm.so.6 libgdbm6 #MINVER#
  gdbm_latest_snapshot@Base 1.21
  gdbm_load@Base 1.16
  gdbm_load_from_file@Base 1.16
+ gdbm_load_from_file_ext@Base 1.24
  gdbm_needs_recovery@Base 1.16
  gdbm_nextkey@Base 1.16
  gdbm_open@Base 1.16

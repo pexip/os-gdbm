@@ -1,7 +1,7 @@
 /* falloc.c - The file space management routines for dbm. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-2022 Free Software Foundation, Inc.
+   Copyright (C) 1990-2024 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -121,8 +121,7 @@ _gdbm_free (GDBM_FILE dbf, off_t file_adr, int num_bytes)
     return 0;
 
   /* Initialize the avail element. */
-  temp.av_size = num_bytes;
-  temp.av_adr = file_adr;
+  avail_elem_init (&temp, num_bytes, file_adr);
 
   /* Is the freed space large or small? */
   if ((num_bytes >= dbf->header->block_size) || dbf->central_free)
@@ -189,9 +188,10 @@ pop_avail_block (GDBM_FILE dbf)
     }
 
   /* Set up variables. */
-  new_el.av_adr = dbf->avail->next_block;
-  new_el.av_size = ( ( (dbf->avail->size * sizeof (avail_elem)) >> 1)
-			+ sizeof (avail_block));
+  avail_elem_init (&new_el,
+		   ( ( (dbf->avail->size * sizeof (avail_elem)) >> 1)
+		     + sizeof (avail_block)),
+		   dbf->avail->next_block);
 
   /* Allocate space for the block. */
   new_blk = malloc (new_el.av_size);
@@ -404,8 +404,7 @@ get_elem (int size, avail_elem av_table[], int *av_count)
   avail_elem val;		/* The default return value. */
 
   /* Initialize default return value. */
-  val.av_adr = 0;
-  val.av_size = 0;
+  avail_elem_init (&val, 0, 0);
 
   /* Search for element.  List is sorted by size. */
   index = avail_lookup (size, av_table, *av_count);
@@ -480,8 +479,7 @@ get_block (int size, GDBM_FILE dbf)
   avail_elem val;
 
   /* Need at least one block. */
-  val.av_adr  = dbf->header->next_block;
-  val.av_size = dbf->header->block_size;
+  avail_elem_init (&val, dbf->header->block_size, dbf->header->next_block);
 
   /* Get enough blocks to fit the need. */
   while (val.av_size < size)

@@ -1,26 +1,27 @@
 # Swedish translation for gdbm.
-# Copyright © 2017, 2019, 2020, 2021 Free Software Foundation, Inc.
+# Copyright © 2017, 2019, 2020, 2021, 2022 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gdbm package.
 # Anders Jonsson <anders.jonsson@norsjovallen.se>, 2017, 2021.
-# Sebastian Rasmussen <sebras@gmail.com>, 2019, 2020.
+# Sebastian Rasmussen <sebras@gmail.com>, 2019, 2020, 2022.
+# Luna Jernberg <droidbittin@gmail.com, 2024.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gdbm 1.19.90\n"
+"Project-Id-Version: gdbm 1.23.90\n"
 "Report-Msgid-Bugs-To: bug-gdbm@gnu.org\n"
-"POT-Creation-Date: 2022-02-04 16:04+0200\n"
-"PO-Revision-Date: 2021-04-03 00:41+0200\n"
-"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"POT-Creation-Date: 2024-07-01 09:33+0300\n"
+"PO-Revision-Date: 2024-06-19 06:51+0200\n"
+"Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"X-Generator: Poedit 3.4.2\n"
 
-#: src/bucket.c:399 src/bucket.c:684 src/falloc.c:211 src/falloc.c:337
+#: src/bucket.c:399 src/bucket.c:685 src/falloc.c:211 src/falloc.c:337
 #: src/findkey.c:124 src/gdbmstore.c:168 src/update.c:36 src/update.c:76
 msgid "lseek error"
 msgstr "lseek-fel"
@@ -110,9 +111,8 @@ msgid "Cannot replace"
 msgstr "Kan inte ersätta"
 
 #: src/gdbmerrno.c:120
-#, fuzzy
 msgid "Malformed data"
-msgstr "Felformaterad hashtabell"
+msgstr "Felformaterad data"
 
 #: src/gdbmerrno.c:121
 msgid "Option already set"
@@ -120,7 +120,7 @@ msgstr "Flagga redan inställd"
 
 #: src/gdbmerrno.c:122
 msgid "Bad option value"
-msgstr ""
+msgstr "Felaktivt alternativvärde"
 
 #: src/gdbmerrno.c:123
 msgid "Byte-swapped file"
@@ -208,19 +208,16 @@ msgid "Malformed bucket hash entry"
 msgstr "Felformaterad hashpost för hink"
 
 #: src/gdbmerrno.c:145
-#, fuzzy
 msgid "Reflink failed"
-msgstr "Omorganisation misslyckades"
+msgstr "Omlänkning misslyckades"
 
 #: src/gdbmerrno.c:146
-#, fuzzy
 msgid "Failed to resolve real path name"
-msgstr "Misslyckades med att återställa filrättigheter"
+msgstr "Misslyckades med att slå upp sökvägsnamn"
 
 #: src/gdbmerrno.c:147
-#, fuzzy
 msgid "Function usage error"
-msgstr "Filsökfel (seek)"
+msgstr "Användningsfel för funktion"
 
 #: src/recover.c:272
 #, c-format
@@ -277,31 +274,32 @@ msgstr "DBFIL [FIL]"
 msgid "select dump format"
 msgstr "välj dumpformat"
 
-#: tools/gdbm_dump.c:67
+#: tools/gdbm_dump.c:67 tools/gdbm_dump.c:79
 msgid "unknown dump format"
 msgstr "okänt dumpformat"
 
-#: tools/gdbm_dump.c:74 tools/gdbm_load.c:215
+#: tools/gdbm_dump.c:86 tools/gdbm_load.c:225
 msgid "unknown option"
 msgstr "okänd flagga"
 
-#: tools/gdbm_dump.c:90 tools/gdbm_load.c:231
+#: tools/gdbm_dump.c:102 tools/gdbm_load.c:241
 #, c-format
 msgid "too many arguments; try `%s -h' for more info"
 msgstr "för många argument, försök med ”%s -h” för mer info"
 
-#: tools/gdbm_dump.c:110 tools/gdbm_load.c:251
+#: tools/gdbm_dump.c:122 tools/gdbm_load.c:267
 #, c-format
 msgid "cannot open %s"
 msgstr "det går inte att öppna %s"
 
-#: tools/gdbm_dump.c:118 tools/gdbm_load.c:261
+#: tools/gdbm_dump.c:130 tools/gdbm_load.c:277
 msgid "gdbm_open failed"
 msgstr "gdbm_open misslyckades"
 
-#: tools/gdbm_dump.c:125
-msgid "dump error"
-msgstr "dumpfel"
+#: tools/gdbm_dump.c:137
+#, c-format
+msgid "%s: dump error"
+msgstr "%s: dumpfel"
 
 #: tools/gdbm_load.c:32
 msgid "load a GDBM database from a file"
@@ -312,8 +310,8 @@ msgid "FILE [DB_FILE]"
 msgstr "FIL [DBFIL]"
 
 #: tools/gdbm_load.c:35
-msgid "replace records in the existing database"
-msgstr "ersätt poster i den befintliga databasen"
+msgid "replace records in the existing database (needs -U)"
+msgstr "ersätt poster i den befintliga databasen (behöver -U)"
 
 # https://en.wikipedia.org/wiki/Modes_(Unix)
 #: tools/gdbm_load.c:36
@@ -325,88 +323,96 @@ msgid "set file mode"
 msgstr "ställ in filrättigheter"
 
 #: tools/gdbm_load.c:37
+msgid "update the existing database"
+msgstr "uppdatera den befintliga databasen"
+
+#: tools/gdbm_load.c:38
 msgid "NAME|UID[:NAME|GID]"
 msgstr "NAMN|UID[:NAMN|GID]"
 
-#: tools/gdbm_load.c:37
+#: tools/gdbm_load.c:38
 msgid "set file owner"
 msgstr "ställ in filägare"
 
-#: tools/gdbm_load.c:38
+#: tools/gdbm_load.c:39
 msgid "do not attempt to set file meta-data"
 msgstr "försök inte att ställa in metadata för fil"
 
-#: tools/gdbm_load.c:39
+#: tools/gdbm_load.c:40
 msgid "use memory mapping"
 msgstr "använd minnesmappning"
 
-#: tools/gdbm_load.c:40 tools/gdbm_load.c:41
+#: tools/gdbm_load.c:41 tools/gdbm_load.c:42
 msgid "NUM"
 msgstr "TAL"
 
-#: tools/gdbm_load.c:40
+#: tools/gdbm_load.c:41
 msgid "set the cache size"
 msgstr "ställ in cachestorleken"
 
-#: tools/gdbm_load.c:41
+#: tools/gdbm_load.c:42
 msgid "set the block size"
 msgstr "ställ in blockstorleken"
 
-#: tools/gdbm_load.c:79
+#: tools/gdbm_load.c:80
 #, c-format
 msgid "invalid number: %s"
 msgstr "ogiltigt tal: %s"
 
-#: tools/gdbm_load.c:84
+#: tools/gdbm_load.c:85
 #, c-format
 msgid "invalid number: %s: %s"
 msgstr "ogiltigt tal: %s: %s"
 
-#: tools/gdbm_load.c:136
+#: tools/gdbm_load.c:137
 #, c-format
 msgid "invalid octal number"
 msgstr "ogiltigt oktalt tal"
 
-#: tools/gdbm_load.c:161
+#: tools/gdbm_load.c:167
 #, c-format
 msgid "invalid user name: %s"
 msgstr "ogiltigt användarnamn: %s"
 
-#: tools/gdbm_load.c:180
+#: tools/gdbm_load.c:186
 #, c-format
 msgid "invalid group name: %s"
 msgstr "ogiltigt gruppnamn: %s"
 
-#: tools/gdbm_load.c:192
+#: tools/gdbm_load.c:198
 #, c-format
 msgid "no such UID: %lu"
 msgstr "inget sådant UID: %lu"
 
-#: tools/gdbm_load.c:267
+#: tools/gdbm_load.c:247
+msgid "-r is useless without -U"
+msgstr "-r är värdelös utan -U"
+
+#: tools/gdbm_load.c:283
 #, c-format
 msgid "gdbm_setopt failed: %s"
 msgstr "gdbm_setopt misslyckades: %s"
 
-#: tools/gdbm_load.c:281 tools/gdbm_load.c:299
+#: tools/gdbm_load.c:297 tools/gdbm_load.c:315
 #, c-format
 msgid "error restoring metadata: %s (%s)"
-msgstr "fel vid återställande av metadata: %s (%s)"
+msgstr "fel vid återställning av metadata: %s (%s)"
 
-#: tools/gdbm_load.c:290 tools/gdbmshell.c:1635
+#: tools/gdbm_load.c:306 tools/gdbmshell.c:1674
 #, c-format
 msgid "cannot load from %s"
 msgstr "det går inte att läsa in från %s"
 
-#: tools/gdbm_load.c:307
+#: tools/gdbm_load.c:323
 msgid "gdbm_setopt failed"
 msgstr "gdbm_setopt misslyckades"
 
 #: tools/gdbmshell.c:64 tools/gdbmshell.c:157 tools/gdbmshell.c:361
-#: tools/gdbmshell.c:497 tools/gdbmshell.c:873 tools/gdbmshell.c:910
-#: tools/gdbmshell.c:919
-#, fuzzy, c-format
+#: tools/gdbmshell.c:497 tools/gdbmshell.c:905 tools/gdbmshell.c:942
+#: tools/gdbmshell.c:951
+#, c-format
 msgid "%s failed"
-msgstr "malloc misslyckades"
+msgstr "%s misslyckades"
 
 #: tools/gdbmshell.c:120
 #, c-format
@@ -414,14 +420,14 @@ msgid "database %s already exists; overwrite"
 msgstr "databasen %s finns redan; skriv över"
 
 #: tools/gdbmshell.c:151
-#, fuzzy, c-format
+#, c-format
 msgid "cannot open database %s"
-msgstr "det går inte att öppna databasen %s: %s"
+msgstr "det går inte att öppna databasen %s"
 
 #: tools/gdbmshell.c:252
-#, fuzzy, c-format
+#, c-format
 msgid "Bucket #%d"
-msgstr "Hink #%s"
+msgstr "Hink #%d"
 
 #: tools/gdbmshell.c:255
 #, c-format
@@ -431,6 +437,10 @@ msgid ""
 "hash prefix = %08x\n"
 "references  = %u"
 msgstr ""
+"adress      = %lu\n"
+"djup        = %d\n"
+"hash prefix = %08x\n"
+"referencer  = %u"
 
 #: tools/gdbmshell.c:270
 #, c-format
@@ -438,10 +448,12 @@ msgid ""
 "count       = %d\n"
 "load factor = %3d\n"
 msgstr ""
+"antal       = %d\n"
+"belast.fakt.= %3d\n"
 
 #: tools/gdbmshell.c:275
 msgid "Hash Table:\n"
-msgstr ""
+msgstr "Hashtabell:\n"
 
 #: tools/gdbmshell.c:277
 #, c-format
@@ -451,13 +463,13 @@ msgstr ""
 "    #    hashvärde      nyck.storl  datastorl     dataadr.-hem  nyck.start\n"
 
 #: tools/gdbmshell.c:295
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Avail count = %d\n"
 msgstr ""
 "\n"
-"Tillg. antal= %1d\n"
+"Tillg. antal= %d\n"
 
 #: tools/gdbmshell.c:296
 #, c-format
@@ -466,22 +478,21 @@ msgstr "Adress            storl\n"
 
 #: tools/gdbmshell.c:347
 msgid "header block"
-msgstr ""
+msgstr "huvudblock"
 
 #: tools/gdbmshell.c:349
-#, fuzzy, c-format
+#, c-format
 msgid "block = %lu"
-msgstr "  nästa block     = %lu\n"
+msgstr "block = %lu"
 
 #: tools/gdbmshell.c:350
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "size  = %d\n"
 "count = %d\n"
 msgstr ""
 "\n"
-"block  = %lu\n"
 "storlek= %d\n"
 "antal  = %d\n"
 
@@ -523,24 +534,20 @@ msgstr[0] "Det finns %s objekt i databasen.\n"
 msgstr[1] "Det finns %s objekt i databasen.\n"
 
 #: tools/gdbmshell.c:526 tools/gdbmshell.c:550 tools/gdbmshell.c:630
-#, fuzzy
 msgid "No such item found"
-msgstr "Inget sådant objekt hittades."
+msgstr "Inget sådant objekt hittades"
 
 #: tools/gdbmshell.c:529
-#, fuzzy
 msgid "Can't delete"
-msgstr "Kan inte ta bort: %s"
+msgstr "Kan inte ta bort"
 
 #: tools/gdbmshell.c:553
-#, fuzzy
 msgid "Can't fetch data"
-msgstr "Det går inte att hämta data: %s"
+msgstr "Kan inte hämta data"
 
 #: tools/gdbmshell.c:566
-#, fuzzy
 msgid "Item not inserted"
-msgstr "Objekt inte infogat: %s."
+msgstr "Objekt inte infogat"
 
 #: tools/gdbmshell.c:594
 #, c-format
@@ -548,103 +555,112 @@ msgid "No such item found.\n"
 msgstr "Inget sådant objekt hittades.\n"
 
 #: tools/gdbmshell.c:597
-#, fuzzy
 msgid "Can't find first key"
-msgstr "Det går inte att hitta nyckel: %s"
+msgstr "Kan inte hitta första nyckel"
 
 #: tools/gdbmshell.c:634
-#, fuzzy
 msgid "Can't find next key"
-msgstr "Det går inte att hitta nyckel: %s"
+msgstr "Kan inte hitta nästa nyckel"
 
 #: tools/gdbmshell.c:645
-#, fuzzy
 msgid "Reorganization failed"
-msgstr "Omorganisation misslyckades."
+msgstr "Omorganisation misslyckades"
 
 #: tools/gdbmshell.c:649
 msgid "Reorganization succeeded."
 msgstr "Omorganisation lyckades."
 
-#: tools/gdbmshell.c:700 tools/gdbmshell.c:710 tools/gdbmshell.c:720
-#: tools/gdbmshell.c:825 tools/gdbmshell.c:834
-#, fuzzy, c-format
-msgid "not a number (stopped near %s)"
-msgstr "inte ett tal (stoppade nära %s)\n"
-
-#: tools/gdbmshell.c:727 tools/gdbmshell.c:1561 tools/gdbmshell.c:1596
+#: tools/gdbmshell.c:702 tools/gdbmshell.c:751 tools/gdbmshell.c:1599
+#: tools/gdbmshell.c:1635
 #, c-format
 msgid "unrecognized argument: %s"
 msgstr "okänt argument: %s"
 
-#: tools/gdbmshell.c:736
+#: tools/gdbmshell.c:710
+#, c-format
+msgid "%s: bad argument type"
+msgstr "%s: felaktig argumenttyp"
+
+#: tools/gdbmshell.c:715
+msgid "unexpected compound statement"
+msgstr "oväntat sammansatt uttalande"
+
+#: tools/gdbmshell.c:724 tools/gdbmshell.c:734 tools/gdbmshell.c:744
+#: tools/gdbmshell.c:856 tools/gdbmshell.c:865
+#, c-format
+msgid "not a number (stopped near %s)"
+msgstr "inte ett tal (stoppade nära %s)"
+
+#: tools/gdbmshell.c:757
+msgid "unexpected datum"
+msgstr "oväntat datum"
+
+#: tools/gdbmshell.c:767
 #, c-format
 msgid "Recovery succeeded.\n"
 msgstr "Återställning lyckades.\n"
 
-#: tools/gdbmshell.c:740
+#: tools/gdbmshell.c:771
 #, c-format
 msgid "Keys recovered: %lu, failed: %lu, duplicate: %lu\n"
 msgstr "Nycklar återhämtade: %lu, misslyckade: %lu, duplikat: %lu\n"
 
-#: tools/gdbmshell.c:745
+#: tools/gdbmshell.c:776
 #, c-format
 msgid "Buckets recovered: %lu, failed: %lu\n"
 msgstr "Hinkar återhämtade: %lu, misslyckades: %lu\n"
 
-#: tools/gdbmshell.c:753
+#: tools/gdbmshell.c:784
 #, c-format
 msgid "Original database preserved in file %s"
 msgstr "Ursprunglig databas bevarad i filen %s"
 
-#: tools/gdbmshell.c:761
-#, fuzzy
+#: tools/gdbmshell.c:792
 msgid "Recovery failed"
-msgstr "Återställning misslyckades: %s"
+msgstr "Återställning misslyckades"
 
-#: tools/gdbmshell.c:812 tools/gdbmshell.c:894
+#: tools/gdbmshell.c:843 tools/gdbmshell.c:926
 #, c-format
 msgid "no current bucket\n"
 msgstr "ingen aktuell hink\n"
 
-#: tools/gdbmshell.c:861
+#: tools/gdbmshell.c:893
 #, c-format
 msgid "bucket number out of range (0..%lu)"
-msgstr ""
+msgstr "hinknummer utanför intervall (0..%lu)"
 
-#: tools/gdbmshell.c:904 tools/gdbmshell.c:916
+#: tools/gdbmshell.c:936 tools/gdbmshell.c:948
 #, c-format
 msgid "no sibling\n"
-msgstr ""
+msgstr "inget syskon\n"
 
-#: tools/gdbmshell.c:964
+#: tools/gdbmshell.c:996
 #, c-format
 msgid "Hash table directory.\n"
 msgstr "Hashtabellkatalog.\n"
 
-#: tools/gdbmshell.c:965
-#, fuzzy, c-format
+#: tools/gdbmshell.c:997
+#, c-format
 msgid ""
 "  Size =  %d.  Capacity = %lu.  Bits = %d,  Buckets = %zu.\n"
 "\n"
 msgstr ""
-"  Storl=  %d.  Bitar= %d,  Hinkar  = %zu.\n"
+"  Storl=  %d.  Kapacitet = %lu.  Bitar= %d,  Hinkar  = %zu.\n"
 "\n"
 
-#: tools/gdbmshell.c:972
+#: tools/gdbmshell.c:1004
 msgid "Index"
-msgstr ""
+msgstr "Index"
 
-#: tools/gdbmshell.c:972
+#: tools/gdbmshell.c:1004
 msgid "Hash Pfx"
-msgstr ""
+msgstr "Hash Pfx"
 
-#: tools/gdbmshell.c:972
-#, fuzzy
+#: tools/gdbmshell.c:1004
 msgid "Bucket address"
-msgstr "Hink #%s"
+msgstr "Hinkadress"
 
-#: tools/gdbmshell.c:1040
+#: tools/gdbmshell.c:1072
 #, c-format
 msgid ""
 "\n"
@@ -655,465 +671,454 @@ msgstr ""
 "Filhuvud: \n"
 "\n"
 
-#: tools/gdbmshell.c:1041
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1073
+#, c-format
 msgid "  type            = %s\n"
-msgstr "  tabell          = %lu\n"
+msgstr "  typ             = %s\n"
 
-#: tools/gdbmshell.c:1042
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1074
+#, c-format
 msgid "  directory start = %lu\n"
-msgstr ""
-"\n"
-" aktuell katalogpost = %d.\n"
+msgstr "  katalogstart    = %lu\n"
 
-#: tools/gdbmshell.c:1044
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1076
+#, c-format
 msgid "  directory size  = %d\n"
-msgstr "  hinkstorlek     = %d\n"
+msgstr "  katalogstorlek  = %d\n"
 
-#: tools/gdbmshell.c:1045
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1077
+#, c-format
 msgid "  directory depth = %d\n"
-msgstr ""
-"\n"
-" aktuell katalogpost = %d.\n"
+msgstr "  katalogdjup     = %d\n"
 
-#: tools/gdbmshell.c:1046
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1078
+#, c-format
 msgid "  block size      = %d\n"
-msgstr "  blockstorlek    = %d\n"
+msgstr "  blockstorlek       = %d\n"
 
-#: tools/gdbmshell.c:1047
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1079
+#, c-format
 msgid "  bucket elems    = %d\n"
-msgstr "  hinkelement     = %d\n"
+msgstr ""
+"  hinkelement     = %d\n"
+"\n"
 
-#: tools/gdbmshell.c:1048
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1080
+#, c-format
 msgid "  bucket size     = %d\n"
 msgstr "  hinkstorlek     = %d\n"
 
-#: tools/gdbmshell.c:1049
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1081
+#, c-format
 msgid "  header magic    = %x\n"
 msgstr "  huvudmagi       = %x\n"
 
-#: tools/gdbmshell.c:1050
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1082
+#, c-format
 msgid "  next block      = %lu\n"
 msgstr "  nästa block     = %lu\n"
 
-#: tools/gdbmshell.c:1053
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1085
+#, c-format
 msgid "  avail size      = %d\n"
 msgstr "  tillg. storlek  = %d\n"
 
-#: tools/gdbmshell.c:1054
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1086
+#, c-format
 msgid "  avail count     = %d\n"
 msgstr "  tillg. antal    = %d\n"
 
 # nx=next
-#: tools/gdbmshell.c:1055
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1087
+#, c-format
 msgid "  avail next block= %lu\n"
 msgstr "  tillg. nästa blk= %lu\n"
 
-#: tools/gdbmshell.c:1060
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1092
+#, c-format
 msgid ""
 "\n"
 "Extended Header: \n"
 "\n"
 msgstr ""
 "\n"
-"Filhuvud: \n"
+"Utökat filhuvud: \n"
 "\n"
 
-#: tools/gdbmshell.c:1061
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1093
+#, c-format
 msgid "      version = %d\n"
-msgstr "  tillg. antal    = %d\n"
+msgstr "      version = %d\n"
 
-#: tools/gdbmshell.c:1062
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1094
+#, c-format
 msgid "      numsync = %u\n"
-msgstr "  tabell          = %lu\n"
+msgstr "      numsynk = %u\n"
 
-#: tools/gdbmshell.c:1176
-#, fuzzy
+#: tools/gdbmshell.c:1208
 msgid "bad file mode"
-msgstr "ställ in filrättigheter"
+msgstr "felaktiga filrättigheter"
 
-#: tools/gdbmshell.c:1186
+#: tools/gdbmshell.c:1218
 msgid "insufficient precision"
-msgstr ""
+msgstr "otillräcklig precision"
 
 #. TRANSLATORS: Stands for "Not Available".
-#: tools/gdbmshell.c:1199
+#: tools/gdbmshell.c:1231
 msgid "N/A"
-msgstr ""
+msgstr "Saknas"
 
-#: tools/gdbmshell.c:1207 tools/gdbmshell.c:1212
-#, fuzzy
+#: tools/gdbmshell.c:1239 tools/gdbmshell.c:1244
 msgid "can't open database"
-msgstr "det går inte att öppna databasen %s: %s"
+msgstr "kan inte öppna databas"
 
-#: tools/gdbmshell.c:1217
-#, fuzzy
+#: tools/gdbmshell.c:1249
 msgid "not a regular file"
-msgstr "%s är inte en vanlig fil"
+msgstr "är inte en vanlig fil"
 
-#: tools/gdbmshell.c:1222
+#: tools/gdbmshell.c:1254
 msgid "ERROR"
-msgstr ""
+msgstr "FEL"
 
-#: tools/gdbmshell.c:1232
+#: tools/gdbmshell.c:1264
 #, c-format
 msgid "%s: ERROR: can't stat: %s"
-msgstr ""
+msgstr "%s: FEL: kan inte köra stat: %s"
 
-#: tools/gdbmshell.c:1256
+#: tools/gdbmshell.c:1288
 msgid "Invalid arguments in call to gdbm_latest_snapshot"
-msgstr ""
+msgstr "Ogiltiga argument i anrop till gdbm_latest_snapshot"
 
-#: tools/gdbmshell.c:1261
+#: tools/gdbmshell.c:1293
 msgid ""
 "Function is not implemented: GDBM is built without crash-tolerance support"
 msgstr ""
+"Funktion är inte implementerad: GDBM är byggt utan stöd för kraschtolerans"
 
-#: tools/gdbmshell.c:1269
+#: tools/gdbmshell.c:1301
 msgid "Selected the most recent snapshot"
-msgstr ""
+msgstr "Valde den senaste ögonblicksbilden"
 
-#: tools/gdbmshell.c:1273
+#: tools/gdbmshell.c:1305
 msgid "Neither snapshot is readable"
-msgstr ""
+msgstr "Ingen av ögonblicksbilderna är läsbara"
 
-#: tools/gdbmshell.c:1278
+#: tools/gdbmshell.c:1310
 msgid "Error selecting snapshot"
-msgstr ""
+msgstr "Fel vid val av ögonblickbild"
 
-#: tools/gdbmshell.c:1283
+#: tools/gdbmshell.c:1315
 msgid "Snapshot modes and dates are the same"
-msgstr ""
+msgstr "Ögonblicksbildslägen och datum är samma"
 
-#: tools/gdbmshell.c:1288
+#: tools/gdbmshell.c:1320
 msgid "Snapshot sync counters differ by more than 1"
-msgstr ""
+msgstr "Ögonblicksbilds synkräknare skiljer sig med mer än 1"
 
-#: tools/gdbmshell.c:1314
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1348
+#, c-format
 msgid "unexpected error code: %d"
-msgstr "oväntat fel då %s skulle ställas in: %d"
+msgstr "oväntad felkod: %d"
 
-#: tools/gdbmshell.c:1331
+#: tools/gdbmshell.c:1368
 #, c-format
 msgid "hash value = %x, bucket #%u, slot %u"
 msgstr "hashvärde = %x, hink #%u, plats %u"
 
-#: tools/gdbmshell.c:1337
+#: tools/gdbmshell.c:1374
 #, c-format
 msgid "hash value = %x"
 msgstr "hashvärde = %x"
 
-#: tools/gdbmshell.c:1390
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1427
+#, c-format
 msgid "unrecognized parameter: %s\n"
-msgstr "okänt argument: %s"
+msgstr "okänd parameter: %s\n"
 
-#: tools/gdbmshell.c:1397
-#, fuzzy
+#: tools/gdbmshell.c:1434
 msgid "select bucket first\n"
-msgstr "välj dumpformat"
+msgstr "välj hink först\n"
 
-#: tools/gdbmshell.c:1448
+#: tools/gdbmshell.c:1485
 #, c-format
 msgid "error reading entry %d"
-msgstr ""
+msgstr "fel vid läsning av post %d"
 
-#: tools/gdbmshell.c:1457 tools/gdbmshell.c:1495
-#, fuzzy
+#: tools/gdbmshell.c:1494 tools/gdbmshell.c:1532
 msgid "the key was:"
-msgstr "%s; nyckeln var:"
+msgstr "nyckeln var:"
 
-#: tools/gdbmshell.c:1570
-#, fuzzy
+#: tools/gdbmshell.c:1608
 msgid "error dumping database"
-msgstr "fel vid dumpande av databas: %s"
+msgstr "fel vid dumpning av databas"
 
-#: tools/gdbmshell.c:1628
-#, fuzzy
+#: tools/gdbmshell.c:1667
 msgid "error restoring metadata"
-msgstr "fel vid återställande av metadata: %s (%s)"
+msgstr "fel vid återställning av metadata"
 
-#: tools/gdbmshell.c:1661
+#: tools/gdbmshell.c:1700
 #, c-format
 msgid "Database file: %s\n"
 msgstr "Databasfil: %s\n"
 
-#: tools/gdbmshell.c:1663
+#: tools/gdbmshell.c:1702
 msgid "Database is open"
 msgstr "Databas är öppen"
 
-#: tools/gdbmshell.c:1665
+#: tools/gdbmshell.c:1704
 msgid "Database is not open"
 msgstr "Databas är inte öppen"
 
-#: tools/gdbmshell.c:1720
+#: tools/gdbmshell.c:1759
 #, c-format
 msgid "unknown debug flag: %s"
 msgstr "okänd felsökningsflagga: %s"
 
-#: tools/gdbmshell.c:1723
+#: tools/gdbmshell.c:1762
 #, c-format
 msgid "invalid type of argument %d"
 msgstr "ogiltig argumenttyp %d"
 
-#: tools/gdbmshell.c:1728
+#: tools/gdbmshell.c:1767
 #, c-format
 msgid "Debug flags:"
 msgstr "Felsökningsflaggor:"
 
-#: tools/gdbmshell.c:1734
+#: tools/gdbmshell.c:1773
 msgid "none"
 msgstr "ingen"
 
-#: tools/gdbmshell.c:1738
+#: tools/gdbmshell.c:1777
 msgid "compiled without debug support"
 msgstr "kompilerat utan stöd för felsökning"
 
-#: tools/gdbmshell.c:1789
+#: tools/gdbmshell.c:1828
 #, c-format
 msgid "command failed with status %d"
-msgstr ""
+msgstr "kommando misslyckades med status %d"
 
-#: tools/gdbmshell.c:1792
+#: tools/gdbmshell.c:1831
 #, c-format
 msgid "command terminated on signal %d"
-msgstr ""
+msgstr "kommando avslutades med signal %d"
 
 #. TRANSLATORS: %s is the stream name
-#: tools/gdbmshell.c:1862
+#: tools/gdbmshell.c:1901
 #, c-format
 msgid "input history is not available for %s input stream"
-msgstr ""
+msgstr "inmatningshistorik är inte tillgänglig för %s inmatningssystem"
 
-#: tools/gdbmshell.c:1954
+#: tools/gdbmshell.c:1994
 msgid "count (number of entries)"
 msgstr "antal (antalet poster)"
 
-#: tools/gdbmshell.c:1964 tools/gdbmshell.c:1992 tools/gdbmshell.c:2045
-#: tools/gdbmshell.c:2154
+#: tools/gdbmshell.c:2004 tools/gdbmshell.c:2032 tools/gdbmshell.c:2085
+#: tools/gdbmshell.c:2194
 msgid "KEY"
 msgstr "NYCKEL"
 
-#: tools/gdbmshell.c:1967
+#: tools/gdbmshell.c:2007
 msgid "delete a record"
 msgstr "ta bort en post"
 
-#: tools/gdbmshell.c:1977 tools/gdbmshell.c:2005 tools/gdbmtool.c:93
+#: tools/gdbmshell.c:2017 tools/gdbmshell.c:2045 tools/gdbmtool.c:93
 msgid "FILE"
 msgstr "FIL"
 
-#: tools/gdbmshell.c:1982
+#: tools/gdbmshell.c:2022
 msgid "export"
 msgstr "exportera"
 
-#: tools/gdbmshell.c:1995
+#: tools/gdbmshell.c:2035
 msgid "fetch record"
 msgstr "hämta post"
 
-#: tools/gdbmshell.c:2010
+#: tools/gdbmshell.c:2050
 msgid "import"
 msgstr "importera"
 
-#: tools/gdbmshell.c:2022
+#: tools/gdbmshell.c:2062
 msgid "list"
 msgstr "lista"
 
-#: tools/gdbmshell.c:2032
+#: tools/gdbmshell.c:2072
 msgid "[KEY]"
 msgstr "[NYCKEL]"
 
-#: tools/gdbmshell.c:2035
+#: tools/gdbmshell.c:2075
 msgid "continue iteration: get next key and datum"
 msgstr "fortsätt iteration: få nästa nyckel och data"
 
-#: tools/gdbmshell.c:2046
+#: tools/gdbmshell.c:2086
 msgid "DATA"
 msgstr "DATA"
 
-#: tools/gdbmshell.c:2049
+#: tools/gdbmshell.c:2089
 msgid "store"
 msgstr "lagra"
 
-#: tools/gdbmshell.c:2058
+#: tools/gdbmshell.c:2098
 msgid "begin iteration: get first key and datum"
 msgstr "börja iteration: få första nyckel och data"
 
-#: tools/gdbmshell.c:2067
+#: tools/gdbmshell.c:2107
 msgid "reorganize"
 msgstr "omorganisera"
 
-#: tools/gdbmshell.c:2086
+#: tools/gdbmshell.c:2126
 msgid "recover the database"
 msgstr "återställ databasen"
 
-#: tools/gdbmshell.c:2095
+#: tools/gdbmshell.c:2135
 msgid "print avail list"
 msgstr "skriv ut lista över tillgängliga"
 
-#: tools/gdbmshell.c:2105
-#, fuzzy
+#: tools/gdbmshell.c:2145
 msgid "[NUMBER]"
-msgstr "TAL"
+msgstr "[TAL]"
 
-#: tools/gdbmshell.c:2108
+#: tools/gdbmshell.c:2148
 msgid "print a bucket"
 msgstr "skriv ut en hink"
 
-#: tools/gdbmshell.c:2117
+#: tools/gdbmshell.c:2157
 msgid "print current bucket"
 msgstr "skriv ut aktuell hink"
 
-#: tools/gdbmshell.c:2126
-#, fuzzy
+#: tools/gdbmshell.c:2166
 msgid "print sibling bucket"
-msgstr "skriv ut en hink"
+msgstr "skriv ut en syskonhink"
 
-#: tools/gdbmshell.c:2135
+#: tools/gdbmshell.c:2175
 msgid "print hash directory"
 msgstr "skriv ut hashkatalog"
 
-#: tools/gdbmshell.c:2144
+#: tools/gdbmshell.c:2184
 msgid "print database file header"
 msgstr "skriv ut filhuvud för databas"
 
-#: tools/gdbmshell.c:2157
+#: tools/gdbmshell.c:2197
 msgid "hash value of key"
 msgstr "hashvärde för nyckel"
 
-#: tools/gdbmshell.c:2165
+#: tools/gdbmshell.c:2205
 msgid "print the bucket cache"
 msgstr "skriv ut hinkcachen"
 
-#: tools/gdbmshell.c:2174
+#: tools/gdbmshell.c:2214
 msgid "print current program status"
 msgstr "skriv ut aktuell programstatus"
 
-#: tools/gdbmshell.c:2182
-msgid "Synchronize the database with disk copy"
-msgstr ""
-
-#: tools/gdbmshell.c:2191
-msgid "Upgrade the database to extended format"
-msgstr ""
-
-#: tools/gdbmshell.c:2200
-msgid "Downgrade the database to standard format"
-msgstr ""
-
-#: tools/gdbmshell.c:2214
-msgid "analyze two database snapshots"
-msgstr ""
-
 #: tools/gdbmshell.c:2222
+msgid "Synchronize the database with disk copy"
+msgstr "Synkronisera databasen med diskkopian"
+
+#: tools/gdbmshell.c:2231
+msgid "Upgrade the database to extended format"
+msgstr "Uppgradera databasen till utökat format"
+
+#: tools/gdbmshell.c:2240
+msgid "Downgrade the database to standard format"
+msgstr "Nedgradera databasen till standardformat"
+
+#: tools/gdbmshell.c:2254
+msgid "analyze two database snapshots"
+msgstr "analysera två databasögonblicksbilder"
+
+#: tools/gdbmshell.c:2262
 msgid "print version of gdbm"
 msgstr "skriv ut version av gdbm"
 
-#: tools/gdbmshell.c:2230
+#: tools/gdbmshell.c:2270
 msgid "print this help list"
 msgstr "skriv ut denna hjälplista"
 
-#: tools/gdbmshell.c:2239
+#: tools/gdbmshell.c:2279
 msgid "quit the program"
 msgstr "avsluta programmet"
 
-#: tools/gdbmshell.c:2251
+#: tools/gdbmshell.c:2291
 msgid "set or list variables"
 msgstr "ställ in eller lista variabler"
 
-#: tools/gdbmshell.c:2262
+#: tools/gdbmshell.c:2302
 msgid "unset variables"
 msgstr "töm variabler"
 
-#: tools/gdbmshell.c:2274
+#: tools/gdbmshell.c:2314
 msgid "define datum structure"
 msgstr "definiera struktur för data"
 
 # https://en.wikipedia.org/wiki/Source_(command)
-#: tools/gdbmshell.c:2285
+#: tools/gdbmshell.c:2325
 msgid "source command script"
 msgstr "kör ”source” på kommandoskript"
 
-#: tools/gdbmshell.c:2293
+#: tools/gdbmshell.c:2333
 msgid "close the database"
 msgstr "stäng databasen"
 
-#: tools/gdbmshell.c:2305
+#: tools/gdbmshell.c:2345
 msgid "open new database"
 msgstr "öppna ny databas"
 
-#: tools/gdbmshell.c:2314
+#: tools/gdbmshell.c:2354
 msgid "[FROM]"
 msgstr "[FRÅN]"
 
-#: tools/gdbmshell.c:2315
+#: tools/gdbmshell.c:2355
 msgid "[COUNT]"
 msgstr "[ANTAL]"
 
-#: tools/gdbmshell.c:2318
+#: tools/gdbmshell.c:2358
 msgid "show input history"
 msgstr "visa indatahistorik"
 
-#: tools/gdbmshell.c:2327
+#: tools/gdbmshell.c:2367
 msgid "query/set debug level"
 msgstr "efterfråga/ställ in felsökningsnivå"
 
-#: tools/gdbmshell.c:2335
-#, fuzzy
+#: tools/gdbmshell.c:2386
 msgid "invoke the shell"
-msgstr "visa denna hjälplista"
+msgstr "starta skalet"
 
-#: tools/gdbmshell.c:2347
+#: tools/gdbmshell.c:2398
 msgid "describe GDBM error code"
-msgstr ""
+msgstr "beskriv GDBM-felkod"
 
-#: tools/gdbmshell.c:2492
+#: tools/gdbmshell.c:2547
 msgid "Invalid command. Try ? for help."
 msgstr "Ogiltigt kommando. Försök med ? för hjälp."
 
-#: tools/gdbmshell.c:2493
+#: tools/gdbmshell.c:2548
 msgid "Unknown command"
 msgstr "Okänt kommando"
 
-#: tools/gdbmshell.c:2808
+#: tools/gdbmshell.c:2863
 #, c-format
 msgid "cannot coerce %s to %s"
 msgstr "det går inte att tvinga %s till %s"
 
-#: tools/gdbmshell.c:2957
+#: tools/gdbmshell.c:3044
 #, c-format
 msgid "%s: not enough arguments"
 msgstr "%s: för få argument"
 
-#: tools/gdbmshell.c:2964
+#: tools/gdbmshell.c:3052
 msgid "unexpected eof"
 msgstr "oväntat filslut"
 
-#: tools/gdbmshell.c:2980
+#: tools/gdbmshell.c:3068
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: för många argument"
 
-#: tools/gdbmshell.c:3041
+#: tools/gdbmshell.c:3129
 #, c-format
 msgid "cannot run pager `%s': %s"
 msgstr "det går inte att köra sidvisaren ”%s”: %s"
 
-#: tools/gdbmshell.c:3146
+#: tools/gdbmshell.c:3234
 #, c-format
 msgid ""
 "\n"
@@ -1183,24 +1188,23 @@ msgstr "skriv inte ut inledande banderoll"
 #. TRANSLATORS: File Descriptor.
 #: tools/gdbmtool.c:104
 msgid "FD"
-msgstr ""
+msgstr "FD"
 
 #: tools/gdbmtool.c:105
 msgid "open database at the given file descriptor"
-msgstr ""
+msgstr "öppna databas vid given fildeskriptor"
 
 #: tools/gdbmtool.c:106
 msgid "extended format (numsync)"
-msgstr ""
+msgstr "utökat format (numsync)"
 
 #: tools/gdbmtool.c:108
-#, fuzzy
 msgid "enable trace mode"
-msgstr "aktivera grammatikspårning"
+msgstr "aktivera spårningsläge"
 
 #: tools/gdbmtool.c:109
 msgid "print timing after each command"
-msgstr ""
+msgstr "skriv ut tid efter varje kommando"
 
 #: tools/gdbmtool.c:111
 msgid "enable lexical analyzer traces"
@@ -1211,70 +1215,69 @@ msgid "enable grammar traces"
 msgstr "aktivera grammatikspårning"
 
 #: tools/gdbmtool.c:149
-#, fuzzy, c-format
+#, c-format
 msgid "invalid file descriptor: %s"
-msgstr "ogiltigt användarnamn: %s"
+msgstr "ogiltig fildeskriptor: %s"
 
 #: tools/gdbmtool.c:226
-#, fuzzy, c-format
+#, c-format
 msgid "unknown option %s; try `%s -h' for more info"
-msgstr "okänd flagga, försök med ”%s -h” för mer info"
+msgstr "okänd flagga %s, försök med ”%s -h” för mer info"
 
 #: tools/gdbmtool.c:229
-#, fuzzy, c-format
+#, c-format
 msgid "unknown option %c; try `%s -h' for more info"
-msgstr "okänd flagga, försök med ”%s -h” för mer info"
+msgstr "okänd flagga %c, försök med ”%s -h” för mer info"
 
 #: tools/gdbmtool.c:253
 msgid "--file and command cannot be used together"
 msgstr "--file och kommando kan inte användas tillsammans"
 
-#: tools/gram.y:172
+#: tools/gram.y:179
 #, c-format
 msgid "duplicate tag: %s"
 msgstr "duplicera tagg: %s"
 
-#: tools/gram.y:253
+#: tools/gram.y:261
 #, c-format
 msgid "expected \"key\" or \"content\", but found \"%s\""
 msgstr "förväntade ”key” eller ”content”, men hittade ”%s”"
 
-#: tools/gram.y:325 tools/gram.y:354 tools/gram.y:386
+#: tools/gram.y:333 tools/gram.y:362 tools/gram.y:394
 #, c-format
 msgid "no such variable: %s"
 msgstr "ingen sådan variabel: %s"
 
-#: tools/gram.y:329
+#: tools/gram.y:337
 #, c-format
 msgid "%s is not a boolean variable"
 msgstr "%s är inte en boolesk variabel"
 
-#: tools/gram.y:333
-#, fuzzy, c-format
+#: tools/gram.y:341
+#, c-format
 msgid "%s: setting is not allowed"
-msgstr "%s: värdet %s är inte tillåtet"
+msgstr "%s: inställningen är inte tillåten"
 
-#: tools/gram.y:337
-#, fuzzy
+#: tools/gram.y:345
 msgid "can't set variable"
-msgstr "töm variabler"
+msgstr "kan inte ställa in variabel"
 
-#: tools/gram.y:341 tools/gram.y:366
+#: tools/gram.y:349 tools/gram.y:374
 #, c-format
 msgid "unexpected error setting %s: %d"
 msgstr "oväntat fel då %s skulle ställas in: %d"
 
-#: tools/gram.y:358
+#: tools/gram.y:366
 #, c-format
 msgid "%s: bad variable type"
 msgstr "%s: felaktig variabeltyp"
 
-#: tools/gram.y:362
+#: tools/gram.y:370
 #, c-format
 msgid "%s: value %s is not allowed"
 msgstr "%s: värdet %s är inte tillåtet"
 
-#: tools/gram.y:390
+#: tools/gram.y:398
 #, c-format
 msgid "%s: variable cannot be unset"
 msgstr "%s: variabel kan inte tömmas"
@@ -1294,16 +1297,16 @@ msgstr "%s är inte en vanlig fil"
 msgid "cannot open %s for reading: %s"
 msgstr "det går inte att öppna %s för läsning: %s"
 
-#: tools/lex.l:144
+#: tools/lex.l:146
 msgid "recursive sourcing"
 msgstr "rekursiv inläsning med ”source”"
 
-#: tools/lex.l:146
+#: tools/lex.l:148
 #, c-format
 msgid "%s already sourced here"
 msgstr "%s redan inläst med ”source” här"
 
-#: tools/lex.l:257 tools/lex.l:267
+#: tools/lex.l:259 tools/lex.l:269
 msgid "invalid #line statement"
 msgstr "ogiltig #line-sats"
 
@@ -1322,37 +1325,37 @@ msgstr "visa ett kort användningsmeddelande"
 #: tools/parseopt.c:289
 #, c-format
 msgid "error in ARGP_HELP_FMT: improper usage of [no-]%s\n"
-msgstr ""
+msgstr "fel i ARGP_HELP_FMT: felaktig användning av [no-]%s\n"
 
 #: tools/parseopt.c:307
 #, c-format
 msgid "error in ARGP_HELP_FMT: bad value for %s"
-msgstr ""
+msgstr "fel i ARGP_HELP_FMT: felaktigt värde för %s"
 
 #: tools/parseopt.c:311
 #, c-format
 msgid " (near %s)"
-msgstr ""
+msgstr " (nära %s)"
 
 #: tools/parseopt.c:320
 #, c-format
 msgid "error in ARGP_HELP_FMT: %s value is out of range\n"
-msgstr ""
+msgstr "fel i ARGP_HELP_FMT: %s värde är utanför intervall\n"
 
 #: tools/parseopt.c:331
 #, c-format
 msgid "%s: ARGP_HELP_FMT parameter requires a value\n"
-msgstr ""
+msgstr "%s: ARGP_HELP_FMT-parameter kräver ett värde\n"
 
 #: tools/parseopt.c:340
 #, c-format
 msgid "%s: Unknown ARGP_HELP_FMT parameter\n"
-msgstr ""
+msgstr "%s: Okänd ARGP_HELP_FMT-parameter\n"
 
 #: tools/parseopt.c:367
 #, c-format
 msgid "ARGP_HELP_FMT: missing delimiter near %s\n"
-msgstr ""
+msgstr "ARGP_HELP_FMT: saknar avskiljare nära %s\n"
 
 #: tools/parseopt.c:487 tools/parseopt.c:565
 msgid "Usage:"
@@ -1399,9 +1402,9 @@ msgid "Please, reply 'y' or 'n'"
 msgstr "Ange ”y” för ja eller ”n” för nej"
 
 #: tools/var.c:792
-#, fuzzy, c-format
+#, c-format
 msgid "unrecognized error code: %s"
-msgstr "okänt argument: %s"
+msgstr "okänd felkod: %s"
 
 #~ msgid "Illegal data"
 #~ msgstr "Otillåtna data"

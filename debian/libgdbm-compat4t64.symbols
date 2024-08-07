@@ -1,4 +1,4 @@
-libgdbm_compat.so.4 libgdbm-compat4 #MINVER#
+libgdbm_compat.so.4 libgdbm-compat4t64 #MINVER#
 * Build-Depends-Package: libgdbm-dev
  _gdbm_file@Base 1.16
  dbm_clearerr@Base 1.16
