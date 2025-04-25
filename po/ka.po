@@ -1,0 +1,1406 @@
+# Georgian translation for gdbm.
+# Copyright (C) 2023 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gdbm package.
+# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gdbm 1.23\n"
+"Report-Msgid-Bugs-To: bug-gdbm@gnu.org\n"
+"POT-Creation-Date: 2024-07-01 09:33+0300\n"
+"PO-Revision-Date: 2023-10-31 11:13+0100\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <(nothing)>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.1\n"
+
+#: src/bucket.c:399 src/bucket.c:685 src/falloc.c:211 src/falloc.c:337
+#: src/findkey.c:124 src/gdbmstore.c:168 src/update.c:36 src/update.c:76
+msgid "lseek error"
+msgstr "lseek -ის შეცდომა"
+
+#: src/bucket.c:534
+msgid "directory overflow"
+msgstr "საქაღალდის გადავსება"
+
+#: src/bucket.c:545 src/falloc.c:302 src/findkey.c:97 src/findkey.c:113
+msgid "malloc error"
+msgstr "malloc -ის შეცდომა"
+
+#: src/falloc.c:201
+msgid "malloc failed"
+msgstr "malloc -ის შეცდომა"
+
+#: src/gdbmerrno.c:102
+msgid "No error"
+msgstr "შეცდომის გარეშე"
+
+#: src/gdbmerrno.c:103
+msgid "Malloc error"
+msgstr "Malloc-ის შეცდომა"
+
+#: src/gdbmerrno.c:104
+msgid "Block size error"
+msgstr "ბლოკის ზომის შეცდომა"
+
+#: src/gdbmerrno.c:105
+msgid "File open error"
+msgstr "ფაილის გახსნის შეცდომა"
+
+#: src/gdbmerrno.c:106
+msgid "File write error"
+msgstr "ფაილის ჩაწერის შეცდომა"
+
+#: src/gdbmerrno.c:107
+msgid "File seek error"
+msgstr "ფაილის გადახვევის შეცდომა"
+
+#: src/gdbmerrno.c:108
+msgid "File read error"
+msgstr "ფაილის კითხვის შეცდომა"
+
+#: src/gdbmerrno.c:109
+msgid "Bad magic number"
+msgstr "არასწორი ჯადოსნური რიცხვი"
+
+#: src/gdbmerrno.c:110
+msgid "Empty database"
+msgstr "ცარიელი მონაცემთა ბაზა"
+
+#: src/gdbmerrno.c:111
+msgid "Can't be reader"
+msgstr "მკითხველი ვერ იქნება"
+
+#: src/gdbmerrno.c:112
+msgid "Can't be writer"
+msgstr "ჩამწერი ვერ იქნება"
+
+#: src/gdbmerrno.c:113
+msgid "Reader can't delete"
+msgstr "მკითხველს წაშლა არ შეუძლია"
+
+#: src/gdbmerrno.c:114
+msgid "Reader can't store"
+msgstr "მკითხველს დამახსოვრება არ შეუძლია"
+
+#: src/gdbmerrno.c:115
+msgid "Reader can't reorganize"
+msgstr "მკითხველს გადალაგება არ შეუძლია"
+
+#: src/gdbmerrno.c:116
+msgid "Should not happen: unused error code"
+msgstr "არ უნდა მოხდეს: გამოუყენებელი შეცდომის კოდი"
+
+#: src/gdbmerrno.c:117
+msgid "Item not found"
+msgstr "ჩანაწერი ვერ ვიპოვე"
+
+#: src/gdbmerrno.c:118
+msgid "Reorganize failed"
+msgstr "გადალაგებ ჩავარდა"
+
+#: src/gdbmerrno.c:119
+msgid "Cannot replace"
+msgstr "ჩანაცვლება შეუძლებელია"
+
+#: src/gdbmerrno.c:120
+msgid "Malformed data"
+msgstr "არასწორი მონაცემები"
+
+#: src/gdbmerrno.c:121
+msgid "Option already set"
+msgstr "პარამეტრი უკვე დაყენებულია"
+
+#: src/gdbmerrno.c:122
+msgid "Bad option value"
+msgstr "არასწორი პარამეტრის მნიშვნელობა"
+
+#: src/gdbmerrno.c:123
+msgid "Byte-swapped file"
+msgstr "ბაიტ-შეცვილი ფაილი"
+
+#: src/gdbmerrno.c:124
+msgid "File header assumes wrong off_t size"
+msgstr "ფაილის თავსართს არასწორი off_t-ის ზომა ჰგონია"
+
+#: src/gdbmerrno.c:125
+msgid "Bad file flags"
+msgstr "არასწორი ფაილის ალმები"
+
+#: src/gdbmerrno.c:126
+msgid "Cannot stat file"
+msgstr "ფაილის აღმოჩენის შეცდომა"
+
+#: src/gdbmerrno.c:127
+msgid "Unexpected end of file"
+msgstr "ფაილის მოულოდნელი ბოლო"
+
+#: src/gdbmerrno.c:128
+msgid "Database name not given"
+msgstr "ბაზის ფაილის სახელი მითითებული არაა"
+
+#: src/gdbmerrno.c:129
+msgid "Failed to restore file owner"
+msgstr "ფაილის მფლობლის აღდგენა ჩავარდა"
+
+#: src/gdbmerrno.c:130
+msgid "Failed to restore file mode"
+msgstr "ფაილის რეჟიმის აღდენა ჩავარდა"
+
+#: src/gdbmerrno.c:131
+msgid "Database needs recovery"
+msgstr "ბაზას აღდგენა სჭირდება"
+
+#: src/gdbmerrno.c:132
+msgid "Failed to create backup copy"
+msgstr "მარქაფის ასლის შექმნის შეცდომა"
+
+#: src/gdbmerrno.c:133
+msgid "Bucket directory overflow"
+msgstr "ბაკეტის საქაღალდის გადავსება"
+
+#: src/gdbmerrno.c:134
+msgid "Malformed bucket header"
+msgstr "ჩამოუყალიბებელი ბაკეტის თავსართი"
+
+#: src/gdbmerrno.c:135
+msgid "Malformed database file header"
+msgstr "ჩამოუყალიბებელი ბაზის ფაილის თავსართი"
+
+#. TRANSLATORS: avail_block is a field name. Don't translate it.
+#: src/gdbmerrno.c:137
+msgid "Malformed avail_block"
+msgstr "ჩამოუყალიბებელი avail_block"
+
+#: src/gdbmerrno.c:138
+msgid "Malformed hash table"
+msgstr "ჩამოუყალიბებელი ჰეშის ცხრილი"
+
+#: src/gdbmerrno.c:139
+msgid "Invalid directory entry"
+msgstr "არასწორი საქაღალდის ელემენტი"
+
+#: src/gdbmerrno.c:140
+msgid "Error closing file"
+msgstr "ფაილის დახურვის შეცდომა"
+
+#: src/gdbmerrno.c:141
+msgid "Error synchronizing file"
+msgstr "ფაილის სინქრონიზაციის შეცდომა"
+
+#: src/gdbmerrno.c:142
+msgid "Error truncating file"
+msgstr "ფაილის წაკვეთის შეცდომა"
+
+#: src/gdbmerrno.c:143
+msgid "Bucket cache corrupted"
+msgstr "ბაკეტის კეში დაზიანებულია"
+
+#: src/gdbmerrno.c:144
+msgid "Malformed bucket hash entry"
+msgstr "ჩამოუყალიბებელი ბაკეტის ჰეშის ელემენტი"
+
+#: src/gdbmerrno.c:145
+msgid "Reflink failed"
+msgstr "ასახვის ბმული ჩავარდა"
+
+#: src/gdbmerrno.c:146
+msgid "Failed to resolve real path name"
+msgstr "რეალური ბილიკის სახელის ამოხსნა ჩავარდა"
+
+#: src/gdbmerrno.c:147
+msgid "Function usage error"
+msgstr "ფუნქციის გამოყენების შეცდომა"
+
+#: src/recover.c:272
+#, c-format
+msgid "can't read bucket #%d: %s"
+msgstr "ვერ წავიკითხე ბაკეტი #%d: %s"
+
+#: src/recover.c:300
+#, c-format
+msgid "can't read key pair %d:%d (%lu:%d): %s"
+msgstr "ვერ წავიკითხე გასაღებების წყვილი %d:%d (%lu:%d): %s"
+
+#: src/recover.c:330
+#, c-format
+msgid "ignoring duplicate key %d:%d (%lu:%d)"
+msgstr "გამოტოვებულია დუბლირებული გასაღები %d:%d (%lu:%d)"
+
+#: src/recover.c:340
+#, c-format
+msgid "fatal: can't store element %d:%d (%lu:%d): %s"
+msgstr "ფატალური შეცდომა: ვერ დავიმახსოვრე ელემენტი %d:%d (%lu:%d): %s"
+
+#: tools/datconv.c:291
+#, c-format
+msgid "(not enough data)"
+msgstr "(არასაკმარისი მონაცემები)"
+
+#: tools/datconv.c:383
+msgid "cannot convert"
+msgstr "გადაყვანა შეუძლებელია"
+
+#: tools/datconv.c:392
+#, c-format
+msgid "cannot convert value #%d: %s"
+msgstr "ვერ გადავიყვანე მნიშვნელობა #%d: %s"
+
+#: tools/datconv.c:418 tools/datconv.c:467
+msgid "mixing tagged and untagged values is not allowed"
+msgstr "ჭდის მქონე და გარეშე მნიშვნელობების შერევა დაშვებული არაა"
+
+#: tools/datconv.c:472
+#, c-format
+msgid "%s: no such field in datum"
+msgstr "%s: მონაცემებში ასეთი ველი არაა"
+
+#: tools/gdbm_dump.c:22
+msgid "dump a GDBM database to a file"
+msgstr "'GDBM' ბაზის ფაილში გატანა"
+
+#: tools/gdbm_dump.c:23
+msgid "DB_FILE [FILE]"
+msgstr "მბ_ფაილი [ფაილი]"
+
+#: tools/gdbm_dump.c:25
+msgid "select dump format"
+msgstr "აირჩიეთ გატანის ფორმატი"
+
+#: tools/gdbm_dump.c:67 tools/gdbm_dump.c:79
+msgid "unknown dump format"
+msgstr "უცნობი გატანის ფორმატი"
+
+#: tools/gdbm_dump.c:86 tools/gdbm_load.c:225
+msgid "unknown option"
+msgstr "უცნობი პარამეტრი"
+
+#: tools/gdbm_dump.c:102 tools/gdbm_load.c:241
+#, c-format
+msgid "too many arguments; try `%s -h' for more info"
+msgstr "მეტისმეტად ბევრი არგუმენტი. სცადეთ `%s -h' მეტი ინფორმაციითვის"
+
+#: tools/gdbm_dump.c:122 tools/gdbm_load.c:267
+#, c-format
+msgid "cannot open %s"
+msgstr "%s გახსნა ვერ მოხერხდა"
+
+#: tools/gdbm_dump.c:130 tools/gdbm_load.c:277
+msgid "gdbm_open failed"
+msgstr "gdbm_open ჩავარდა"
+
+#: tools/gdbm_dump.c:137
+#, fuzzy, c-format
+#| msgid "dump error"
+msgid "%s: dump error"
+msgstr "გატანის შეცდომა"
+
+#: tools/gdbm_load.c:32
+msgid "load a GDBM database from a file"
+msgstr "'GDBM' ბაზის ფაილიდან ჩატვირთვა"
+
+#: tools/gdbm_load.c:33
+msgid "FILE [DB_FILE]"
+msgstr "ფაილი [მბ_ფაილი]"
+
+#: tools/gdbm_load.c:35
+#, fuzzy
+#| msgid "replace records in the existing database"
+msgid "replace records in the existing database (needs -U)"
+msgstr "ჩანაწერების ჩანაცვლება არსებულ ბაზაში"
+
+#: tools/gdbm_load.c:36
+msgid "MODE"
+msgstr "რეჟიმი"
+
+#: tools/gdbm_load.c:36
+msgid "set file mode"
+msgstr "ფაილის რეჟიმის დაყენება"
+
+#: tools/gdbm_load.c:37
+#, fuzzy
+#| msgid "replace records in the existing database"
+msgid "update the existing database"
+msgstr "ჩანაწერების ჩანაცვლება არსებულ ბაზაში"
+
+#: tools/gdbm_load.c:38
+msgid "NAME|UID[:NAME|GID]"
+msgstr "სახელი|UID[:სახელი|GID]"
+
+#: tools/gdbm_load.c:38
+msgid "set file owner"
+msgstr "ფაილის მფლობლის დაყენება"
+
+#: tools/gdbm_load.c:39
+msgid "do not attempt to set file meta-data"
+msgstr "ფაილის მეტამონაცემები არ დადგება"
+
+#: tools/gdbm_load.c:40
+msgid "use memory mapping"
+msgstr "მეხსიერების ასახვის გამოყენება"
+
+#: tools/gdbm_load.c:41 tools/gdbm_load.c:42
+msgid "NUM"
+msgstr "რიცხვი"
+
+#: tools/gdbm_load.c:41
+msgid "set the cache size"
+msgstr "კეშის ზომის დაყენება"
+
+#: tools/gdbm_load.c:42
+msgid "set the block size"
+msgstr "ბლოკის ზომის დაყენება"
+
+#: tools/gdbm_load.c:80
+#, c-format
+msgid "invalid number: %s"
+msgstr "არასწორი რიცხვი: %s"
+
+#: tools/gdbm_load.c:85
+#, c-format
+msgid "invalid number: %s: %s"
+msgstr "არასწორი რიცხვი: %s: %s"
+
+#: tools/gdbm_load.c:137
+#, c-format
+msgid "invalid octal number"
+msgstr "არასწორი რვაობითი რიცხვი"
+
+#: tools/gdbm_load.c:167
+#, c-format
+msgid "invalid user name: %s"
+msgstr "არასწორი მომხმარებლის სახელი: %s"
+
+#: tools/gdbm_load.c:186
+#, c-format
+msgid "invalid group name: %s"
+msgstr "არასწორი ჯგუფის სახელი: %s"
+
+#: tools/gdbm_load.c:198
+#, c-format
+msgid "no such UID: %lu"
+msgstr "ასეთი UID არ არსებობს: %lu"
+
+#: tools/gdbm_load.c:247
+msgid "-r is useless without -U"
+msgstr ""
+
+#: tools/gdbm_load.c:283
+#, c-format
+msgid "gdbm_setopt failed: %s"
+msgstr "gdbm_setopt ჩავარდა: %s"
+
+#: tools/gdbm_load.c:297 tools/gdbm_load.c:315
+#, c-format
+msgid "error restoring metadata: %s (%s)"
+msgstr "მეტამონაცემების აღდგენის შეცდომა: %s (%s)"
+
+#: tools/gdbm_load.c:306 tools/gdbmshell.c:1674
+#, c-format
+msgid "cannot load from %s"
+msgstr "%s-დან ჩატვირთვა შეუძლებელია"
+
+#: tools/gdbm_load.c:323
+msgid "gdbm_setopt failed"
+msgstr "gdbm_setopt ჩავარდა"
+
+#: tools/gdbmshell.c:64 tools/gdbmshell.c:157 tools/gdbmshell.c:361
+#: tools/gdbmshell.c:497 tools/gdbmshell.c:905 tools/gdbmshell.c:942
+#: tools/gdbmshell.c:951
+#, c-format
+msgid "%s failed"
+msgstr "%s -ის შეცდომა"
+
+#: tools/gdbmshell.c:120
+#, c-format
+msgid "database %s already exists; overwrite"
+msgstr "ბაზა %s უკვე არსებბს. გადავაწერე"
+
+#: tools/gdbmshell.c:151
+#, c-format
+msgid "cannot open database %s"
+msgstr "ბაზა %s ვერ გავხსენი"
+
+#: tools/gdbmshell.c:252
+#, c-format
+msgid "Bucket #%d"
+msgstr "ბაკეტი #%d"
+
+#: tools/gdbmshell.c:255
+#, c-format
+msgid ""
+"address     = %lu\n"
+"depth       = %d\n"
+"hash prefix = %08x\n"
+"references  = %u"
+msgstr ""
+"მისამართი     = %lu\n"
+"სიღრმე       = %d\n"
+"ჰეშის პრეფიქსი = %08x\n"
+"მიმართვები  = %u"
+
+#: tools/gdbmshell.c:270
+#, c-format
+msgid ""
+"count       = %d\n"
+"load factor = %3d\n"
+msgstr ""
+"რაოდენობა       = %d\n"
+"ჩატვირთვის ფაქტორი = %3d\n"
+
+#: tools/gdbmshell.c:275
+msgid "Hash Table:\n"
+msgstr "ჰეშის ცხრილი:\n"
+
+#: tools/gdbmshell.c:277
+#, c-format
+msgid ""
+"    #    hash value     key size    data size     data adr home  key start\n"
+msgstr ""
+"    #    ჰეშის_მნიშ     გასაღ. ზომა    მონაც. ზომა     მისაც. მისამ. საწყ  "
+"გასაღების დაწყ\n"
+
+#: tools/gdbmshell.c:295
+#, c-format
+msgid ""
+"\n"
+"Avail count = %d\n"
+msgstr ""
+"\n"
+"ხელმისაწვდ. რაოდ = %d\n"
+
+#: tools/gdbmshell.c:296
+#, c-format
+msgid "Address           size\n"
+msgstr "მისამართი           ზომა\n"
+
+#: tools/gdbmshell.c:347
+msgid "header block"
+msgstr "თავსართის ბლოკი"
+
+#: tools/gdbmshell.c:349
+#, c-format
+msgid "block = %lu"
+msgstr "ბლოკი = %lu"
+
+#: tools/gdbmshell.c:350
+#, c-format
+msgid ""
+"\n"
+"size  = %d\n"
+"count = %d\n"
+msgstr ""
+"\n"
+"ზომა  = %d\n"
+"რაოდენობა = %d\n"
+
+#: tools/gdbmshell.c:374
+#, c-format
+msgid ""
+"Bucket Cache (size %zu/%zu):\n"
+"  Index:         Address  Changed  Data_Hash \n"
+msgstr ""
+"ბაკეტის კეში (ზომა %zu/%zu):\n"
+"  ინდექსი:         მისამართი  შეიცვალა  მონაც_ჰეში \n"
+
+#: tools/gdbmshell.c:381
+msgid "True"
+msgstr "ჭეშმარიტი"
+
+#: tools/gdbmshell.c:381
+msgid "False"
+msgstr "მცდარი"
+
+#: tools/gdbmshell.c:386
+#, c-format
+msgid "Bucket cache is empty.\n"
+msgstr "ბაკეტის ჰეში ცარიელია\n"
+
+#: tools/gdbmshell.c:463
+msgid "nothing to close"
+msgstr "დასახური არაფერია"
+
+#: tools/gdbmshell.c:506
+msgid "count buffer overflow"
+msgstr "რაოდენობის ბუფერის გადასვსება"
+
+#: tools/gdbmshell.c:509
+#, c-format
+msgid "There is %s item in the database.\n"
+msgid_plural "There are %s items in the database.\n"
+msgstr[0] "ბაზაში %s ელემენტია.\n"
+msgstr[1] "ბაზაში %s ელემენტია.\n"
+
+#: tools/gdbmshell.c:526 tools/gdbmshell.c:550 tools/gdbmshell.c:630
+msgid "No such item found"
+msgstr "ასეთი ელემენტი ვერ ვიპოვე"
+
+#: tools/gdbmshell.c:529
+msgid "Can't delete"
+msgstr "ვერ წავშალე"
+
+#: tools/gdbmshell.c:553
+msgid "Can't fetch data"
+msgstr "მონაცემები ვერ გამოვითხოვე"
+
+#: tools/gdbmshell.c:566
+msgid "Item not inserted"
+msgstr "ელემენტი ჩასმული არაა"
+
+#: tools/gdbmshell.c:594
+#, c-format
+msgid "No such item found.\n"
+msgstr "ასეთი ელემენტი ვერ ვიპოვე.\n"
+
+#: tools/gdbmshell.c:597
+msgid "Can't find first key"
+msgstr "პირველი გასაღები ვერ ვიპოვე"
+
+#: tools/gdbmshell.c:634
+msgid "Can't find next key"
+msgstr "შემდეგი გასაღები ვერ ვიპოვე"
+
+#: tools/gdbmshell.c:645
+msgid "Reorganization failed"
+msgstr "გადალაგება ჩავარდა"
+
+#: tools/gdbmshell.c:649
+msgid "Reorganization succeeded."
+msgstr "გადალაგება წარმატებულია."
+
+#: tools/gdbmshell.c:702 tools/gdbmshell.c:751 tools/gdbmshell.c:1599
+#: tools/gdbmshell.c:1635
+#, c-format
+msgid "unrecognized argument: %s"
+msgstr "უცნობი არგუმენტი: %s"
+
+#: tools/gdbmshell.c:710
+#, fuzzy, c-format
+#| msgid "%s: bad variable type"
+msgid "%s: bad argument type"
+msgstr "%s: არასწორი ცვლადის ტიპი"
+
+#: tools/gdbmshell.c:715
+msgid "unexpected compound statement"
+msgstr ""
+
+#: tools/gdbmshell.c:724 tools/gdbmshell.c:734 tools/gdbmshell.c:744
+#: tools/gdbmshell.c:856 tools/gdbmshell.c:865
+#, c-format
+msgid "not a number (stopped near %s)"
+msgstr "რიცხვი არაა (გავჩერდი %s-თან ახლოს)"
+
+#: tools/gdbmshell.c:757
+#, fuzzy
+#| msgid "unexpected eof"
+msgid "unexpected datum"
+msgstr "მოულოდნელი EOF"
+
+#: tools/gdbmshell.c:767
+#, c-format
+msgid "Recovery succeeded.\n"
+msgstr "აღდგენა წარმატებულია.\n"
+
+#: tools/gdbmshell.c:771
+#, c-format
+msgid "Keys recovered: %lu, failed: %lu, duplicate: %lu\n"
+msgstr "გასაღებები აღდგენილი: %lu, ჩავარდა: %lu, დუბლირებულია: %lu\n"
+
+#: tools/gdbmshell.c:776
+#, c-format
+msgid "Buckets recovered: %lu, failed: %lu\n"
+msgstr "ბაკეტები აღდგენილია: %lu, ჩავარდა: %lu\n"
+
+#: tools/gdbmshell.c:784
+#, c-format
+msgid "Original database preserved in file %s"
+msgstr "ორიგინალი ბაზა შენახულია ფაილში %s"
+
+#: tools/gdbmshell.c:792
+msgid "Recovery failed"
+msgstr "აღდგენა ჩავარდა"
+
+#: tools/gdbmshell.c:843 tools/gdbmshell.c:926
+#, c-format
+msgid "no current bucket\n"
+msgstr "მიმდინარე ბაკეტის გარეშე\n"
+
+#: tools/gdbmshell.c:893
+#, c-format
+msgid "bucket number out of range (0..%lu)"
+msgstr "ბაკეტის ნომერი დაშვებულ შუალედს გარეთაა (0..%lu)"
+
+#: tools/gdbmshell.c:936 tools/gdbmshell.c:948
+#, c-format
+msgid "no sibling\n"
+msgstr "დის გარეშე\n"
+
+#: tools/gdbmshell.c:996
+#, c-format
+msgid "Hash table directory.\n"
+msgstr "ჰეშ ცხრილის საქაღალდე.\n"
+
+#: tools/gdbmshell.c:997
+#, c-format
+msgid ""
+"  Size =  %d.  Capacity = %lu.  Bits = %d,  Buckets = %zu.\n"
+"\n"
+msgstr ""
+"  ზომა =  %d.  მოცულობა = %lu.  ბიტები = %d,  ბაკეტები = %zu.\n"
+"\n"
+
+#: tools/gdbmshell.c:1004
+msgid "Index"
+msgstr "ინდექსი"
+
+#: tools/gdbmshell.c:1004
+msgid "Hash Pfx"
+msgstr "ჰეშის პრეფიქსი"
+
+#: tools/gdbmshell.c:1004
+msgid "Bucket address"
+msgstr "ბაკეტის მისამართი"
+
+#: tools/gdbmshell.c:1072
+#, c-format
+msgid ""
+"\n"
+"File Header: \n"
+"\n"
+msgstr ""
+"\n"
+"ფაილის თავსართი: \n"
+"\n"
+
+#: tools/gdbmshell.c:1073
+#, c-format
+msgid "  type            = %s\n"
+msgstr "  ტიპი            = %s\n"
+
+#: tools/gdbmshell.c:1074
+#, c-format
+msgid "  directory start = %lu\n"
+msgstr "  საქაღალდე იწყება = %lu\n"
+
+#: tools/gdbmshell.c:1076
+#, c-format
+msgid "  directory size  = %d\n"
+msgstr "  საქაღალდის ზომა  = %d\n"
+
+#: tools/gdbmshell.c:1077
+#, c-format
+msgid "  directory depth = %d\n"
+msgstr "  საქაღალდის სიღრმე = %d\n"
+
+#: tools/gdbmshell.c:1078
+#, c-format
+msgid "  block size      = %d\n"
+msgstr "  ბლოკის ზომა      = %d\n"
+
+#: tools/gdbmshell.c:1079
+#, c-format
+msgid "  bucket elems    = %d\n"
+msgstr "  ბაკეტის ელემენტები    = %d\n"
+
+#: tools/gdbmshell.c:1080
+#, c-format
+msgid "  bucket size     = %d\n"
+msgstr "  ბაკეტის ზომა     = %d\n"
+
+#: tools/gdbmshell.c:1081
+#, c-format
+msgid "  header magic    = %x\n"
+msgstr "  თავსართის ჯადოსნური რიცხვი    = %x\n"
+
+#: tools/gdbmshell.c:1082
+#, c-format
+msgid "  next block      = %lu\n"
+msgstr "  შემდეგი ბლოკი      = %lu\n"
+
+#: tools/gdbmshell.c:1085
+#, c-format
+msgid "  avail size      = %d\n"
+msgstr "  ხელმისაწვ. ზომა      = %d\n"
+
+#: tools/gdbmshell.c:1086
+#, c-format
+msgid "  avail count     = %d\n"
+msgstr "  ხელმისაწვ. რაოდ.     = %d\n"
+
+#: tools/gdbmshell.c:1087
+#, c-format
+msgid "  avail next block= %lu\n"
+msgstr "  ხელმისაწვ. შემდ. ბლოკი= %lu\n"
+
+#: tools/gdbmshell.c:1092
+#, c-format
+msgid ""
+"\n"
+"Extended Header: \n"
+"\n"
+msgstr ""
+"\n"
+"გაფართოებული თავსართი: \n"
+"\n"
+
+#: tools/gdbmshell.c:1093
+#, c-format
+msgid "      version = %d\n"
+msgstr "      ვერსია = %d\n"
+
+#: tools/gdbmshell.c:1094
+#, c-format
+msgid "      numsync = %u\n"
+msgstr "      სინქრრაოდ = %u\n"
+
+#: tools/gdbmshell.c:1208
+msgid "bad file mode"
+msgstr "არასწორი ფაილის რეჟიმი"
+
+#: tools/gdbmshell.c:1218
+msgid "insufficient precision"
+msgstr "არასაკმარისი სიზუსტე"
+
+#. TRANSLATORS: Stands for "Not Available".
+#: tools/gdbmshell.c:1231
+msgid "N/A"
+msgstr "N/A"
+
+#: tools/gdbmshell.c:1239 tools/gdbmshell.c:1244
+msgid "can't open database"
+msgstr "მონაცემთა ბაზის გახსნა შეუძლებელია"
+
+#: tools/gdbmshell.c:1249
+msgid "not a regular file"
+msgstr "არ წარმოადგენს ჩვეულებრივ ფაილს"
+
+#: tools/gdbmshell.c:1254
+msgid "ERROR"
+msgstr "ERROR"
+
+#: tools/gdbmshell.c:1264
+#, c-format
+msgid "%s: ERROR: can't stat: %s"
+msgstr "%s: შეცდომა: ვერ აღმოვაჩინე: %s"
+
+#: tools/gdbmshell.c:1288
+msgid "Invalid arguments in call to gdbm_latest_snapshot"
+msgstr "არასწორი არგუმენტები gdbm_latest_snapshot-ის გამოძახებისას"
+
+#: tools/gdbmshell.c:1293
+msgid ""
+"Function is not implemented: GDBM is built without crash-tolerance support"
+msgstr "ფუნქცია განხორციელებული არაა: GDBM ავარიებისგან დაცვის გარეშეა აგებული"
+
+#: tools/gdbmshell.c:1301
+msgid "Selected the most recent snapshot"
+msgstr "ავირჩიეთ უახლესი სწრაფი ასლი"
+
+#: tools/gdbmshell.c:1305
+msgid "Neither snapshot is readable"
+msgstr "სწრაფი ასლები წაკითხვადი არაა"
+
+#: tools/gdbmshell.c:1310
+msgid "Error selecting snapshot"
+msgstr "სწრაფი ასლის მონიშვნის შეცდომა"
+
+#: tools/gdbmshell.c:1315
+msgid "Snapshot modes and dates are the same"
+msgstr "სწრაფი ასლის რეჟიმები და თარიღები ტოლია"
+
+#: tools/gdbmshell.c:1320
+msgid "Snapshot sync counters differ by more than 1"
+msgstr "სწრაფი ასლის სინქრონიზაციის რაოდენობები ერთზე მეტით განსხვავდება"
+
+#: tools/gdbmshell.c:1348
+#, c-format
+msgid "unexpected error code: %d"
+msgstr "მოულოდნელი შეცდომის კოდი: %d"
+
+#: tools/gdbmshell.c:1368
+#, c-format
+msgid "hash value = %x, bucket #%u, slot %u"
+msgstr "ჰეშის მნიშვნ. = %x, ბაკეტის #%u, slot %u"
+
+#: tools/gdbmshell.c:1374
+#, c-format
+msgid "hash value = %x"
+msgstr "ჰეშის მნიშვნ. = %x"
+
+#: tools/gdbmshell.c:1427
+#, c-format
+msgid "unrecognized parameter: %s\n"
+msgstr "უცნობი პარამეტრი: %s\n"
+
+#: tools/gdbmshell.c:1434
+msgid "select bucket first\n"
+msgstr "ჯერ ბაკეტი აირციეთ\n"
+
+#: tools/gdbmshell.c:1485
+#, c-format
+msgid "error reading entry %d"
+msgstr "შეცდომა %d-ე ელემენტის წაკითხვისას"
+
+#: tools/gdbmshell.c:1494 tools/gdbmshell.c:1532
+msgid "the key was:"
+msgstr "გასაღები იყო:"
+
+#: tools/gdbmshell.c:1608
+msgid "error dumping database"
+msgstr "ბაზის გატანის შეცდომა"
+
+#: tools/gdbmshell.c:1667
+msgid "error restoring metadata"
+msgstr "მეტამონაცემების აღდგენის შეცდომა"
+
+#: tools/gdbmshell.c:1700
+#, c-format
+msgid "Database file: %s\n"
+msgstr "ბაზის ფაილი: %s\n"
+
+#: tools/gdbmshell.c:1702
+msgid "Database is open"
+msgstr "ბაზა ღიაა"
+
+#: tools/gdbmshell.c:1704
+msgid "Database is not open"
+msgstr "ბაზა ღია არაა"
+
+#: tools/gdbmshell.c:1759
+#, c-format
+msgid "unknown debug flag: %s"
+msgstr "უცნობი გამართვის ალამი: %s"
+
+#: tools/gdbmshell.c:1762
+#, c-format
+msgid "invalid type of argument %d"
+msgstr "არასწორი ტიპი არგუმენტისთვის %d"
+
+#: tools/gdbmshell.c:1767
+#, c-format
+msgid "Debug flags:"
+msgstr "გამართვის ალმები:"
+
+#: tools/gdbmshell.c:1773
+msgid "none"
+msgstr "არაფერი"
+
+#: tools/gdbmshell.c:1777
+msgid "compiled without debug support"
+msgstr "აგებულია გამართვის მხარდაჭერის გარეშე"
+
+#: tools/gdbmshell.c:1828
+#, c-format
+msgid "command failed with status %d"
+msgstr "ბრძანება ჩავარდა სტატუსით %d"
+
+#: tools/gdbmshell.c:1831
+#, c-format
+msgid "command terminated on signal %d"
+msgstr "ბრძანება შეჩერდა სიგნალით %d"
+
+#. TRANSLATORS: %s is the stream name
+#: tools/gdbmshell.c:1901
+#, c-format
+msgid "input history is not available for %s input stream"
+msgstr "შეყვანის ისტორია ხელმიუწვდომელია შეყვანის ნაკადით %s"
+
+#: tools/gdbmshell.c:1994
+msgid "count (number of entries)"
+msgstr "რაოდენობა (ელემენტების რაოდენობა)"
+
+#: tools/gdbmshell.c:2004 tools/gdbmshell.c:2032 tools/gdbmshell.c:2085
+#: tools/gdbmshell.c:2194
+msgid "KEY"
+msgstr "ღილაკი"
+
+#: tools/gdbmshell.c:2007
+msgid "delete a record"
+msgstr "ჩანაწერის წაშლა"
+
+#: tools/gdbmshell.c:2017 tools/gdbmshell.c:2045 tools/gdbmtool.c:93
+msgid "FILE"
+msgstr "FILE"
+
+#: tools/gdbmshell.c:2022
+msgid "export"
+msgstr "გატანა"
+
+#: tools/gdbmshell.c:2035
+msgid "fetch record"
+msgstr "ჩანაწერის გამოთხოვა"
+
+#: tools/gdbmshell.c:2050
+msgid "import"
+msgstr "შემოტანა"
+
+#: tools/gdbmshell.c:2062
+msgid "list"
+msgstr "სა"
+
+#: tools/gdbmshell.c:2072
+msgid "[KEY]"
+msgstr "[გასაღები]"
+
+#: tools/gdbmshell.c:2075
+msgid "continue iteration: get next key and datum"
+msgstr "იტერაციის გაგრძელება: შემდეგი გასაღებისა და თარიღის მიღება"
+
+#: tools/gdbmshell.c:2086
+msgid "DATA"
+msgstr "მონაცემები"
+
+#: tools/gdbmshell.c:2089
+msgid "store"
+msgstr "დამახსოვრება"
+
+#: tools/gdbmshell.c:2098
+msgid "begin iteration: get first key and datum"
+msgstr "იტერაციის დაწყება: პირველი გასაღებისა და თარიღის მიღება"
+
+#: tools/gdbmshell.c:2107
+msgid "reorganize"
+msgstr "გადალაგება"
+
+#: tools/gdbmshell.c:2126
+msgid "recover the database"
+msgstr "ბაზის აღდგენა"
+
+#: tools/gdbmshell.c:2135
+msgid "print avail list"
+msgstr "ხელმისაწვდომი სიის გამოტანა"
+
+#: tools/gdbmshell.c:2145
+msgid "[NUMBER]"
+msgstr "[რიცხვი]"
+
+#: tools/gdbmshell.c:2148
+msgid "print a bucket"
+msgstr "ბაკეტის გამოტანა"
+
+#: tools/gdbmshell.c:2157
+msgid "print current bucket"
+msgstr "მიმდინარე ბაკეტის გამოტანა"
+
+#: tools/gdbmshell.c:2166
+msgid "print sibling bucket"
+msgstr "და ბაკეტის გამოტანა"
+
+#: tools/gdbmshell.c:2175
+msgid "print hash directory"
+msgstr "ჰეშის საქაღალდის გამოტანა"
+
+#: tools/gdbmshell.c:2184
+msgid "print database file header"
+msgstr "ბაზის ფაილის თავსართის გამოტანა"
+
+#: tools/gdbmshell.c:2197
+msgid "hash value of key"
+msgstr "გასაღების ჰეშის მნიშვნელობა"
+
+#: tools/gdbmshell.c:2205
+msgid "print the bucket cache"
+msgstr "ბაკეტის ჰეშის გამოტანა"
+
+#: tools/gdbmshell.c:2214
+msgid "print current program status"
+msgstr "მიმდინარე პროგრამის სტატუსის გამოტანა"
+
+#: tools/gdbmshell.c:2222
+msgid "Synchronize the database with disk copy"
+msgstr "ბაზის სინქრონიზაცია დისკის ასლთან"
+
+#: tools/gdbmshell.c:2231
+msgid "Upgrade the database to extended format"
+msgstr "ბაზის განახლება გაფართოებულ ფორმატამდე"
+
+#: tools/gdbmshell.c:2240
+msgid "Downgrade the database to standard format"
+msgstr "ბაზის ვერსიის ჩამოწევა სტანდარტულ ფორმატამდე"
+
+#: tools/gdbmshell.c:2254
+msgid "analyze two database snapshots"
+msgstr "ორი ბაზის სწრაფი ასლის ანალიზი"
+
+#: tools/gdbmshell.c:2262
+msgid "print version of gdbm"
+msgstr "gdbm-ის ვერსიის გამოტანა"
+
+#: tools/gdbmshell.c:2270
+msgid "print this help list"
+msgstr "ამ დახმარების სიის გამოტანა"
+
+#: tools/gdbmshell.c:2279
+msgid "quit the program"
+msgstr "პროგრამიდან გასვლა"
+
+#: tools/gdbmshell.c:2291
+msgid "set or list variables"
+msgstr "ცვლადების გამოტანა ან დაყენება"
+
+#: tools/gdbmshell.c:2302
+msgid "unset variables"
+msgstr "დაუყენებელი ცვლადები"
+
+#: tools/gdbmshell.c:2314
+msgid "define datum structure"
+msgstr "აღწერეთ თარიღის სტრუქტურა"
+
+#: tools/gdbmshell.c:2325
+msgid "source command script"
+msgstr "ბრძანების სკრიპტის ჩასმა"
+
+#: tools/gdbmshell.c:2333
+msgid "close the database"
+msgstr "ბაზის დახურვა"
+
+#: tools/gdbmshell.c:2345
+msgid "open new database"
+msgstr "ახალი ბაზის გახსნა"
+
+#: tools/gdbmshell.c:2354
+msgid "[FROM]"
+msgstr "[საიდან]"
+
+#: tools/gdbmshell.c:2355
+msgid "[COUNT]"
+msgstr "[რაოდენობა]"
+
+#: tools/gdbmshell.c:2358
+msgid "show input history"
+msgstr "შეყვანის ისტორიის ჩვენება"
+
+#: tools/gdbmshell.c:2367
+msgid "query/set debug level"
+msgstr "გამართვის დონის გამოთხოვა/დაყენება"
+
+#: tools/gdbmshell.c:2386
+msgid "invoke the shell"
+msgstr "გარსის გაშვება"
+
+#: tools/gdbmshell.c:2398
+msgid "describe GDBM error code"
+msgstr "'GDBM'-ის შეცდომის კოდის აღწერა"
+
+#: tools/gdbmshell.c:2547
+msgid "Invalid command. Try ? for help."
+msgstr "არასწორი ბრძანება. დახმარებისთვის სცადეთ ?."
+
+#: tools/gdbmshell.c:2548
+msgid "Unknown command"
+msgstr "უცნობი ბრძანება"
+
+#: tools/gdbmshell.c:2863
+#, c-format
+msgid "cannot coerce %s to %s"
+msgstr "%s-ის %s-ში გადაყვანა შეუძლებელია"
+
+#: tools/gdbmshell.c:3044
+#, c-format
+msgid "%s: not enough arguments"
+msgstr "%s: არასაკმარისი არგუმენტები"
+
+#: tools/gdbmshell.c:3052
+msgid "unexpected eof"
+msgstr "მოულოდნელი EOF"
+
+#: tools/gdbmshell.c:3068
+#, c-format
+msgid "%s: too many arguments"
+msgstr "%s: მეტისმეტად ბევრი არგუმენტი"
+
+#: tools/gdbmshell.c:3129
+#, c-format
+msgid "cannot run pager `%s': %s"
+msgstr "დასათვალიერებელი პროგრამის '%s' გაშვება შეუძლებელია: %s"
+
+#: tools/gdbmshell.c:3234
+#, c-format
+msgid ""
+"\n"
+"Welcome to the gdbm tool.  Type ? for help.\n"
+"\n"
+msgstr ""
+"\n"
+"მოგესალმებით gdbm-ში.   დახმარებისთვის აკრიფეთ ?.\n"
+"\n"
+
+#: tools/gdbmtool.c:48
+msgid "cannot find home directory"
+msgstr "საწყისი საქაღალდე ვერ ვიპოვე"
+
+#: tools/gdbmtool.c:82
+msgid "examine and/or modify a GDBM database"
+msgstr "'GDBM'-ის ბაზის დათვალიერება და/ან შეცვლა"
+
+#: tools/gdbmtool.c:83
+msgid "DBFILE [COMMAND [ARG ...]]"
+msgstr "მბფაილი [ბრძანება [არგუმენტი ... ]]"
+
+#: tools/gdbmtool.c:91 tools/gdbmtool.c:92
+msgid "SIZE"
+msgstr "SIZE"
+
+#: tools/gdbmtool.c:91
+msgid "set block size"
+msgstr "ბლოკის ზომის დაყენება"
+
+#: tools/gdbmtool.c:92
+msgid "set cache size"
+msgstr "კეშის ზომის დაყენება"
+
+#: tools/gdbmtool.c:93
+msgid "read commands from FILE"
+msgstr "ბრძანებების წაკითხვა მითითებული ფაილიდან"
+
+#: tools/gdbmtool.c:95
+msgid "disable file locking"
+msgstr "ფაილის დაბლოკვის გათიშვა"
+
+#: tools/gdbmtool.c:96
+msgid "do not use mmap"
+msgstr "mmap გამოყენებული არ იქნება"
+
+#: tools/gdbmtool.c:97
+msgid "create database"
+msgstr "ბაზის შექმნა"
+
+#: tools/gdbmtool.c:98
+msgid "do not read .gdbmtoolrc file"
+msgstr "ფაილი .gdbmtoolrc ვერ წავიკითხე"
+
+#: tools/gdbmtool.c:99
+msgid "open database in read-only mode"
+msgstr "ბაზის მხოლოდ-წაკითხვად რეჟიმში გახსნა"
+
+#: tools/gdbmtool.c:100
+msgid "synchronize to disk after each write"
+msgstr "დისკთან სინქრონიზაცია თითოეული ჩაწერს შემდეგ"
+
+#: tools/gdbmtool.c:101
+msgid "don't print initial banner"
+msgstr "საწყისი ბანერი გამოტანილი არ იქნება"
+
+#. TRANSLATORS: File Descriptor.
+#: tools/gdbmtool.c:104
+msgid "FD"
+msgstr "FD"
+
+#: tools/gdbmtool.c:105
+msgid "open database at the given file descriptor"
+msgstr "ბაზის გახსნა მითითებულ ფაილის დესკრიპტორთან"
+
+#: tools/gdbmtool.c:106
+msgid "extended format (numsync)"
+msgstr "გაფართოებული ფორმატი (numsync)"
+
+#: tools/gdbmtool.c:108
+msgid "enable trace mode"
+msgstr "ტრეისის რეჟიმის ჩართვა"
+
+#: tools/gdbmtool.c:109
+msgid "print timing after each command"
+msgstr "დახარჯული დროის გამოტანა თითოეული ბრზანების შემდეგ"
+
+#: tools/gdbmtool.c:111
+msgid "enable lexical analyzer traces"
+msgstr "ტრეისების ლექსიკური ანალიზატორის ჩართვა"
+
+#: tools/gdbmtool.c:112
+msgid "enable grammar traces"
+msgstr "გრამატიკის ტრეისების ჩართვა"
+
+#: tools/gdbmtool.c:149
+#, c-format
+msgid "invalid file descriptor: %s"
+msgstr "არასწორი ფაილის დესკრიპტორი: %s"
+
+#: tools/gdbmtool.c:226
+#, c-format
+msgid "unknown option %s; try `%s -h' for more info"
+msgstr "უცნობი პარამეტრი %s; მეტი ინფორმაციისთვის სცადეთ `%s -h'"
+
+#: tools/gdbmtool.c:229
+#, c-format
+msgid "unknown option %c; try `%s -h' for more info"
+msgstr "უცნობი პარამეტრი %c; მეტი ინფორმაციისთვის სცადეთ `%s -h'"
+
+#: tools/gdbmtool.c:253
+msgid "--file and command cannot be used together"
+msgstr "--file-ს და ბრძანებას ერთად ვერ გამოიყენებთ"
+
+#: tools/gram.y:179
+#, c-format
+msgid "duplicate tag: %s"
+msgstr "დუბლიკატი ჭდე: %s"
+
+#: tools/gram.y:261
+#, c-format
+msgid "expected \"key\" or \"content\", but found \"%s\""
+msgstr "მოველოდი \"key\"-ს ან \"content\"-ს, მაგრამ აღმოჩენილია \"%s\""
+
+#: tools/gram.y:333 tools/gram.y:362 tools/gram.y:394
+#, c-format
+msgid "no such variable: %s"
+msgstr "ასეთი ცვლადი არ არსებობს: %s"
+
+#: tools/gram.y:337
+#, c-format
+msgid "%s is not a boolean variable"
+msgstr "%s ლოგიკური ცვლადი არაა"
+
+#: tools/gram.y:341
+#, c-format
+msgid "%s: setting is not allowed"
+msgstr "%s: პარამეტრი დაშვებული არაა"
+
+#: tools/gram.y:345
+msgid "can't set variable"
+msgstr "ცვლადი ვერ დავაყენე"
+
+#: tools/gram.y:349 tools/gram.y:374
+#, c-format
+msgid "unexpected error setting %s: %d"
+msgstr "მოულოდნელი შეცდომის პარამეტრი %s: %d"
+
+#: tools/gram.y:366
+#, c-format
+msgid "%s: bad variable type"
+msgstr "%s: არასწორი ცვლადის ტიპი"
+
+#: tools/gram.y:370
+#, c-format
+msgid "%s: value %s is not allowed"
+msgstr "%s: მნიშვნელობა %s დაშვებული არაა"
+
+#: tools/gram.y:398
+#, c-format
+msgid "%s: variable cannot be unset"
+msgstr "%s: ცვლადის დაყენების გაუქმება შეუძლებელია"
+
+#: tools/input-file.c:60
+#, c-format
+msgid "cannot open `%s': %s"
+msgstr "ფაილის გახსნის შეცდომა \"%s\": %s"
+
+#: tools/input-file.c:65
+#, c-format
+msgid "%s is not a regular file"
+msgstr "%s: არ წარმოადგენს ჩვეულებრივ ფაილს"
+
+#: tools/input-file.c:72
+#, c-format
+msgid "cannot open %s for reading: %s"
+msgstr "%s-ის წასაკითხად გახსნა შეუძლებელია: %s"
+
+#: tools/lex.l:146
+msgid "recursive sourcing"
+msgstr "რეკურსიული ჩასმა"
+
+#: tools/lex.l:148
+#, c-format
+msgid "%s already sourced here"
+msgstr "%s აქ უკვე ჩასმულია"
+
+#: tools/lex.l:259 tools/lex.l:269
+msgid "invalid #line statement"
+msgstr "არასწორი #line გამოსახულება"
+
+#: tools/parseopt.c:49
+msgid "give this help list"
+msgstr "ამ დახმარების სიის მიღება"
+
+#: tools/parseopt.c:50
+msgid "print program version"
+msgstr "პროგრამის ვერსიის დაბეჭდვა"
+
+#: tools/parseopt.c:51
+msgid "give a short usage message"
+msgstr "გამოყენების მოკლე შეტყობინების მიღება"
+
+#: tools/parseopt.c:289
+#, c-format
+msgid "error in ARGP_HELP_FMT: improper usage of [no-]%s\n"
+msgstr "შეცდომა ARGP_HELP_FMT-ში: [no-]%s-ის არასწორი გამოყენება\n"
+
+#: tools/parseopt.c:307
+#, c-format
+msgid "error in ARGP_HELP_FMT: bad value for %s"
+msgstr "შეცდომა ARGP_HELP_FMT-ში: არასწორი მნიშვნელობა %s-ში"
+
+#: tools/parseopt.c:311
+#, c-format
+msgid " (near %s)"
+msgstr " (%s-სთან ახლოს)"
+
+#: tools/parseopt.c:320
+#, c-format
+msgid "error in ARGP_HELP_FMT: %s value is out of range\n"
+msgstr "შეცდომა ARGP_HELP_FMT-ში: %s value is out of range\n"
+
+#: tools/parseopt.c:331
+#, c-format
+msgid "%s: ARGP_HELP_FMT parameter requires a value\n"
+msgstr "%s: ARGP_HELP_FMT პარამეტრს მნიშვნელობა სჭირდება\n"
+
+#: tools/parseopt.c:340
+#, c-format
+msgid "%s: Unknown ARGP_HELP_FMT parameter\n"
+msgstr "%s: უცნობი ARGP_HELP_FMT პარამეტრი\n"
+
+#: tools/parseopt.c:367
+#, c-format
+msgid "ARGP_HELP_FMT: missing delimiter near %s\n"
+msgstr "ARGP_HELP_FMT: აკლია გამყოფი %s-სთან ახლოს\n"
+
+#: tools/parseopt.c:487 tools/parseopt.c:565
+msgid "Usage:"
+msgstr "გამოყენება:"
+
+#: tools/parseopt.c:489
+msgid "OPTION"
+msgstr "პარამეტრი"
+
+#: tools/parseopt.c:510
+msgid ""
+"Mandatory or optional arguments to long options are also mandatory or "
+"optional for any corresponding short options."
+msgstr ""
+"გრძელი პარამეტრების აუცილებელი ან არასავალდებულო არგუმენტები ასევე "
+"აუცილებელი ან არასავალდებულოა მათი მოკლე ვარიანტებისთვისაც."
+
+#. TRANSLATORS: The placeholder indicates the bug-reporting address
+#. for this package.  Please add _another line_ saying
+#. "Report translation bugs to <...>\n" with the address for translation
+#. bugs (typically your translation team's web or email address).
+#: tools/parseopt.c:523
+#, c-format
+msgid "Report bugs to %s.\n"
+msgstr "შეცდომების შესახებ მიწერეთ: %s\n"
+
+#: tools/parseopt.c:526
+#, c-format
+msgid "%s home page: <%s>\n"
+msgstr "%s-ის საწყისი გვერდია: <%s>\n"
+
+#. TRANSLATORS: Translate "(C)" to the copyright symbol
+#. (C-in-a-circle), if this symbol is available in the user's
+#. locale.  Otherwise, do not translate "(C)"; leave it as-is.
+#: tools/parseopt.c:667
+msgid "(C)"
+msgstr "(C)"
+
+#. TRANSLATORS: Please, don't translate 'y' and 'n'.
+#: tools/util.c:100
+msgid "Please, reply 'y' or 'n'"
+msgstr "უპასუხეთ 'y'(დიახ) ან 'n'(არა)"
+
+#: tools/var.c:792
+#, c-format
+msgid "unrecognized error code: %s"
+msgstr "უცნობი შეცდომის კოდი: %s"

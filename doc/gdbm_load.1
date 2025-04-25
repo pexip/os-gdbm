@@ -1,5 +1,5 @@
 .\" This file is part of GDBM.            -*- nroff -*-
-.\" Copyright (C) 2011-2022 Free Software Foundation, Inc.
+.\" Copyright (C) 2011-2024 Free Software Foundation, Inc.
 .\"
 .\" GDBM is free software; you can redistribute it and/or modify
 .\" it under the terms of the GNU General Public License as published by
@@ -13,18 +13,20 @@
 .\"
 .\" You should have received a copy of the GNU General Public License
 .\" along with GDBM. If not, see <http://www.gnu.org/licenses/>. */
-.TH GDBM_LOAD 1 "December 25, 2013" "GDBM" "GDBM User Reference"
+.TH GDBM_LOAD 1 "July 1, 2024" "GDBM" "GDBM User Reference"
 .SH NAME
 gdbm_load \- re-create a GDBM database from a dump file.
 .SH SYNOPSIS
-\fBgdbm_load\fR [\fB\-Mnr\fR] [\fB\-b\fR \fINUM\fR] [\fB\-c\fR \fINUM]\
+\fBgdbm_load\fR [\fB\-MUnr\fR] [\fB\-b\fR \fINUM\fR] [\fB\-c\fR \fINUM]\
  [\fB\-m\fR \fIMODE\fR]\
- [\fB\-u\fR \fINAME\fR|\fIUID\fR[:\fINAME\fR|\fIGID\fR]]
-          [\fB\-\-block\-size\fR=\fINUM\fR] [\fB\-\-cache\-size\fR=\fINUM\fR]\
- [\fB\-\-mmap\fR=\fINUM\fR]
-          [\fB\-\-mode\fR=\fIMODE\fR]\
- [\fB\-\-no\-meta\fR] [\fB\-\-replace\fR]
-          [\fB\-\-user\fR=\fINAME\fR|\fIUID\fR[:\fINAME\fR|\fIGID\fR]]\
+ [\fB\-u\fR \fINAME\fR|\fIUID\fR[:\fINAME\fR|\fIGID\fR]]\
+ [\fB\-\-block\-size\fR=\fINUM\fR]\
+ [\fB\-\-cache\-size\fR=\fINUM\fR]\
+ [\fB\-\-mmap\fR=\fINUM\fR]\
+ [\fB\-\-mode\fR=\fIMODE\fR]\
+ [\fB\-\-no\-meta\fR] [\fB\-\-replace\fR]\
+ [\fB\-\-update\fR]\
+ [\fB\-\-user\fR=\fINAME\fR|\fIUID\fR[:\fINAME\fR|\fIGID\fR]]\
  \fIFILE\fR [\fIDB_FILE\fR]
 			    
 .sp
@@ -61,7 +63,16 @@ Set database file mode (octal number).
 Do not attempt to restore database meta-data (mode and ownership).
 .TP
 \fB\-r\fR, \fB\-\-replace\fR
-If the database exists, replace records in it.
+Replace existing keys.  This must be used together with the
+\fB\-U\fR (\fB\-\-update\fR) option.
+.TP
+\fB\-U\fR, \fB\-\-update\fR
+Update an existing database.  Key/value pairs from the
+dump file will be added to that database, without removing the
+existing keys.  To overwrite keys that are duplicated in the dump
+file, use the \fB\-\-replace\fR option.
+.IP
+If the database does not exist, it will be created.
 .TP
 \fB\-u\fR, \fB\-\-user\fR=\fINAME\fR|\fIUID\fR[:\fINAME\fR|\fIGID\fR]
 Set file ownership.

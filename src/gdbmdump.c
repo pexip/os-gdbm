@@ -1,5 +1,5 @@
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 2011-2022 Free Software Foundation, Inc.
+   Copyright (C) 2011-2024 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -153,7 +153,7 @@ gdbm_dump_to_file (GDBM_FILE dbf, FILE *fp, int format)
 
     default:
       GDBM_SET_ERRNO (NULL, GDBM_BAD_OPEN_FLAGS, FALSE);
-      return EINVAL;
+      return -1;
     }
   
   if (rc == 0 && ferror (fp))

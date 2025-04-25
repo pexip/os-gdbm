@@ -2,7 +2,7 @@
    NDBM interface for dbm use. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-2022 Free Software Foundation, Inc.
+   Copyright (C) 1990-2024 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -81,12 +81,21 @@ ndbm_open_dir_file0 (const char *file_name, int pagfd, int mode)
 	{
 	  if (st.st_dev == pagst.st_dev && st.st_ino == pagst.st_ino)
 	    {
-	      if (unlink (file_name))
+	      if (flags == O_RDONLY)
 		{
-		  if ((mode & GDBM_OPENMASK) == GDBM_READER)
-		    /* Ok, try to cope with it. */
-		    return pagfd;
-		  else if (errno != ENOENT)
+		  /*
+		   * Don't touch the link if the database is opened read-only.
+		   * Return a meaningful file descriptor for the sake
+		   * of those programs that compare it with pagfd trying
+		   * to detect old GDBM versions (as Sendmail does).
+		   */
+		  if ((fd = open ("/dev/null", flags)) == -1)
+		    gdbm_set_errno (NULL, GDBM_FILE_OPEN_ERROR, TRUE); 
+		  return fd;
+		}
+	      else if (unlink (file_name))
+		{
+		  if (errno != ENOENT)
 		    {
 		      gdbm_set_errno (NULL, GDBM_FILE_OPEN_ERROR, TRUE); 
 		      return -1;
@@ -137,6 +146,13 @@ ndbm_open_dir_file0 (const char *file_name, int pagfd, int mode)
 	  gdbm_set_errno (NULL, GDBM_BAD_MAGIC_NUMBER, FALSE);
 	  return -1;
 	}
+    }
+  else if (flags == O_RDONLY)
+    {
+      /* See the comment above. */
+      if ((fd = open ("/dev/null", flags)) == -1)
+	gdbm_set_errno (NULL, GDBM_FILE_OPEN_ERROR, TRUE); 
+      return fd;
     }
   
   /* File does not exist.  Create it. */

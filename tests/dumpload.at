@@ -1,0 +1,5 @@
+# This file is part of GDBM testsuite.                      -*- autoconf -*-
+AT_SETUP([dump/load])
+AT_KEYWORDS([dump load import export])
+AT_CHECK(t_dumpload)
+AT_CLEANUP

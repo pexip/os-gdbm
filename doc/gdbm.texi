@@ -43,8 +43,7 @@ Published by the Free Software Foundation,
 51 Franklin Street, Fifth Floor
 Boston, MA 02110-1301, USA
 
-Copyright @copyright{} 1989--1999, 2007--2022 Free Software Foundation,
-Inc.
+Copyright @copyright{} 1989--2024 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -529,7 +528,7 @@ returned from @code{gdbm_open} (or @code{gdbm_fd_open}, described below).
 @anchor{gdbm_fd_open}
 @deftypefn {gdbm interface} GDBM_FILE gdbm_fd_open (int @var{fd},@
   const char *@var{name}, int @var{block_size}, @
-  int @var{flags}, int @var{mode}, void (*@var{fatal_func})(const char *))
+  int @var{flags}, void (*@var{fatal_func})(const char *))
 
 Alternative function for opening a @command{GDBM} database.  The @var{fd}
 argument is the file descriptor of the database file obtained by a
@@ -1096,11 +1095,13 @@ The permissions to use when creating the output file (@pxref{open,,open a file,o
     unsigned long *@var{errline})
 Loads data from the dump file @var{filename} into the database pointed
 to by @var{pdbf}.  The latter can point to @code{NULL}, in which case
-the function will try to create a new database.  If it succeeds, the
-function will return, in the memory location pointed to by @var{pdbf},
-a pointer to the newly created database.  If the dump file carries no
-information about the original database file name, the function will
-set @code{gdbm_errno} to @code{GDBM_NO_DBNAME} and return
+the function will try to open an existing database, if @var{flag} is
+@code{GDBM_REPLACE}, or create a new one, if @var{flag} is
+@code{GDBM_INSERT} or if the database file does not exit.  If it
+succeeds, the function will return, in the memory location pointed to
+by @var{pdbf}, a pointer to the newly created database.  If the dump
+file carries no information about the original database file name, the
+function will set @code{gdbm_errno} to @code{GDBM_NO_DBNAME} and return
 @code{-1}, indicating failure.
 
 The @var{flag} has the same meaning as the @var{flag} argument
@@ -1195,13 +1196,39 @@ Format of the dump file.  See the @var{format} argument to the
 @end table
 @end deftypefn
 
+@deftypefn {gdbm interface} int gdbm_load_from_file_ext (GDBM_FILE *@var{pdbf}, @
+    FILE *@var{fp}, int @var{flags}, int @var{replace}, int @var{meta_mask}, @
+    unsigned long *@var{line})
+This is an alternative entry point to @code{gdbm_load}.  It reads the
+dump from @var{fp}, which must be a file open for reading.  The
+@var{flags} argument gives flags for @code{gdbm_open} call
+(@pxref{Open}).  It is used if @var{pdbf} points to @code{NULL}, i.e. the
+database has not been open yet.  The rest of arguments is the same as
+for @code{gdbm_load}.
+
+The function returns 0 on success.  On error it returns -1 and sets
+@code{gdbm_errno} to one of error codes (@pxref{Error codes}).  In
+particular, @code{GDBM_ERR_USAGE} is returned if:
+
+@itemize @bullet
+@item @var{pdbf} is @code{NULL}.
+@item @var{fp} is @code{NULL}.
+@item lower 7 bits of @var{flags} have the value @code{GDBM_READER}.
+@end itemize
+@end deftypefn
+
 @deftypefn {gdbm interface} int gdbm_load_from_file (GDBM_FILE *@var{pdbf}, @
     FILE *@var{fp}, int @var{replace}, int @var{meta_mask}, @
     unsigned long *@var{line})
-This is an alternative entry point to @code{gdbm_load}.  It writes the
-output to @var{fp} which must be a file open for writing.  The rest of
-arguments is the same as for @code{gdbm_load} (excepting of course
-@var{flag}, which is not needed in this case).
+Yet another entry point to @code{gdbm_load}.  It is equivalent to
+
+@example
+@group
+gdbm_load_from_file (*pdbf, *fp,
+                     replace ? GDBM_WRCREAT : GDBM_NEWDB,
+                     replace, meta_mask, line);
+@end group
+@end example
 @end deftypefn
 
 @deftypefn {gdbm interface} int gdbm_export (GDBM_FILE @var{dbf}, @
@@ -1303,10 +1330,12 @@ code.  The following are the ones that have:
 @item GDBM_FILE_READ_ERROR
 @item GDBM_FILE_STAT_ERROR
 @item GDBM_BACKUP_FAILED
-@item GDBM_BACKUP_FAILED
 @item GDBM_FILE_CLOSE_ERROR
 @item GDBM_FILE_SYNC_ERROR
 @item GDBM_FILE_TRUNCATE_ERROR
+@item GDBM_ERR_SNAPSHOT_CLONE
+@item GDBM_ERR_REALPATH
+@item GDBM_ERR_USAGE
 @end itemize
 
 For other errors, @code{gdbm_last_syserr} will return 0.
@@ -3249,6 +3278,8 @@ symmetry).  A special code @samp{all} stands for all available error codes.
 
 In boolean context, the @code{true} value is equivalent to @samp{all},
 and @code{false} (i.e. variable unset) is equivalent to @samp{-all}.
+
+This variable cannot be set from interactive sessions.
 @end deftypevr
 
 @deftypevr {gdbmtool variable} string errormask
@@ -4068,9 +4099,17 @@ must be given as the second argument.
 
 In general, if two arguments are given, the second one is treated as
 the name of the database to create, overriding the file name specified
-in the flat file.
+in the flat file.  All existing keys will be removed from this
+database prior to loading from the dump.  Use the @option{--update}
+(@option{-U}) option if it is not what you wish.
 
-The utility understands the following command line arguments:
+When given the @option{--update} (@option{-U}) option,
+@command{gdbm_load} will update the existing database with the data
+from the dump.  It will bail out if the dump contains a key that is
+already present in the database.  To silently overwrite existing keys,
+use the @option{--replace} (@option{-r}) option.
+
+The utility understands the following command line options:
 
 @table @option
 
@@ -4096,15 +4135,28 @@ Do not restore file meta-data (ownership and mode) from the flat file.
 
 @item -r
 @itemx --replace
-Replace existing keys.
+Replace existing keys.  This option can be used only together with
+@option{--update} (@option{-U}).
 
-@item -u @var{user}[:@var{group}]
-@itemx --user=@var{user}[:@var{group}]
-Set file owner.  The @var{user} can be either a valid user name or
+@item -U
+@itemx --update
+Update an existing database.  The key/value pairs from the
+dump file will be added to that database, without removing the
+existing keys.  To overwrite keys that are duplicated in the dump
+file, use @option{--update --replace}.
+
+If the database does not exist, it will be created.
+
+@item -u @var{owner}[:[@var{group}]]
+@itemx --user=@var{owner}[:[@var{group}]]
+Set file owner.  The @var{owner} can be either a valid user name or
 UID.  Similarly, the @var{group} is either a valid group name or GID.
-If @var{group} is not given, the main group of @var{user} is used.
+If @var{group} is not given, the main group of @var{owner} is implied, if
+@var{owner} is followed by a @samp{:}, otherwise the login group of the
+current user is implied.
 
-User and group parts can be separated by a dot, instead of the colon.
+User and group parts can be separated by a dot, instead of the colon,
+but such usage is discouraged.
 
 @item -h
 @itemx --help

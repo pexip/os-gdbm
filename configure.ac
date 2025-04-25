@@ -1,5 +1,5 @@
 # This file is part of GDBM.                                   -*- autoconf -*-
-# Copyright (C) 2007-2022 Free Software Foundation, Inc.
+# Copyright (C) 2007-2024 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,15 +15,14 @@
 # along with GDBM. If not, see <http://www.gnu.org/licenses/>. */
 
 m4_define([_GDBM_VERSION_MAJOR], 1)
-m4_define([_GDBM_VERSION_MINOR], 23)
+m4_define([_GDBM_VERSION_MINOR], 24)
 
 AC_INIT([gdbm],
         _GDBM_VERSION_MAJOR._GDBM_VERSION_MINOR[]m4_ifdef([_GDBM_VERSION_PATCH],._GDBM_VERSION_PATCH),
 	[bug-gdbm@gnu.org],,
 	[http://www.gnu.org/software/gdbm])
 
-dnl When switching to 2.70, see Internationalization macros below
-AC_PREREQ([2.69]) 
+AC_PREREQ([2.71])
 AC_CONFIG_SRCDIR([src/gdbmdefs.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([autoconf.h])
@@ -96,32 +95,10 @@ AC_DEFINE_UNQUOTED([GDBM_THREAD_LOCAL],$gdbm_cv__thread,[TLS qualifier])
 dnl Internationalization macros.
 AM_GNU_GETTEXT([external], [need-ngettext])
 AM_GNU_GETTEXT_REQUIRE_VERSION([0.19])
-dnl The following kludge is needed when using autoconf 2.69.
-dnl Observe the following:
-dnl 1. Autopoint (0.19.8.1) understands the AM_GNU_GETTEXT_REQUIRE_VERSION
-dnl    macro, but autoreconf 2.69 reports:
-dnl      configure.ac: AM_GNU_GETTEXT is used, but not AM_GNU_GETTEXT_VERSION
-dnl    and doesn't call autopoint at all.
-dnl 2. On the other hand, when both macros are used, autopoint warns:
-dnl      using AM_GNU_GETTEXT_REQUIRE_VERSION instead of AM_GNU_GETTEXT_VERSION
-dnl    (which it actually does).
-dnl
-dnl To make both happy, the following kludge is installed, which uses the fact
-dnl that autoreconf 2.69 looks for /^AM_GNU_GETTEXT_VERSION/ (see line 341),
-dnl and autopoint, when working with the file written for autoconf 2.69, uses a
-dnl simple sed logic to detect the presence of either macro.  The kludge below
-dnl easily fools that logic.  When working with autoconf 2.70 and later,
-dnl autopoint traces the m4 output, in which m4_if expands to nothing.
-dnl
-dnl When we finally switch to 2.70, this will be removed.
-dnl
-m4_if([
-AM_GNU_GETTEXT_VERSION
-])
 
 AC_CHECK_HEADERS([sys/file.h string.h locale.h getopt.h])
 
-AC_CHECK_FUNCS([ftruncate flock lockf fsync setlocale getopt_long])
+AC_CHECK_FUNCS([ftruncate flock lockf fsync setlocale getopt_long getline])
 
 if test x$mapped_io = xyes
 then
@@ -256,10 +233,11 @@ EOF
 if test "$want_gdbmtool_debug" != default; then
     cat <<EOF    
 NOTE: You used the --enable-gdbmtool-debug option. In order for your changes
-NOTE: to take effect, please run the following command prior to building the
+NOTE: to take effect, please run the following commands prior to building the
 NOTE: package:
 NOTE:
 NOTE:   make -C src maintainer-clean-generic
+NOTE:   make -C tools maintainer-clean-generic
 NOTE:
 EOF
 fi

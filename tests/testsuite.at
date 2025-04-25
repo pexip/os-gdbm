@@ -1,5 +1,5 @@
 # This file is part of GDBM.                                   -*- autoconf -*-
-# Copyright (C) 2011-2022 Free Software Foundation, Inc.
+# Copyright (C) 2011-2024 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,6 +44,8 @@ m4_include([delete01.at])
 m4_include([delete02.at])
 
 m4_include([closerr.at])
+
+m4_include([dumpload.at])
 
 AT_BANNER([Block size selection])
 m4_include([blocksize00.at])

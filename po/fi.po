@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gdbm 1.10.90\n"
 "Report-Msgid-Bugs-To: bug-gdbm@gnu.org\n"
-"POT-Creation-Date: 2022-02-04 16:04+0200\n"
+"POT-Creation-Date: 2024-07-01 09:33+0300\n"
 "PO-Revision-Date: 2013-05-20 10:59+0300\n"
 "Last-Translator: Jorma Karvonen <karvonen.jorma@gmail.com>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/bucket.c:399 src/bucket.c:684 src/falloc.c:211 src/falloc.c:337
+#: src/bucket.c:399 src/bucket.c:685 src/falloc.c:211 src/falloc.c:337
 #: src/findkey.c:124 src/gdbmstore.c:168 src/update.c:36 src/update.c:76
 msgid "lseek error"
 msgstr "lseek-virhe"
@@ -153,11 +153,13 @@ msgstr "Tiedostotilan palauttaminen epäonnistui"
 
 #: src/gdbmerrno.c:131
 #, fuzzy
+#| msgid "Database is open"
 msgid "Database needs recovery"
 msgstr "Tietokanta on avattu"
 
 #: src/gdbmerrno.c:132
 #, fuzzy
+#| msgid "Failed to restore file mode"
 msgid "Failed to create backup copy"
 msgstr "Tiedostotilan palauttaminen epäonnistui"
 
@@ -171,6 +173,7 @@ msgstr ""
 
 #: src/gdbmerrno.c:135
 #, fuzzy
+#| msgid "print database file header"
 msgid "Malformed database file header"
 msgstr "tulosta tietokantatiedosto-otsake"
 
@@ -185,6 +188,9 @@ msgstr ""
 
 #: src/gdbmerrno.c:139
 #, fuzzy
+#| msgid ""
+#| "\n"
+#| " current directory entry = %d.\n"
 msgid "Invalid directory entry"
 msgstr ""
 "\n"
@@ -212,21 +218,25 @@ msgstr ""
 
 #: src/gdbmerrno.c:145
 #, fuzzy
+#| msgid "Reorganize failed"
 msgid "Reflink failed"
 msgstr "Uudelleenjärjestely epäonnistui"
 
 #: src/gdbmerrno.c:146
 #, fuzzy
+#| msgid "Failed to restore file mode"
 msgid "Failed to resolve real path name"
 msgstr "Tiedostotilan palauttaminen epäonnistui"
 
 #: src/gdbmerrno.c:147
 #, fuzzy
+#| msgid "File seek error"
 msgid "Function usage error"
 msgstr "Tiedoston etsintävirhe"
 
 #: src/recover.c:272
 #, fuzzy, c-format
+#| msgid "cannot convert value #%d: %s"
 msgid "can't read bucket #%d: %s"
 msgstr "arvon #%d muuntaminen epäonnistui: %s"
 
@@ -274,6 +284,7 @@ msgstr ""
 
 #: tools/gdbm_dump.c:23
 #, fuzzy
+#| msgid "DBFILE"
 msgid "DB_FILE [FILE]"
 msgstr "DBFILE"
 
@@ -281,30 +292,32 @@ msgstr "DBFILE"
 msgid "select dump format"
 msgstr "valitse vedosmuoto"
 
-#: tools/gdbm_dump.c:67
+#: tools/gdbm_dump.c:67 tools/gdbm_dump.c:79
 msgid "unknown dump format"
 msgstr "tuntematon vedosmuoto"
 
-#: tools/gdbm_dump.c:74 tools/gdbm_load.c:215
+#: tools/gdbm_dump.c:86 tools/gdbm_load.c:225
 msgid "unknown option"
 msgstr "tuntematon valitsin"
 
-#: tools/gdbm_dump.c:90 tools/gdbm_load.c:231
+#: tools/gdbm_dump.c:102 tools/gdbm_load.c:241
 #, c-format
 msgid "too many arguments; try `%s -h' for more info"
 msgstr "liian monta argumenttia; lisätietoja komennolla ”%s -h”"
 
-#: tools/gdbm_dump.c:110 tools/gdbm_load.c:251
+#: tools/gdbm_dump.c:122 tools/gdbm_load.c:267
 #, c-format
 msgid "cannot open %s"
 msgstr "sivuttajan %s suorittaminen epäonnistui"
 
-#: tools/gdbm_dump.c:118 tools/gdbm_load.c:261
+#: tools/gdbm_dump.c:130 tools/gdbm_load.c:277
 msgid "gdbm_open failed"
 msgstr "gdbm_open epäonnistui"
 
-#: tools/gdbm_dump.c:125
-msgid "dump error"
+#: tools/gdbm_dump.c:137
+#, fuzzy, c-format
+#| msgid "dump error"
+msgid "%s: dump error"
 msgstr "vedosvirhe"
 
 #: tools/gdbm_load.c:32
@@ -313,11 +326,14 @@ msgstr ""
 
 #: tools/gdbm_load.c:33
 #, fuzzy
+#| msgid "DBFILE"
 msgid "FILE [DB_FILE]"
 msgstr "DBFILE"
 
 #: tools/gdbm_load.c:35
-msgid "replace records in the existing database"
+#, fuzzy
+#| msgid "replace records in the existing database"
+msgid "replace records in the existing database (needs -U)"
 msgstr "korvaa tietueet olemassaolevassa tietokannassa"
 
 #: tools/gdbm_load.c:36
@@ -329,89 +345,107 @@ msgid "set file mode"
 msgstr "aseta tiedostotila"
 
 #: tools/gdbm_load.c:37
+#, fuzzy
+#| msgid "replace records in the existing database"
+msgid "update the existing database"
+msgstr "korvaa tietueet olemassaolevassa tietokannassa"
+
+#: tools/gdbm_load.c:38
 msgid "NAME|UID[:NAME|GID]"
 msgstr "NIMI|UID[:NIMI|GID]"
 
-#: tools/gdbm_load.c:37
+#: tools/gdbm_load.c:38
 msgid "set file owner"
 msgstr "aseta tiedoston omistaja"
 
-#: tools/gdbm_load.c:38
+#: tools/gdbm_load.c:39
 msgid "do not attempt to set file meta-data"
 msgstr "älä yritä asettaa tiedoston metatietoja"
 
-#: tools/gdbm_load.c:39
+#: tools/gdbm_load.c:40
 msgid "use memory mapping"
 msgstr ""
 
-#: tools/gdbm_load.c:40 tools/gdbm_load.c:41
+#: tools/gdbm_load.c:41 tools/gdbm_load.c:42
 #, fuzzy
+#| msgid "NUMBER"
 msgid "NUM"
 msgstr "NUMERO"
 
-#: tools/gdbm_load.c:40
+#: tools/gdbm_load.c:41
 #, fuzzy
+#| msgid "set cache size"
 msgid "set the cache size"
 msgstr "aseta välimuistikoko"
 
-#: tools/gdbm_load.c:41
+#: tools/gdbm_load.c:42
 #, fuzzy
+#| msgid "set block size"
 msgid "set the block size"
 msgstr "aseta lohkokoko"
 
-#: tools/gdbm_load.c:79
+#: tools/gdbm_load.c:80
 #, fuzzy, c-format
+#| msgid "invalid user name: %s"
 msgid "invalid number: %s"
 msgstr "virheellinen käyttäjätunnus: %s"
 
-#: tools/gdbm_load.c:84
+#: tools/gdbm_load.c:85
 #, fuzzy, c-format
+#| msgid "invalid user name: %s"
 msgid "invalid number: %s: %s"
 msgstr "virheellinen käyttäjätunnus: %s"
 
-#: tools/gdbm_load.c:136
+#: tools/gdbm_load.c:137
 #, c-format
 msgid "invalid octal number"
 msgstr "virheellinen oktaalinumero"
 
-#: tools/gdbm_load.c:161
+#: tools/gdbm_load.c:167
 #, c-format
 msgid "invalid user name: %s"
 msgstr "virheellinen käyttäjätunnus: %s"
 
-#: tools/gdbm_load.c:180
+#: tools/gdbm_load.c:186
 #, c-format
 msgid "invalid group name: %s"
 msgstr "virheellinen ryhmänimi: %s"
 
-#: tools/gdbm_load.c:192
+#: tools/gdbm_load.c:198
 #, c-format
 msgid "no such UID: %lu"
 msgstr "tuntematon UID: %lu"
 
-#: tools/gdbm_load.c:267
+#: tools/gdbm_load.c:247
+#, fuzzy
+#| msgid "-r is incompatible with -n"
+msgid "-r is useless without -U"
+msgstr "-r on yhteensopimaton valitsimen -n kanssa"
+
+#: tools/gdbm_load.c:283
 #, c-format
 msgid "gdbm_setopt failed: %s"
 msgstr "gdbm_setopt epäonnistui: %s"
 
-#: tools/gdbm_load.c:281 tools/gdbm_load.c:299
+#: tools/gdbm_load.c:297 tools/gdbm_load.c:315
 #, c-format
 msgid "error restoring metadata: %s (%s)"
 msgstr "virhe palautettaessa metatietoja: %s (%s)"
 
-#: tools/gdbm_load.c:290 tools/gdbmshell.c:1635
+#: tools/gdbm_load.c:306 tools/gdbmshell.c:1674
 #, c-format
 msgid "cannot load from %s"
 msgstr "kohteesta %s lataaminen epäonnistui"
 
-#: tools/gdbm_load.c:307
+#: tools/gdbm_load.c:323
 msgid "gdbm_setopt failed"
 msgstr "gdbm_setopt epäonnistui"
 
 #: tools/gdbmshell.c:64 tools/gdbmshell.c:157 tools/gdbmshell.c:361
-#: tools/gdbmshell.c:497 tools/gdbmshell.c:873 tools/gdbmshell.c:910
-#: tools/gdbmshell.c:919
+#: tools/gdbmshell.c:497 tools/gdbmshell.c:905 tools/gdbmshell.c:942
+#: tools/gdbmshell.c:951
 #, fuzzy, c-format
+#| msgid "malloc failed"
 msgid "%s failed"
 msgstr "malloc epäonnistui"
 
@@ -422,6 +456,7 @@ msgstr "tietokanta %s on jo olemasa; korvaa"
 
 #: tools/gdbmshell.c:151
 #, fuzzy, c-format
+#| msgid "cannot open database %s: %s"
 msgid "cannot open database %s"
 msgstr "sivuttajan %s suorittaminen epäonnistui: %s"
 
@@ -452,12 +487,16 @@ msgstr ""
 
 #: tools/gdbmshell.c:277
 #, fuzzy, c-format
+#| msgid "     #    hash value     key size    data size     data adr  home\n"
 msgid ""
 "    #    hash value     key size    data size     data adr home  key start\n"
 msgstr "     #    tiivistearvo   avainkoko   tietokoko    tieto-osoite koti\n"
 
 #: tools/gdbmshell.c:295
 #, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| "Avail count = %1d\n"
 msgid ""
 "\n"
 "Avail count = %d\n"
@@ -467,6 +506,7 @@ msgstr ""
 
 #: tools/gdbmshell.c:296
 #, fuzzy, c-format
+#| msgid "Avail  adr     size\n"
 msgid "Address           size\n"
 msgstr "Käytettävissä oleva osoite koko\n"
 
@@ -476,11 +516,17 @@ msgstr ""
 
 #: tools/gdbmshell.c:349
 #, fuzzy, c-format
+#| msgid "  next block   = %lu\n"
 msgid "block = %lu"
 msgstr "  seuraava lohko = %lu\n"
 
 #: tools/gdbmshell.c:350
 #, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| "block = %d\n"
+#| "size  = %d\n"
+#| "count = %d\n"
 msgid ""
 "\n"
 "size  = %d\n"
@@ -494,6 +540,9 @@ msgstr ""
 #  Esimerkiksi puhelinluettelon A-kirjaimella alkavat nimet muodostavat \"bucket\":in.
 #: tools/gdbmshell.c:374
 #, fuzzy, c-format
+#| msgid ""
+#| "Bucket Cache (size %d):\n"
+#| "  Index:  Address  Changed  Data_Hash \n"
 msgid ""
 "Bucket Cache (size %zu/%zu):\n"
 "  Index:         Address  Changed  Data_Hash \n"
@@ -511,6 +560,7 @@ msgstr "Epätosi"
 
 #: tools/gdbmshell.c:386
 #, fuzzy, c-format
+#| msgid "Bucket cache has not been initialized.\n"
 msgid "Bucket cache is empty.\n"
 msgstr "Säiliövälimuistia ei ole alustettu.\n"
 
@@ -524,6 +574,8 @@ msgstr ""
 
 #: tools/gdbmshell.c:509
 #, fuzzy, c-format
+#| msgid "There is %d item in the database.\n"
+#| msgid_plural "There are %d items in the database.\n"
 msgid "There is %s item in the database.\n"
 msgid_plural "There are %s items in the database.\n"
 msgstr[0] "Tietokannassa on %d alkio.\n"
@@ -531,21 +583,25 @@ msgstr[1] "Tietokannassa on %d alkiota.\n"
 
 #: tools/gdbmshell.c:526 tools/gdbmshell.c:550 tools/gdbmshell.c:630
 #, fuzzy
+#| msgid "No such item found.\n"
 msgid "No such item found"
 msgstr "Ei löytynyt sellaista alkiota.\n"
 
 #: tools/gdbmshell.c:529
 #, fuzzy
+#| msgid "Can't delete: %s"
 msgid "Can't delete"
 msgstr "Poistaminen epäonnistui: %s"
 
 #: tools/gdbmshell.c:553
 #, fuzzy
+#| msgid "(not enough data)"
 msgid "Can't fetch data"
 msgstr "(dataa ei ole kylliksi)"
 
 #: tools/gdbmshell.c:566
 #, fuzzy
+#| msgid "Item not inserted.\n"
 msgid "Item not inserted"
 msgstr "Alkiota ei lisätty.\n"
 
@@ -564,72 +620,99 @@ msgstr ""
 
 #: tools/gdbmshell.c:645
 #, fuzzy
+#| msgid "Reorganization failed.\n"
 msgid "Reorganization failed"
 msgstr "Uudelleenjärjestely epäonnistui.\n"
 
 #: tools/gdbmshell.c:649
 #, fuzzy
+#| msgid "Reorganization succeeded.\n"
 msgid "Reorganization succeeded."
 msgstr "Uudelleenjärjestely onnistui.\n"
 
-#: tools/gdbmshell.c:700 tools/gdbmshell.c:710 tools/gdbmshell.c:720
-#: tools/gdbmshell.c:825 tools/gdbmshell.c:834
-#, fuzzy, c-format
-msgid "not a number (stopped near %s)"
-msgstr "ei ole numero (pysähtyi kohteen %s lähellä)\n"
-
-#: tools/gdbmshell.c:727 tools/gdbmshell.c:1561 tools/gdbmshell.c:1596
+#: tools/gdbmshell.c:702 tools/gdbmshell.c:751 tools/gdbmshell.c:1599
+#: tools/gdbmshell.c:1635
 #, c-format
 msgid "unrecognized argument: %s"
 msgstr "tunnistamaton argumentti: %s"
 
-#: tools/gdbmshell.c:736
+#: tools/gdbmshell.c:710
 #, fuzzy, c-format
+#| msgid "%s: bad variable type"
+msgid "%s: bad argument type"
+msgstr "%s: väärä muuttujatyyppi"
+
+#: tools/gdbmshell.c:715
+msgid "unexpected compound statement"
+msgstr ""
+
+#: tools/gdbmshell.c:724 tools/gdbmshell.c:734 tools/gdbmshell.c:744
+#: tools/gdbmshell.c:856 tools/gdbmshell.c:865
+#, fuzzy, c-format
+#| msgid "not a number (stopped near %s)\n"
+msgid "not a number (stopped near %s)"
+msgstr "ei ole numero (pysähtyi kohteen %s lähellä)\n"
+
+#: tools/gdbmshell.c:757
+#, fuzzy
+#| msgid "unexpected eof"
+msgid "unexpected datum"
+msgstr "odottamaton tiedoston loppumerkki"
+
+#: tools/gdbmshell.c:767
+#, fuzzy, c-format
+#| msgid "Reorganization succeeded.\n"
 msgid "Recovery succeeded.\n"
 msgstr "Uudelleenjärjestely onnistui.\n"
 
-#: tools/gdbmshell.c:740
+#: tools/gdbmshell.c:771
 #, c-format
 msgid "Keys recovered: %lu, failed: %lu, duplicate: %lu\n"
 msgstr ""
 
-#: tools/gdbmshell.c:745
+#: tools/gdbmshell.c:776
 #, c-format
 msgid "Buckets recovered: %lu, failed: %lu\n"
 msgstr ""
 
-#: tools/gdbmshell.c:753
+#: tools/gdbmshell.c:784
 #, fuzzy, c-format
+#| msgid "warning: using default database file %s"
 msgid "Original database preserved in file %s"
 msgstr "varoitus: käytetään oletustietokantatiedostoa %s"
 
-#: tools/gdbmshell.c:761
+#: tools/gdbmshell.c:792
 #, fuzzy
+#| msgid "Reorganize failed"
 msgid "Recovery failed"
 msgstr "Uudelleenjärjestely epäonnistui"
 
-#: tools/gdbmshell.c:812 tools/gdbmshell.c:894
+#: tools/gdbmshell.c:843 tools/gdbmshell.c:926
 #, fuzzy, c-format
+#| msgid "print current bucket"
 msgid "no current bucket\n"
 msgstr "tulosta nykyinen säiliö"
 
-#: tools/gdbmshell.c:861
+#: tools/gdbmshell.c:893
 #, c-format
 msgid "bucket number out of range (0..%lu)"
 msgstr ""
 
-#: tools/gdbmshell.c:904 tools/gdbmshell.c:916
+#: tools/gdbmshell.c:936 tools/gdbmshell.c:948
 #, c-format
 msgid "no sibling\n"
 msgstr ""
 
-#: tools/gdbmshell.c:964
+#: tools/gdbmshell.c:996
 #, c-format
 msgid "Hash table directory.\n"
 msgstr "Tiivistetauluhakemisto.\n"
 
-#: tools/gdbmshell.c:965
+#: tools/gdbmshell.c:997
 #, fuzzy, c-format
+#| msgid ""
+#| "  Size =  %d.  Bits = %d. \n"
+#| "\n"
 msgid ""
 "  Size =  %d.  Capacity = %lu.  Bits = %d,  Buckets = %zu.\n"
 "\n"
@@ -637,19 +720,19 @@ msgstr ""
 "  Koko =  %d.  Bitit = %d. \n"
 "\n"
 
-#: tools/gdbmshell.c:972
+#: tools/gdbmshell.c:1004
 msgid "Index"
 msgstr ""
 
-#: tools/gdbmshell.c:972
+#: tools/gdbmshell.c:1004
 msgid "Hash Pfx"
 msgstr ""
 
-#: tools/gdbmshell.c:972
+#: tools/gdbmshell.c:1004
 msgid "Bucket address"
 msgstr ""
 
-#: tools/gdbmshell.c:1040
+#: tools/gdbmshell.c:1072
 #, c-format
 msgid ""
 "\n"
@@ -660,72 +743,92 @@ msgstr ""
 "Tiedosto-otsake: \n"
 "\n"
 
-#: tools/gdbmshell.c:1041
+#: tools/gdbmshell.c:1073
 #, fuzzy, c-format
+#| msgid "  table        = %lu\n"
 msgid "  type            = %s\n"
 msgstr "  taulukko     = %lu\n"
 
-#: tools/gdbmshell.c:1042
+#: tools/gdbmshell.c:1074
 #, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| " current directory entry = %d.\n"
 msgid "  directory start = %lu\n"
 msgstr ""
 "\n"
 " nykyinen hakemistorivi = %d.\n"
 
-#: tools/gdbmshell.c:1044
+#: tools/gdbmshell.c:1076
 #, fuzzy, c-format
+#| msgid "  bucket size  = %d\n"
 msgid "  directory size  = %d\n"
 msgstr "  säiliökoko  = %d\n"
 
-#: tools/gdbmshell.c:1045
+#: tools/gdbmshell.c:1077
 #, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| " current directory entry = %d.\n"
 msgid "  directory depth = %d\n"
 msgstr ""
 "\n"
 " nykyinen hakemistorivi = %d.\n"
 
-#: tools/gdbmshell.c:1046
+#: tools/gdbmshell.c:1078
 #, fuzzy, c-format
+#| msgid "  block size   = %d\n"
 msgid "  block size      = %d\n"
 msgstr "  lohkokoko    = %d\n"
 
-#: tools/gdbmshell.c:1047
+#: tools/gdbmshell.c:1079
 #, fuzzy, c-format
+#| msgid "  bucket elems = %d\n"
 msgid "  bucket elems    = %d\n"
 msgstr "  säiliöelementit = %d\n"
 
-#: tools/gdbmshell.c:1048
+#: tools/gdbmshell.c:1080
 #, fuzzy, c-format
+#| msgid "  bucket size  = %d\n"
 msgid "  bucket size     = %d\n"
 msgstr "  säiliökoko  = %d\n"
 
-#: tools/gdbmshell.c:1049
+#: tools/gdbmshell.c:1081
 #, fuzzy, c-format
+#| msgid "  header magic = %x\n"
 msgid "  header magic    = %x\n"
 msgstr "  otsakkeen maaginen luku = %x\n"
 
-#: tools/gdbmshell.c:1050
+#: tools/gdbmshell.c:1082
 #, fuzzy, c-format
+#| msgid "  next block   = %lu\n"
 msgid "  next block      = %lu\n"
 msgstr "  seuraava lohko = %lu\n"
 
-#: tools/gdbmshell.c:1053
+#: tools/gdbmshell.c:1085
 #, fuzzy, c-format
+#| msgid "  avail size   = %d\n"
 msgid "  avail size      = %d\n"
 msgstr "  käytettävissä oleva koko = %d\n"
 
-#: tools/gdbmshell.c:1054
+#: tools/gdbmshell.c:1086
 #, fuzzy, c-format
+#| msgid "  avail count  = %d\n"
 msgid "  avail count     = %d\n"
 msgstr "  käytettävissä oleva lukumäärä  = %d\n"
 
-#: tools/gdbmshell.c:1055
+#: tools/gdbmshell.c:1087
 #, fuzzy, c-format
+#| msgid "  avail nx blk = %lu\n"
 msgid "  avail next block= %lu\n"
 msgstr "  käytettävissä oleva seuraava lohko = %lu\n"
 
-#: tools/gdbmshell.c:1060
+#: tools/gdbmshell.c:1092
 #, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| "File Header: \n"
+#| "\n"
 msgid ""
 "\n"
 "Extended Header: \n"
@@ -735,388 +838,405 @@ msgstr ""
 "Tiedosto-otsake: \n"
 "\n"
 
-#: tools/gdbmshell.c:1061
+#: tools/gdbmshell.c:1093
 #, fuzzy, c-format
+#| msgid "  avail count  = %d\n"
 msgid "      version = %d\n"
 msgstr "  käytettävissä oleva lukumäärä  = %d\n"
 
-#: tools/gdbmshell.c:1062
+#: tools/gdbmshell.c:1094
 #, fuzzy, c-format
+#| msgid "  table        = %lu\n"
 msgid "      numsync = %u\n"
 msgstr "  taulukko     = %lu\n"
 
-#: tools/gdbmshell.c:1176
+#: tools/gdbmshell.c:1208
 #, fuzzy
+#| msgid "set file mode"
 msgid "bad file mode"
 msgstr "aseta tiedostotila"
 
-#: tools/gdbmshell.c:1186
+#: tools/gdbmshell.c:1218
 msgid "insufficient precision"
 msgstr ""
 
 #. TRANSLATORS: Stands for "Not Available".
-#: tools/gdbmshell.c:1199
+#: tools/gdbmshell.c:1231
 msgid "N/A"
 msgstr ""
 
-#: tools/gdbmshell.c:1207 tools/gdbmshell.c:1212
+#: tools/gdbmshell.c:1239 tools/gdbmshell.c:1244
 #, fuzzy
+#| msgid "cannot open database %s: %s"
 msgid "can't open database"
 msgstr "sivuttajan %s suorittaminen epäonnistui: %s"
 
-#: tools/gdbmshell.c:1217
+#: tools/gdbmshell.c:1249
 #, fuzzy
+#| msgid "%s is not a regular file"
 msgid "not a regular file"
 msgstr "%s ei ole tavallinen tiedosto"
 
-#: tools/gdbmshell.c:1222
+#: tools/gdbmshell.c:1254
 msgid "ERROR"
 msgstr ""
 
-#: tools/gdbmshell.c:1232
+#: tools/gdbmshell.c:1264
 #, c-format
 msgid "%s: ERROR: can't stat: %s"
 msgstr ""
 
-#: tools/gdbmshell.c:1256
+#: tools/gdbmshell.c:1288
 msgid "Invalid arguments in call to gdbm_latest_snapshot"
 msgstr ""
 
-#: tools/gdbmshell.c:1261
+#: tools/gdbmshell.c:1293
 msgid ""
 "Function is not implemented: GDBM is built without crash-tolerance support"
 msgstr ""
 
-#: tools/gdbmshell.c:1269
+#: tools/gdbmshell.c:1301
 msgid "Selected the most recent snapshot"
 msgstr ""
 
-#: tools/gdbmshell.c:1273
+#: tools/gdbmshell.c:1305
 msgid "Neither snapshot is readable"
 msgstr ""
 
-#: tools/gdbmshell.c:1278
+#: tools/gdbmshell.c:1310
 msgid "Error selecting snapshot"
 msgstr ""
 
-#: tools/gdbmshell.c:1283
+#: tools/gdbmshell.c:1315
 msgid "Snapshot modes and dates are the same"
 msgstr ""
 
-#: tools/gdbmshell.c:1288
+#: tools/gdbmshell.c:1320
 msgid "Snapshot sync counters differ by more than 1"
 msgstr ""
 
-#: tools/gdbmshell.c:1314
+#: tools/gdbmshell.c:1348
 #, fuzzy, c-format
+#| msgid "unexpected error setting %s: %d"
 msgid "unexpected error code: %d"
 msgstr "odottamaton virheasetus %s: %d"
 
-#: tools/gdbmshell.c:1331
+#: tools/gdbmshell.c:1368
 #, c-format
 msgid "hash value = %x, bucket #%u, slot %u"
 msgstr ""
 
-#: tools/gdbmshell.c:1337
+#: tools/gdbmshell.c:1374
 #, fuzzy, c-format
+#| msgid "hash value = %x. \n"
 msgid "hash value = %x"
 msgstr "tiivistearvo = %x. \n"
 
-#: tools/gdbmshell.c:1390
+#: tools/gdbmshell.c:1427
 #, fuzzy, c-format
+#| msgid "unrecognized argument: %s"
 msgid "unrecognized parameter: %s\n"
 msgstr "tunnistamaton argumentti: %s"
 
-#: tools/gdbmshell.c:1397
+#: tools/gdbmshell.c:1434
 #, fuzzy
+#| msgid "select dump format"
 msgid "select bucket first\n"
 msgstr "valitse vedosmuoto"
 
-#: tools/gdbmshell.c:1448
+#: tools/gdbmshell.c:1485
 #, c-format
 msgid "error reading entry %d"
 msgstr ""
 
-#: tools/gdbmshell.c:1457 tools/gdbmshell.c:1495
+#: tools/gdbmshell.c:1494 tools/gdbmshell.c:1532
 msgid "the key was:"
 msgstr ""
 
-#: tools/gdbmshell.c:1570
+#: tools/gdbmshell.c:1608
 #, fuzzy
+#| msgid "error dumping database: %s"
 msgid "error dumping database"
 msgstr "virhe vedostettaessa tietokantaa: %s"
 
-#: tools/gdbmshell.c:1628
+#: tools/gdbmshell.c:1667
 #, fuzzy
+#| msgid "error restoring metadata: %s (%s)"
 msgid "error restoring metadata"
 msgstr "virhe palautettaessa metatietoja: %s (%s)"
 
-#: tools/gdbmshell.c:1661
+#: tools/gdbmshell.c:1700
 #, c-format
 msgid "Database file: %s\n"
 msgstr "Tietokantatiedosto: %s\n"
 
-#: tools/gdbmshell.c:1663
+#: tools/gdbmshell.c:1702
 msgid "Database is open"
 msgstr "Tietokanta on avattu"
 
-#: tools/gdbmshell.c:1665
+#: tools/gdbmshell.c:1704
 msgid "Database is not open"
 msgstr "Tietokantaa ei ole avattu"
 
-#: tools/gdbmshell.c:1720
+#: tools/gdbmshell.c:1759
 #, fuzzy, c-format
+#| msgid "unknown dump format"
 msgid "unknown debug flag: %s"
 msgstr "tuntematon vedosmuoto"
 
-#: tools/gdbmshell.c:1723
+#: tools/gdbmshell.c:1762
 #, fuzzy, c-format
+#| msgid "invalid user name: %s"
 msgid "invalid type of argument %d"
 msgstr "virheellinen käyttäjätunnus: %s"
 
-#: tools/gdbmshell.c:1728
+#: tools/gdbmshell.c:1767
 #, c-format
 msgid "Debug flags:"
 msgstr ""
 
-#: tools/gdbmshell.c:1734
+#: tools/gdbmshell.c:1773
 msgid "none"
 msgstr ""
 
-#: tools/gdbmshell.c:1738
+#: tools/gdbmshell.c:1777
 msgid "compiled without debug support"
 msgstr ""
 
-#: tools/gdbmshell.c:1789
+#: tools/gdbmshell.c:1828
 #, c-format
 msgid "command failed with status %d"
 msgstr ""
 
-#: tools/gdbmshell.c:1792
+#: tools/gdbmshell.c:1831
 #, c-format
 msgid "command terminated on signal %d"
 msgstr ""
 
 #. TRANSLATORS: %s is the stream name
-#: tools/gdbmshell.c:1862
+#: tools/gdbmshell.c:1901
 #, c-format
 msgid "input history is not available for %s input stream"
 msgstr ""
 
-#: tools/gdbmshell.c:1954
+#: tools/gdbmshell.c:1994
 msgid "count (number of entries)"
 msgstr "lukumäärä (alkioiden lukumäärä)"
 
-#: tools/gdbmshell.c:1964 tools/gdbmshell.c:1992 tools/gdbmshell.c:2045
-#: tools/gdbmshell.c:2154
+#: tools/gdbmshell.c:2004 tools/gdbmshell.c:2032 tools/gdbmshell.c:2085
+#: tools/gdbmshell.c:2194
 msgid "KEY"
 msgstr "AVAIN"
 
-#: tools/gdbmshell.c:1967
+#: tools/gdbmshell.c:2007
 msgid "delete a record"
 msgstr "poista tietue"
 
-#: tools/gdbmshell.c:1977 tools/gdbmshell.c:2005 tools/gdbmtool.c:93
+#: tools/gdbmshell.c:2017 tools/gdbmshell.c:2045 tools/gdbmtool.c:93
 msgid "FILE"
 msgstr "TIEDOSTO"
 
-#: tools/gdbmshell.c:1982
+#: tools/gdbmshell.c:2022
 msgid "export"
 msgstr "vie"
 
-#: tools/gdbmshell.c:1995
+#: tools/gdbmshell.c:2035
 msgid "fetch record"
 msgstr "nouda tietue"
 
-#: tools/gdbmshell.c:2010
+#: tools/gdbmshell.c:2050
 msgid "import"
 msgstr "tuo"
 
-#: tools/gdbmshell.c:2022
+#: tools/gdbmshell.c:2062
 msgid "list"
 msgstr "luettelo"
 
-#: tools/gdbmshell.c:2032
+#: tools/gdbmshell.c:2072
 msgid "[KEY]"
 msgstr "[AVAIN]"
 
-#: tools/gdbmshell.c:2035
+#: tools/gdbmshell.c:2075
 msgid "continue iteration: get next key and datum"
 msgstr ""
 
-#: tools/gdbmshell.c:2046
+#: tools/gdbmshell.c:2086
 msgid "DATA"
 msgstr "TIEDOT"
 
-#: tools/gdbmshell.c:2049
+#: tools/gdbmshell.c:2089
 msgid "store"
 msgstr "tallenna"
 
-#: tools/gdbmshell.c:2058
+#: tools/gdbmshell.c:2098
 msgid "begin iteration: get first key and datum"
 msgstr ""
 
-#: tools/gdbmshell.c:2067
+#: tools/gdbmshell.c:2107
 msgid "reorganize"
 msgstr "järjestä uudelleen"
 
-#: tools/gdbmshell.c:2086
+#: tools/gdbmshell.c:2126
 #, fuzzy
+#| msgid "close the database"
 msgid "recover the database"
 msgstr "sulje tietokanta"
 
-#: tools/gdbmshell.c:2095
+#: tools/gdbmshell.c:2135
 msgid "print avail list"
 msgstr "tulosta käytettävissä oleva luettelo"
 
-#: tools/gdbmshell.c:2105
+#: tools/gdbmshell.c:2145
 #, fuzzy
+#| msgid "NUMBER"
 msgid "[NUMBER]"
 msgstr "NUMERO"
 
-#: tools/gdbmshell.c:2108
+#: tools/gdbmshell.c:2148
 msgid "print a bucket"
 msgstr "tulosta säiliö"
 
-#: tools/gdbmshell.c:2117
+#: tools/gdbmshell.c:2157
 msgid "print current bucket"
 msgstr "tulosta nykyinen säiliö"
 
-#: tools/gdbmshell.c:2126
+#: tools/gdbmshell.c:2166
 #, fuzzy
+#| msgid "print a bucket"
 msgid "print sibling bucket"
 msgstr "tulosta säiliö"
 
-#: tools/gdbmshell.c:2135
+#: tools/gdbmshell.c:2175
 msgid "print hash directory"
 msgstr "tulosta tiivistehakemisto"
 
-#: tools/gdbmshell.c:2144
+#: tools/gdbmshell.c:2184
 msgid "print database file header"
 msgstr "tulosta tietokantatiedosto-otsake"
 
-#: tools/gdbmshell.c:2157
+#: tools/gdbmshell.c:2197
 msgid "hash value of key"
 msgstr "avaimen tiivistearvo"
 
-#: tools/gdbmshell.c:2165
+#: tools/gdbmshell.c:2205
 msgid "print the bucket cache"
 msgstr "tulosta säiliövälimuisti"
 
-#: tools/gdbmshell.c:2174
+#: tools/gdbmshell.c:2214
 msgid "print current program status"
 msgstr "tulosta nykyinen ohjelman tila"
 
-#: tools/gdbmshell.c:2182
+#: tools/gdbmshell.c:2222
 msgid "Synchronize the database with disk copy"
 msgstr ""
 
-#: tools/gdbmshell.c:2191
+#: tools/gdbmshell.c:2231
 msgid "Upgrade the database to extended format"
 msgstr ""
 
-#: tools/gdbmshell.c:2200
+#: tools/gdbmshell.c:2240
 msgid "Downgrade the database to standard format"
 msgstr ""
 
-#: tools/gdbmshell.c:2214
+#: tools/gdbmshell.c:2254
 msgid "analyze two database snapshots"
 msgstr ""
 
-#: tools/gdbmshell.c:2222
+#: tools/gdbmshell.c:2262
 msgid "print version of gdbm"
 msgstr "tulosta gdbm-versio"
 
-#: tools/gdbmshell.c:2230
+#: tools/gdbmshell.c:2270
 msgid "print this help list"
 msgstr "tulosta tämä opasteluettelo"
 
-#: tools/gdbmshell.c:2239
+#: tools/gdbmshell.c:2279
 msgid "quit the program"
 msgstr "poistu ohjelmasta"
 
-#: tools/gdbmshell.c:2251
+#: tools/gdbmshell.c:2291
 msgid "set or list variables"
 msgstr "aseta tai luettele muuttujat"
 
-#: tools/gdbmshell.c:2262
+#: tools/gdbmshell.c:2302
 msgid "unset variables"
 msgstr "nolla muuttujat"
 
-#: tools/gdbmshell.c:2274
+#: tools/gdbmshell.c:2314
 msgid "define datum structure"
 msgstr "määritä päivämäärärakenne"
 
-#: tools/gdbmshell.c:2285
+#: tools/gdbmshell.c:2325
 msgid "source command script"
 msgstr "lähdekomentoskripti"
 
-#: tools/gdbmshell.c:2293
+#: tools/gdbmshell.c:2333
 msgid "close the database"
 msgstr "sulje tietokanta"
 
-#: tools/gdbmshell.c:2305
+#: tools/gdbmshell.c:2345
 msgid "open new database"
 msgstr "avaa uusi tietokanta"
 
-#: tools/gdbmshell.c:2314
+#: tools/gdbmshell.c:2354
 msgid "[FROM]"
 msgstr ""
 
-#: tools/gdbmshell.c:2315
+#: tools/gdbmshell.c:2355
 msgid "[COUNT]"
 msgstr ""
 
-#: tools/gdbmshell.c:2318
+#: tools/gdbmshell.c:2358
 msgid "show input history"
 msgstr ""
 
-#: tools/gdbmshell.c:2327
+#: tools/gdbmshell.c:2367
 msgid "query/set debug level"
 msgstr ""
 
-#: tools/gdbmshell.c:2335
+#: tools/gdbmshell.c:2386
 #, fuzzy
+#| msgid "give this help list"
 msgid "invoke the shell"
 msgstr "anna tämä opasteluettelo"
 
-#: tools/gdbmshell.c:2347
+#: tools/gdbmshell.c:2398
 msgid "describe GDBM error code"
 msgstr ""
 
-#: tools/gdbmshell.c:2492
+#: tools/gdbmshell.c:2547
 msgid "Invalid command. Try ? for help."
 msgstr "Virheellinen komento. Opastusta ?-komennolla."
 
-#: tools/gdbmshell.c:2493
+#: tools/gdbmshell.c:2548
 msgid "Unknown command"
 msgstr "Tuntematon komento"
 
-#: tools/gdbmshell.c:2808
+#: tools/gdbmshell.c:2863
 #, c-format
 msgid "cannot coerce %s to %s"
 msgstr "arvon %s pakottaminen arvoksi %s epäonnistui"
 
-#: tools/gdbmshell.c:2957
+#: tools/gdbmshell.c:3044
 #, c-format
 msgid "%s: not enough arguments"
 msgstr "%s: argumentteja ei ole kylliksi"
 
-#: tools/gdbmshell.c:2964
+#: tools/gdbmshell.c:3052
 msgid "unexpected eof"
 msgstr "odottamaton tiedoston loppumerkki"
 
-#: tools/gdbmshell.c:2980
+#: tools/gdbmshell.c:3068
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: liian monta argumenttia"
 
-#: tools/gdbmshell.c:3041
+#: tools/gdbmshell.c:3129
 #, c-format
 msgid "cannot run pager `%s': %s"
 msgstr "sivuttajan ”%s” suorittaminen epäonnistui: %s"
 
-#: tools/gdbmshell.c:3146
+#: tools/gdbmshell.c:3234
 #, c-format
 msgid ""
 "\n"
@@ -1214,16 +1334,19 @@ msgstr ""
 
 #: tools/gdbmtool.c:149
 #, fuzzy, c-format
+#| msgid "invalid user name: %s"
 msgid "invalid file descriptor: %s"
 msgstr "virheellinen käyttäjätunnus: %s"
 
 #: tools/gdbmtool.c:226
 #, fuzzy, c-format
+#| msgid "unknown option; try `%s -h' for more info"
 msgid "unknown option %s; try `%s -h' for more info"
 msgstr "tuntematon valitsin; lisätietoja komennolla ”%s -h”"
 
 #: tools/gdbmtool.c:229
 #, fuzzy, c-format
+#| msgid "unknown option; try `%s -h' for more info"
 msgid "unknown option %c; try `%s -h' for more info"
 msgstr "tuntematon valitsin; lisätietoja komennolla ”%s -h”"
 
@@ -1231,52 +1354,54 @@ msgstr "tuntematon valitsin; lisätietoja komennolla ”%s -h”"
 msgid "--file and command cannot be used together"
 msgstr ""
 
-#: tools/gram.y:172
+#: tools/gram.y:179
 #, c-format
 msgid "duplicate tag: %s"
 msgstr ""
 
-#: tools/gram.y:253
+#: tools/gram.y:261
 #, c-format
 msgid "expected \"key\" or \"content\", but found \"%s\""
 msgstr "odotettiin argumenttia ”key” tai ”content”, mutta löydettiin ”%s”"
 
-#: tools/gram.y:325 tools/gram.y:354 tools/gram.y:386
+#: tools/gram.y:333 tools/gram.y:362 tools/gram.y:394
 #, c-format
 msgid "no such variable: %s"
 msgstr "tuntematon muuttuja: %s"
 
-#: tools/gram.y:329
+#: tools/gram.y:337
 #, c-format
 msgid "%s is not a boolean variable"
 msgstr "%s ei ole boolean-muuttuja"
 
-#: tools/gram.y:333
+#: tools/gram.y:341
 #, fuzzy, c-format
+#| msgid "%s: value %s is not allowed"
 msgid "%s: setting is not allowed"
 msgstr "%s: arvo %s ei ole sallittu"
 
-#: tools/gram.y:337
+#: tools/gram.y:345
 #, fuzzy
+#| msgid "unset variables"
 msgid "can't set variable"
 msgstr "nolla muuttujat"
 
-#: tools/gram.y:341 tools/gram.y:366
+#: tools/gram.y:349 tools/gram.y:374
 #, c-format
 msgid "unexpected error setting %s: %d"
 msgstr "odottamaton virheasetus %s: %d"
 
-#: tools/gram.y:358
+#: tools/gram.y:366
 #, c-format
 msgid "%s: bad variable type"
 msgstr "%s: väärä muuttujatyyppi"
 
-#: tools/gram.y:362
+#: tools/gram.y:370
 #, c-format
 msgid "%s: value %s is not allowed"
 msgstr "%s: arvo %s ei ole sallittu"
 
-#: tools/gram.y:390
+#: tools/gram.y:398
 #, c-format
 msgid "%s: variable cannot be unset"
 msgstr "%s: muuttujan nollaus epäonnistui"
@@ -1296,16 +1421,16 @@ msgstr "%s ei ole tavallinen tiedosto"
 msgid "cannot open %s for reading: %s"
 msgstr "tiedoston %s avaaminen lukemista varten epäonnistui: %s"
 
-#: tools/lex.l:144
+#: tools/lex.l:146
 msgid "recursive sourcing"
 msgstr "rekursiivinen lähdekoodi"
 
-#: tools/lex.l:146
+#: tools/lex.l:148
 #, c-format
 msgid "%s already sourced here"
 msgstr "%s on jo täällä lähdekoodina"
 
-#: tools/lex.l:257 tools/lex.l:267
+#: tools/lex.l:259 tools/lex.l:269
 msgid "invalid #line statement"
 msgstr "virheellinen #line-lause"
 
@@ -1403,6 +1528,7 @@ msgstr ""
 
 #: tools/var.c:792
 #, fuzzy, c-format
+#| msgid "unrecognized argument: %s"
 msgid "unrecognized error code: %s"
 msgstr "tunnistamaton argumentti: %s"
 
@@ -1424,6 +1550,7 @@ msgstr "tunnistamaton argumentti: %s"
 #~ msgid "Unknown error"
 #~ msgstr "Tuntematon virhe"
 
+#, c-format
 #~ msgid ""
 #~ "******* %s **********\n"
 #~ "\n"
@@ -1437,6 +1564,7 @@ msgstr "tunnistamaton argumentti: %s"
 #~ "laskuri= %d\n"
 #~ "Tiivistetaulu:\n"
 
+#, c-format
 #~ msgid ""
 #~ "\n"
 #~ "header block\n"
@@ -1451,21 +1579,26 @@ msgstr "tunnistamaton argumentti: %s"
 #~ msgid "Current bucket"
 #~ msgstr "Nykyinen säiliö"
 
+#, c-format
 #~ msgid " current bucket address  = %lu.\n"
 #~ msgstr " nykyinen säiliöosoite  = %lu.\n"
 
+#, c-format
 #~ msgid "Not a bucket.\n"
 #~ msgstr "Ei ole säiliö.\n"
 
+#, c-format
 #~ msgid "  table size   = %d\n"
 #~ msgstr "  taulukkokoko = %d\n"
 
+#, c-format
 #~ msgid "  table bits   = %d\n"
 #~ msgstr "  taulukkobitit= %d\n"
 
 #~ msgid "cannot fetch data; the key was:"
 #~ msgstr "tietojen noutaminen epäonnistui; avain oli:"
 
+#, c-format
 #~ msgid "cannot load from %s: %s"
 #~ msgstr "sivuttajan %s suorittaminen epäonnistui: %s"
 
@@ -1481,6 +1614,7 @@ msgstr "tunnistamaton argumentti: %s"
 #~ msgid "too many arguments"
 #~ msgstr "liian monta argumenttia"
 
+#, c-format
 #~ msgid "gdbm fatal: %s\n"
 #~ msgstr "kohtalokas gdbm-virhe: %s\n"
 
@@ -1564,9 +1698,6 @@ msgstr "tunnistamaton argumentti: %s"
 
 #~ msgid "-s is incompatible with -r"
 #~ msgstr "-s on yhteensopimaton valitsimen -r kanssa"
-
-#~ msgid "-r is incompatible with -n"
-#~ msgstr "-r on yhteensopimaton valitsimen -n kanssa"
 
 #~ msgid "-n is incompatible with -r"
 #~ msgstr "-n on yhteensopimaton valitsimen -r kanssa"
