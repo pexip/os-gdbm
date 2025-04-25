@@ -1,6 +1,6 @@
 %{
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-2022 Free Software Foundation, Inc.
+   Copyright (C) 1990-2024 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -19,12 +19,12 @@
 #include "gdbmtool.h"
 
 struct dsegm *dsdef[DS_MAX];
-  
+
 %}
 
 %define parse.error verbose
 %locations
-     
+
 %token <type> T_TYPE
 %token T_OFF "off"
        T_PAD "pad"
@@ -38,7 +38,7 @@ struct dsegm *dsdef[DS_MAX];
 %token <num> T_NUM "number"
 %token <string> T_IDENT "identifier" T_WORD "word"
 %type <cmd> command
-%type <string> string 
+%type <string> string
 %type <arg> arg
 %type <arglist> arglist arg1list
 %type <dsegm> def defbody
@@ -74,29 +74,29 @@ struct dsegm *dsdef[DS_MAX];
 %%
 
 input     : /* empty */
-          | stmtlist
+	  | stmtlist
 	  ;
 
 stmtlist  : stmt
-          | stmtlist stmt
-          ;
+	  | stmtlist stmt
+	  ;
 
 stmt      : /* empty */ eol
-            {
+	    {
 	      if (run_last_command ())
 		{
 		  YYABORT;
 		}
 	    }
-          | command arglist eol
-            {
+	  | command arglist eol
+	    {
 	      if (run_command ($1, &$2))
 		{
 		  YYABORT;
 		}
 	    }
-          | set eol
-          | defn eol
+	  | set eol
+	  | defn eol
 	  | T_BOGUS eol
 	    {
 	      if (interactive ())
@@ -107,8 +107,8 @@ stmt      : /* empty */ eol
 	      else
 		YYERROR;
 	    }
-          | error { end_def(); } eol
-            {
+	  | error { end_def(); } eol
+	    {
 	      if (interactive ())
 		{
 		  yyclearin;
@@ -117,55 +117,62 @@ stmt      : /* empty */ eol
 	      else
 		YYERROR;
 	    }
-          ;
+	  ;
 
 command   : T_CMD
-          | T_SHELL
-          ;
+	  | T_SHELL
+	  ;
 
 eol       : '\n'
-          | ';'
-          ;
+	  | ';'
+	  ;
 
 arglist   : /* empty */
-            {
+	    {
 	      gdbmarglist_init (&$$, NULL);
 	    }
-          | arg1list
+	  | arg1list
 	  ;
 
 arg1list  : arg
-            {
+	    {
 	      gdbmarglist_init (&$$, $1);
 	    }
-          | arg1list arg
+	  | arg1list arg
 	    {
 	      gdbmarglist_add (&$1, $2);
 	      $$ = $1;
 	    }
-          ;
+	  ;
 
 arg       : string
-            {
+	    {
 	      $$ = gdbmarg_string ($1, &@1);
 	    }
-          | compound
+	  | T_IDENT '=' string
+	    {
+	      struct locus loc = { .beg = @1.beg, .end = @3.end };
+	      struct kvpair *kvp = kvpair_string (&loc, $3);
+	      kvp->key = $1;
+	      $$ = gdbmarg_kvpair (kvp, &loc);
+	    }
+	  | compound
 	    {
 	      $$ = gdbmarg_kvpair ($1, &@1);
 	    }
 	  ;
 
 compound  : '{' kvlist '}'
-            {
+	    {
 	      $$ = $2.head;
 	    }
-          ;
+	  ;
 
 kvlist    : kvpair
-            {
+	    {
 	      $$.head = $$.tail = $1;
 	    }
-          | kvlist ',' kvpair
+	  | kvlist ',' kvpair
 	    {
 	      if (kvlist_find ($1.head, $3->key))
 		{
@@ -178,66 +185,67 @@ kvlist    : kvpair
 	      $1.tail = $3;
 	      $$ = $1;
 	    }
-          ;
+	  ;
 
 kvpair    : value
-          | T_IDENT '=' value
+	  | T_IDENT '=' value
 	    {
 	      $3->key = $1;
+	      $3->loc.beg = @1.beg;
 	      $$ = $3;
 	    }
-          ;
+	  ;
 
 value     : string
-            {
+	    {
 	      $$ = kvpair_string (&@1, $1);
 	    }
-          | '{' slist '}'
+	  | '{' slist '}'
 	    {
 	      $$ = kvpair_list (&@1, $2.head);
 	    }
-          ;
+	  ;
 
 slist     : string
-            {
+	    {
 	      $$.head = $$.tail = slist_new_s ($1);
 	    }
-          | slist ',' string
+	  | slist ',' string
 	    {
 	      struct slist *s = slist_new_s ($3);
 	      slist_insert (&$1.tail, s);
 	      $$ = $1;
 	    }
-          ;
+	  ;
 
 string    : T_IDENT
-          | T_WORD
-          ;
+	  | T_WORD
+	  ;
 
 defn      : T_DEF defid { begin_def (); } defbody
-            {
+	    {
 	      end_def ();
 	      dsegm_list_free (dsdef[$2]);
 	      dsdef[$2] = $4;
 	    }
-          ;
+	  ;
 
 defbody   : '{' deflist optcomma '}'
-            {
+	    {
 	      $$ = $2.head;
 	    }
-          | T_TYPE
-            {
+	  | T_TYPE
+	    {
 	      $$ = dsegm_new_field ($1, NULL, 1);
 	    }
-          ;
+	  ;
 
 optcomma  : /* empty */
-          | ','
-          ;
+	  | ','
+	  ;
 
 defid     : T_IDENT
-            {
+	    {
 	      if (strcmp ($1, "key") == 0)
 		{
 		  $$ = DS_KEY;
@@ -256,58 +264,58 @@ defid     : T_IDENT
 		  YYERROR;
 		}
 	    }
-          ;
+	  ;
 
 deflist   : def
-            {
+	    {
 	      $$.head = $$.tail = $1;
 	    }
-          | deflist ',' def
+	  | deflist ',' def
 	    {
 	      $1.tail->next = $3;
 	      $1.tail = $3;
 	      $$ = $1;
 	    }
-          ;
+	  ;
 
 def       : T_TYPE T_IDENT
-            {
+	    {
 	      $$ = dsegm_new_field ($1, $2, 1);
 	    }
-          | T_TYPE T_IDENT '[' T_NUM ']'
-            {
+	  | T_TYPE T_IDENT '[' T_NUM ']'
+	    {
 	      $$ = dsegm_new_field ($1, $2, $4);
 	    }
-          | T_OFF T_NUM
+	  | T_OFF T_NUM
 	    {
 	      $$ = dsegm_new (FDEF_OFF);
 	      $$->v.n = $2;
 	    }
-          | T_PAD T_NUM
+	  | T_PAD T_NUM
 	    {
 	      $$ = dsegm_new (FDEF_PAD);
 	      $$->v.n = $2;
 	    }
-          ;
+	  ;
 
 set       : T_SET
-            {
+	    {
 	      variable_print_all (stdout);
-            }
-          | T_SET asgnlist
+	    }
+	  | T_SET asgnlist
 	  | T_UNSET varlist
-          ;
+	  ;
 
 asgnlist  : asgn
-          | asgnlist asgn
-          ;
+	  | asgnlist asgn
+	  ;
 
 asgn      : T_IDENT
-            {
+	    {
 	      int t = 1;
 	      int rc;
 	      char *varname = $1;
-	      
+
 	      rc = variable_set (varname, VART_BOOL, &t);
 	      if (rc == VAR_ERR_NOTDEF && strncmp (varname, "no", 2) == 0)
 		{
@@ -320,7 +328,7 @@ asgn      : T_IDENT
 		{
 		case VAR_OK:
 		  break;
-		  
+
 		case VAR_ERR_NOTDEF:
 		  lerror (&@1, _("no such variable: %s"), varname);
 		  break;
@@ -336,20 +344,20 @@ asgn      : T_IDENT
 		case VAR_ERR_GDBM:
 		  dberror ("%s", _("can't set variable"));
 		  break;
-		  
+
 		default:
 		  lerror (&@1, _("unexpected error setting %s: %d"), $1, rc);
 		}
 	      free ($1);
 	    }
-          | T_IDENT '=' string
+	  | T_IDENT '=' string
 	    {
 	      int rc = variable_set ($1, VART_STRING, $3);
 	      switch (rc)
 		{
 		case VAR_OK:
 		  break;
-		  
+
 		case VAR_ERR_NOTDEF:
 		  lerror (&@1, _("no such variable: %s"), $1);
 		  break;
@@ -368,20 +376,20 @@ asgn      : T_IDENT
 	      free ($1);
 	      free ($3);
 	    }
-          ;
+	  ;
 
 varlist   : var
-          | varlist var
-          ;
+	  | varlist var
+	  ;
 
 var       : T_IDENT
-            {
+	    {
 	      int rc = variable_unset ($1);
 	      switch (rc)
 		{
 		case VAR_OK:
 		  break;
-		  
+
 		case VAR_ERR_NOTDEF:
 		  lerror (&@1, _("no such variable: %s"), $1);
 		  break;
@@ -392,7 +400,7 @@ var       : T_IDENT
 		}
 	      free ($1);
 	    }
-          ;
+	  ;
 
 %%
 
@@ -437,7 +445,7 @@ yyerror (char const *s)
 void
 gram_trace (int n)
 {
-#if GDBMTOOL_DEBUG  
+#if GDBMTOOL_DEBUG
   yydebug = 1;
 #endif
 }

@@ -34,7 +34,7 @@ main(int argc, char **argv)
 		return 1;
 	}
 
-	key.dptr = &magic;
+	key.dptr = (const char *)&magic;
 	key.dsize = sizeof(magic);
 	value = key;
 	gdbm_store(db, key, value, GDBM_REPLACE);

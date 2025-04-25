@@ -17,7 +17,7 @@ Copyright: 1995      Ray Dassen.
            1996,1997 Christoph Lameter.
            1998-2006 James Troup.
            2016      Dmitry Bogatov <KAction@gnu.org>
-           2021-2022 Nicolas Mora <babelouest@debian.org>
+           2021-2024 Nicolas Mora <babelouest@debian.org>
 License: GPL-3+
 
 Files: doc/*

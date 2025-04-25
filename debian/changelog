@@ -1,3 +1,52 @@
+gdbm (1.24-2) unstable; urgency=medium
+
+  * upload to unstable
+  * Update Standards-Version to 4.7.0
+  * d/tests: fix read-back.c casting error
+
+ -- Nicolas Mora <babelouest@debian.org>  Wed, 07 Aug 2024 07:53:25 -0400
+
+gdbm (1.24-1) experimental; urgency=medium
+
+  * New Upstream release
+  * d/patches: Remove applied upstream patch
+    0001-Ensure-any-padding-bytes-in-avail_elem-are-filled-wi.patch
+
+ -- Nicolas Mora <babelouest@debian.org>  Thu, 04 Jul 2024 07:39:23 -0400
+
+gdbm (1.23-6) unstable; urgency=medium
+
+  * d/control: Add builddep flex
+  * d/copyright: Update year to 2024
+  * d/rules: Remove glibc-build/ files on clean
+  * d/patches: Remove old patches
+  * d/patches: Add patch
+    0001-Ensure-any-padding-bytes-in-avail_elem-are-filled-wi.patch
+    to fix reproductibility issue (Closes: #1031276)
+
+ -- Nicolas Mora <babelouest@debian.org>  Fri, 26 Apr 2024 07:20:47 -0400
+
+gdbm (1.23-5.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Rename libraries for 64-bit time_t transition.  Closes: #1063116
+
+ -- Benjamin Drung <bdrung@debian.org>  Fri, 01 Mar 2024 12:04:12 +0000
+
+gdbm (1.23-5) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Nicolas Mora <babelouest@debian.org>  Tue, 28 Nov 2023 07:51:35 -0500
+
+gdbm (1.23-4) experimental; urgency=medium
+
+  * d/control: remove dietlibc-dev from builddep (Closes: #1055186)
+  * Update Standards-Version to 4.6.2
+  * d/rules: Remove glibc-nolfs-build (Closes: #1055187)
+
+ -- Nicolas Mora <babelouest@debian.org>  Wed, 01 Nov 2023 20:30:06 -0400
+
 gdbm (1.23-3+pexip24u3) pexip-bookworm; urgency=medium
 
   * New versioning scheme

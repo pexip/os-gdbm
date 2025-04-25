@@ -3,13 +3,13 @@
 # Copyright (C) 2019 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gdbm package.
 #
-# Yuri Kozlov <yuray@komyakino.ru>, 2019, 2020, 2021.
+# Yuri Kozlov <yuray@komyakino.ru>, 2019, 2020, 2021, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: gdbm 1.21.90\n"
+"Project-Id-Version: gdbm 1.23\n"
 "Report-Msgid-Bugs-To: bug-gdbm@gnu.org\n"
-"POT-Creation-Date: 2022-02-04 16:04+0200\n"
-"PO-Revision-Date: 2021-09-16 07:12+0300\n"
+"POT-Creation-Date: 2024-07-01 09:33+0300\n"
+"PO-Revision-Date: 2022-02-19 11:02+0300\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnu@d07.ru>\n"
 "Language: ru\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.12.0\n"
 
-#: src/bucket.c:399 src/bucket.c:684 src/falloc.c:211 src/falloc.c:337
+#: src/bucket.c:399 src/bucket.c:685 src/falloc.c:211 src/falloc.c:337
 #: src/findkey.c:124 src/gdbmstore.c:168 src/update.c:36 src/update.c:76
 msgid "lseek error"
 msgstr "ошибка lseek"
@@ -274,30 +274,32 @@ msgstr "ФАЙЛ_БД [ФАЙЛ]"
 msgid "select dump format"
 msgstr "формат дампа"
 
-#: tools/gdbm_dump.c:67
+#: tools/gdbm_dump.c:67 tools/gdbm_dump.c:79
 msgid "unknown dump format"
 msgstr "неизвестный формат дампа"
 
-#: tools/gdbm_dump.c:74 tools/gdbm_load.c:215
+#: tools/gdbm_dump.c:86 tools/gdbm_load.c:225
 msgid "unknown option"
 msgstr "неизвестный параметр"
 
-#: tools/gdbm_dump.c:90 tools/gdbm_load.c:231
+#: tools/gdbm_dump.c:102 tools/gdbm_load.c:241
 #, c-format
 msgid "too many arguments; try `%s -h' for more info"
 msgstr "слишком много аргументов; посмотрите справку «%s -h»"
 
-#: tools/gdbm_dump.c:110 tools/gdbm_load.c:251
+#: tools/gdbm_dump.c:122 tools/gdbm_load.c:267
 #, c-format
 msgid "cannot open %s"
 msgstr "не удалось открыть %s"
 
-#: tools/gdbm_dump.c:118 tools/gdbm_load.c:261
+#: tools/gdbm_dump.c:130 tools/gdbm_load.c:277
 msgid "gdbm_open failed"
 msgstr "вызов gdbm_open завершился ошибкой"
 
-#: tools/gdbm_dump.c:125
-msgid "dump error"
+#: tools/gdbm_dump.c:137
+#, fuzzy, c-format
+#| msgid "dump error"
+msgid "%s: dump error"
 msgstr "ошибка создания дампа"
 
 #: tools/gdbm_load.c:32
@@ -309,7 +311,9 @@ msgid "FILE [DB_FILE]"
 msgstr "ФАЙЛ [ФАЙЛ_БД]"
 
 #: tools/gdbm_load.c:35
-msgid "replace records in the existing database"
+#, fuzzy
+#| msgid "replace records in the existing database"
+msgid "replace records in the existing database (needs -U)"
 msgstr "заменять записи в существующей базе данных"
 
 #: tools/gdbm_load.c:36
@@ -321,85 +325,95 @@ msgid "set file mode"
 msgstr "режим доступа к файлу"
 
 #: tools/gdbm_load.c:37
+#, fuzzy
+#| msgid "replace records in the existing database"
+msgid "update the existing database"
+msgstr "заменять записи в существующей базе данных"
+
+#: tools/gdbm_load.c:38
 msgid "NAME|UID[:NAME|GID]"
 msgstr "ИМЯ|UID[:ИМЯ|GID]"
 
-#: tools/gdbm_load.c:37
+#: tools/gdbm_load.c:38
 msgid "set file owner"
 msgstr "владелец файла"
 
-#: tools/gdbm_load.c:38
+#: tools/gdbm_load.c:39
 msgid "do not attempt to set file meta-data"
 msgstr "не пытаться задать метаданные файла"
 
-#: tools/gdbm_load.c:39
+#: tools/gdbm_load.c:40
 msgid "use memory mapping"
 msgstr "использовать проецирование в память"
 
-#: tools/gdbm_load.c:40 tools/gdbm_load.c:41
+#: tools/gdbm_load.c:41 tools/gdbm_load.c:42
 msgid "NUM"
 msgstr "ЧИСЛО"
 
-#: tools/gdbm_load.c:40
+#: tools/gdbm_load.c:41
 msgid "set the cache size"
 msgstr "размер кэша"
 
-#: tools/gdbm_load.c:41
+#: tools/gdbm_load.c:42
 msgid "set the block size"
 msgstr "размер блока"
 
-#: tools/gdbm_load.c:79
+#: tools/gdbm_load.c:80
 #, c-format
 msgid "invalid number: %s"
 msgstr "неверное число: %s"
 
-#: tools/gdbm_load.c:84
+#: tools/gdbm_load.c:85
 #, c-format
 msgid "invalid number: %s: %s"
 msgstr "неверное число: %s %s"
 
-#: tools/gdbm_load.c:136
+#: tools/gdbm_load.c:137
 #, c-format
 msgid "invalid octal number"
 msgstr "неверное восьмеричное число"
 
-#: tools/gdbm_load.c:161
+#: tools/gdbm_load.c:167
 #, c-format
 msgid "invalid user name: %s"
 msgstr "неверное имя пользователя: %s"
 
-#: tools/gdbm_load.c:180
+#: tools/gdbm_load.c:186
 #, c-format
 msgid "invalid group name: %s"
 msgstr "неверное имя группы: %s"
 
-#: tools/gdbm_load.c:192
+#: tools/gdbm_load.c:198
 #, c-format
 msgid "no such UID: %lu"
 msgstr "UID не найден: %lu"
 
-#: tools/gdbm_load.c:267
+#: tools/gdbm_load.c:247
+msgid "-r is useless without -U"
+msgstr ""
+
+#: tools/gdbm_load.c:283
 #, c-format
 msgid "gdbm_setopt failed: %s"
 msgstr "вызов gdbm_setopt завершился ошибкой: %s"
 
-#: tools/gdbm_load.c:281 tools/gdbm_load.c:299
+#: tools/gdbm_load.c:297 tools/gdbm_load.c:315
 #, c-format
 msgid "error restoring metadata: %s (%s)"
 msgstr "ошибка восстановления метаданных: %s (%s)"
 
-#: tools/gdbm_load.c:290 tools/gdbmshell.c:1635
+#: tools/gdbm_load.c:306 tools/gdbmshell.c:1674
 #, c-format
 msgid "cannot load from %s"
 msgstr "невозможно загрузить из %s"
 
-#: tools/gdbm_load.c:307
+#: tools/gdbm_load.c:323
 msgid "gdbm_setopt failed"
 msgstr "вызов gdbm_setopt завершился ошибкой"
 
 #: tools/gdbmshell.c:64 tools/gdbmshell.c:157 tools/gdbmshell.c:361
-#: tools/gdbmshell.c:497 tools/gdbmshell.c:873 tools/gdbmshell.c:910
-#: tools/gdbmshell.c:919
+#: tools/gdbmshell.c:497 tools/gdbmshell.c:905 tools/gdbmshell.c:942
+#: tools/gdbmshell.c:951
 #, c-format
 msgid "%s failed"
 msgstr "%s завершился ошибкой"
@@ -415,9 +429,9 @@ msgid "cannot open database %s"
 msgstr "не удалось открыть базу данных %s"
 
 #: tools/gdbmshell.c:252
-#, fuzzy, c-format
+#, c-format
 msgid "Bucket #%d"
-msgstr "Корзина #%s"
+msgstr "Корзина #%d"
 
 #: tools/gdbmshell.c:255
 #, c-format
@@ -427,6 +441,10 @@ msgid ""
 "hash prefix = %08x\n"
 "references  = %u"
 msgstr ""
+"адрес       = %lu\n"
+"глубина     = %d\n"
+"хэш-префикс = %08x\n"
+"ссылок      = %u"
 
 #: tools/gdbmshell.c:270
 #, c-format
@@ -434,10 +452,12 @@ msgid ""
 "count       = %d\n"
 "load factor = %3d\n"
 msgstr ""
+"количество  = %d\n"
+"коэффициент использования  = %3d\n"
 
 #: tools/gdbmshell.c:275
 msgid "Hash Table:\n"
-msgstr ""
+msgstr "Хэш-таблица:\n"
 
 #: tools/gdbmshell.c:277
 #, c-format
@@ -448,13 +468,13 @@ msgstr ""
 "ключа\n"
 
 #: tools/gdbmshell.c:295
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Avail count = %d\n"
 msgstr ""
 "\n"
-"Доступное количество = %1d\n"
+"Доступное количество = %d\n"
 
 #: tools/gdbmshell.c:296
 #, c-format
@@ -556,84 +576,100 @@ msgstr "Ошибка перекомпоновки"
 msgid "Reorganization succeeded."
 msgstr "Перекомпоновка выполнена."
 
-#: tools/gdbmshell.c:700 tools/gdbmshell.c:710 tools/gdbmshell.c:720
-#: tools/gdbmshell.c:825 tools/gdbmshell.c:834
-#, c-format
-msgid "not a number (stopped near %s)"
-msgstr "не число (остановка рядом с %s)"
-
-#: tools/gdbmshell.c:727 tools/gdbmshell.c:1561 tools/gdbmshell.c:1596
+#: tools/gdbmshell.c:702 tools/gdbmshell.c:751 tools/gdbmshell.c:1599
+#: tools/gdbmshell.c:1635
 #, c-format
 msgid "unrecognized argument: %s"
 msgstr "нераспознанный аргумент: %s"
 
-#: tools/gdbmshell.c:736
+#: tools/gdbmshell.c:710
+#, fuzzy, c-format
+#| msgid "%s: bad variable type"
+msgid "%s: bad argument type"
+msgstr "%s: неправильный тип переменной"
+
+#: tools/gdbmshell.c:715
+msgid "unexpected compound statement"
+msgstr ""
+
+#: tools/gdbmshell.c:724 tools/gdbmshell.c:734 tools/gdbmshell.c:744
+#: tools/gdbmshell.c:856 tools/gdbmshell.c:865
+#, c-format
+msgid "not a number (stopped near %s)"
+msgstr "не число (остановка рядом с %s)"
+
+#: tools/gdbmshell.c:757
+#, fuzzy
+#| msgid "unexpected eof"
+msgid "unexpected datum"
+msgstr "неожиданный конец файла"
+
+#: tools/gdbmshell.c:767
 #, c-format
 msgid "Recovery succeeded.\n"
 msgstr "Восстановление выполнено.\n"
 
-#: tools/gdbmshell.c:740
+#: tools/gdbmshell.c:771
 #, c-format
 msgid "Keys recovered: %lu, failed: %lu, duplicate: %lu\n"
 msgstr "Восстановлено ключей: %lu, не удалось: %lu, дубликатов: %lu\n"
 
-#: tools/gdbmshell.c:745
+#: tools/gdbmshell.c:776
 #, c-format
 msgid "Buckets recovered: %lu, failed: %lu\n"
 msgstr "Восстановлено корзин: %lu, не удалось: %lu\n"
 
-#: tools/gdbmshell.c:753
+#: tools/gdbmshell.c:784
 #, c-format
 msgid "Original database preserved in file %s"
 msgstr "Первоначальная база данных сохранена в файле %s"
 
-#: tools/gdbmshell.c:761
+#: tools/gdbmshell.c:792
 msgid "Recovery failed"
 msgstr "Сбой при восстановлении"
 
-#: tools/gdbmshell.c:812 tools/gdbmshell.c:894
+#: tools/gdbmshell.c:843 tools/gdbmshell.c:926
 #, c-format
 msgid "no current bucket\n"
 msgstr "нет текущей корзины\n"
 
-#: tools/gdbmshell.c:861
+#: tools/gdbmshell.c:893
 #, c-format
 msgid "bucket number out of range (0..%lu)"
 msgstr "номер корзины выходит за допустимые границы (0..%lu)"
 
-#: tools/gdbmshell.c:904 tools/gdbmshell.c:916
+#: tools/gdbmshell.c:936 tools/gdbmshell.c:948
 #, c-format
 msgid "no sibling\n"
-msgstr ""
+msgstr "не одноуровневых элементов\n"
 
-#: tools/gdbmshell.c:964
+#: tools/gdbmshell.c:996
 #, c-format
 msgid "Hash table directory.\n"
 msgstr "Каталог хэш-таблицы.\n"
 
-#: tools/gdbmshell.c:965
-#, fuzzy, c-format
+#: tools/gdbmshell.c:997
+#, c-format
 msgid ""
 "  Size =  %d.  Capacity = %lu.  Bits = %d,  Buckets = %zu.\n"
 "\n"
 msgstr ""
-"  Размер =  %d. Бит = %d, Корзин = %zu.\n"
+"  Размер =  %d. Ёмкость = %lu. Бит = %d, Корзин = %zu.\n"
 "\n"
 
-#: tools/gdbmshell.c:972
+#: tools/gdbmshell.c:1004
 msgid "Index"
-msgstr ""
+msgstr "Индекс"
 
-#: tools/gdbmshell.c:972
+#: tools/gdbmshell.c:1004
 msgid "Hash Pfx"
-msgstr ""
+msgstr "Хэш-префикс"
 
-#: tools/gdbmshell.c:972
-#, fuzzy
+#: tools/gdbmshell.c:1004
 msgid "Bucket address"
-msgstr "Корзина #%s"
+msgstr "Адрес корзины"
 
-#: tools/gdbmshell.c:1040
+#: tools/gdbmshell.c:1072
 #, c-format
 msgid ""
 "\n"
@@ -644,71 +680,67 @@ msgstr ""
 "Файловый заголовок: \n"
 "\n"
 
-#: tools/gdbmshell.c:1041
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1073
+#, c-format
 msgid "  type            = %s\n"
 msgstr "  тип                     = %s\n"
 
-#: tools/gdbmshell.c:1042
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1074
+#, c-format
 msgid "  directory start = %lu\n"
-msgstr ""
-"\n"
-" текущий элемент каталога = %d.\n"
+msgstr " начало каталога          = %lu\n"
 
-#: tools/gdbmshell.c:1044
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1076
+#, c-format
 msgid "  directory size  = %d\n"
-msgstr "  размер корзины          = %d\n"
+msgstr "  размер каталога         = %d\n"
 
-#: tools/gdbmshell.c:1045
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1077
+#, c-format
 msgid "  directory depth = %d\n"
-msgstr ""
-"\n"
-" текущий элемент каталога = %d.\n"
+msgstr "  глубина каталога        = %d\n"
 
-#: tools/gdbmshell.c:1046
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1078
+#, c-format
 msgid "  block size      = %d\n"
 msgstr "  размер блока            = %d\n"
 
-#: tools/gdbmshell.c:1047
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1079
+#, c-format
 msgid "  bucket elems    = %d\n"
 msgstr "  элементов корзины       = %d\n"
 
-#: tools/gdbmshell.c:1048
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1080
+#, c-format
 msgid "  bucket size     = %d\n"
 msgstr "  размер корзины          = %d\n"
 
-#: tools/gdbmshell.c:1049
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1081
+#, c-format
 msgid "  header magic    = %x\n"
 msgstr "  идентификатор заголовка = %x\n"
 
-#: tools/gdbmshell.c:1050
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1082
+#, c-format
 msgid "  next block      = %lu\n"
 msgstr "  следующий блок          = %lu\n"
 
-#: tools/gdbmshell.c:1053
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1085
+#, c-format
 msgid "  avail size      = %d\n"
 msgstr "  доступный размер        = %d\n"
 
-#: tools/gdbmshell.c:1054
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1086
+#, c-format
 msgid "  avail count     = %d\n"
 msgstr "  доступное количество    = %d\n"
 
-#: tools/gdbmshell.c:1055
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1087
+#, c-format
 msgid "  avail next block= %lu\n"
-msgstr "  доступный nx blk        = %lu\n"
+msgstr "  доступный след. блок    = %lu\n"
 
-#: tools/gdbmshell.c:1060
+#: tools/gdbmshell.c:1092
 #, c-format
 msgid ""
 "\n"
@@ -719,382 +751,379 @@ msgstr ""
 "Расширенный заголовок: \n"
 "\n"
 
-#: tools/gdbmshell.c:1061
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1093
+#, c-format
 msgid "      version = %d\n"
 msgstr "       версия             = %d\n"
 
-#: tools/gdbmshell.c:1062
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1094
+#, c-format
 msgid "      numsync = %u\n"
 msgstr "       numsync            = %u\n"
 
-#: tools/gdbmshell.c:1176
+#: tools/gdbmshell.c:1208
 msgid "bad file mode"
 msgstr "некорректный режим доступа к файлу"
 
-#: tools/gdbmshell.c:1186
+#: tools/gdbmshell.c:1218
 msgid "insufficient precision"
-msgstr ""
+msgstr "недостаточная точность"
 
 #. TRANSLATORS: Stands for "Not Available".
-#: tools/gdbmshell.c:1199
+#: tools/gdbmshell.c:1231
 msgid "N/A"
 msgstr "Н/Д"
 
-#: tools/gdbmshell.c:1207 tools/gdbmshell.c:1212
+#: tools/gdbmshell.c:1239 tools/gdbmshell.c:1244
 msgid "can't open database"
 msgstr "не удалось открыть базу данных"
 
-#: tools/gdbmshell.c:1217
+#: tools/gdbmshell.c:1249
 msgid "not a regular file"
 msgstr "не обычный файл"
 
-#: tools/gdbmshell.c:1222
+#: tools/gdbmshell.c:1254
 msgid "ERROR"
 msgstr "ОШИБКА"
 
-#: tools/gdbmshell.c:1232
+#: tools/gdbmshell.c:1264
 #, c-format
 msgid "%s: ERROR: can't stat: %s"
 msgstr "%s: ОШИБКА: невозможно выполнить stat: %s"
 
-#: tools/gdbmshell.c:1256
+#: tools/gdbmshell.c:1288
 msgid "Invalid arguments in call to gdbm_latest_snapshot"
 msgstr "Некорректные аргументы в вызове gdbm_latest_snapshot"
 
-#: tools/gdbmshell.c:1261
+#: tools/gdbmshell.c:1293
 msgid ""
 "Function is not implemented: GDBM is built without crash-tolerance support"
 msgstr ""
 "Функция не реализована: GDBM собрана без поддержки устойчивости к сбоям"
 
-#: tools/gdbmshell.c:1269
+#: tools/gdbmshell.c:1301
 msgid "Selected the most recent snapshot"
 msgstr "Выбран самый новый снимок"
 
-#: tools/gdbmshell.c:1273
+#: tools/gdbmshell.c:1305
 msgid "Neither snapshot is readable"
 msgstr "Ни один из снимков не читается"
 
-#: tools/gdbmshell.c:1278
+#: tools/gdbmshell.c:1310
 msgid "Error selecting snapshot"
 msgstr "Ошибка выбора снимка"
 
-#: tools/gdbmshell.c:1283
+#: tools/gdbmshell.c:1315
 msgid "Snapshot modes and dates are the same"
 msgstr "Режимы и даты снимков одинаковые"
 
-#: tools/gdbmshell.c:1288
+#: tools/gdbmshell.c:1320
 msgid "Snapshot sync counters differ by more than 1"
 msgstr "Различие счётчиков синхронизации снимков больше 1"
 
-#: tools/gdbmshell.c:1314
+#: tools/gdbmshell.c:1348
 #, c-format
 msgid "unexpected error code: %d"
 msgstr "неожиданный код ошибки: %d"
 
-#: tools/gdbmshell.c:1331
+#: tools/gdbmshell.c:1368
 #, c-format
 msgid "hash value = %x, bucket #%u, slot %u"
 msgstr "хэш-значение = %x, корзина #%u, слот %u"
 
-#: tools/gdbmshell.c:1337
+#: tools/gdbmshell.c:1374
 #, c-format
 msgid "hash value = %x"
 msgstr "хэш-значение = %x"
 
-#: tools/gdbmshell.c:1390
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1427
+#, c-format
 msgid "unrecognized parameter: %s\n"
-msgstr "нераспознанный аргумент: %s"
+msgstr "нераспознанный параметр: %s\n"
 
-#: tools/gdbmshell.c:1397
-#, fuzzy
+#: tools/gdbmshell.c:1434
 msgid "select bucket first\n"
-msgstr "формат дампа"
+msgstr "сначала выберите корзину\n"
 
-#: tools/gdbmshell.c:1448
-#, fuzzy, c-format
+#: tools/gdbmshell.c:1485
+#, c-format
 msgid "error reading entry %d"
-msgstr "ошибка восстановления метаданных"
+msgstr "ошибка чтения элемента %d"
 
-#: tools/gdbmshell.c:1457 tools/gdbmshell.c:1495
+#: tools/gdbmshell.c:1494 tools/gdbmshell.c:1532
 msgid "the key was:"
 msgstr "ключ был:"
 
-#: tools/gdbmshell.c:1570
+#: tools/gdbmshell.c:1608
 msgid "error dumping database"
 msgstr "ошибка при создании дампа базы данных"
 
-#: tools/gdbmshell.c:1628
+#: tools/gdbmshell.c:1667
 msgid "error restoring metadata"
 msgstr "ошибка восстановления метаданных"
 
-#: tools/gdbmshell.c:1661
+#: tools/gdbmshell.c:1700
 #, c-format
 msgid "Database file: %s\n"
 msgstr "Файл базы данных: %s\n"
 
-#: tools/gdbmshell.c:1663
+#: tools/gdbmshell.c:1702
 msgid "Database is open"
 msgstr "База данных открыта"
 
-#: tools/gdbmshell.c:1665
+#: tools/gdbmshell.c:1704
 msgid "Database is not open"
 msgstr "База данных не открыта"
 
-#: tools/gdbmshell.c:1720
+#: tools/gdbmshell.c:1759
 #, c-format
 msgid "unknown debug flag: %s"
 msgstr "неизвестный флаг отладки: %s"
 
-#: tools/gdbmshell.c:1723
+#: tools/gdbmshell.c:1762
 #, c-format
 msgid "invalid type of argument %d"
 msgstr "неправильный тип аргумента %d"
 
-#: tools/gdbmshell.c:1728
+#: tools/gdbmshell.c:1767
 #, c-format
 msgid "Debug flags:"
 msgstr "Флаги отладки:"
 
-#: tools/gdbmshell.c:1734
+#: tools/gdbmshell.c:1773
 msgid "none"
 msgstr "нет"
 
-#: tools/gdbmshell.c:1738
+#: tools/gdbmshell.c:1777
 msgid "compiled without debug support"
 msgstr "скомпилировано без поддержки отладки"
 
-#: tools/gdbmshell.c:1789
+#: tools/gdbmshell.c:1828
 #, c-format
 msgid "command failed with status %d"
 msgstr "команда завершилась с ошибкой %d"
 
-#: tools/gdbmshell.c:1792
+#: tools/gdbmshell.c:1831
 #, c-format
 msgid "command terminated on signal %d"
 msgstr "команда завершена по сигналу %d"
 
 #. TRANSLATORS: %s is the stream name
-#: tools/gdbmshell.c:1862
+#: tools/gdbmshell.c:1901
 #, c-format
 msgid "input history is not available for %s input stream"
 msgstr "история входных данных недоступна для входного потока %s"
 
-#: tools/gdbmshell.c:1954
+#: tools/gdbmshell.c:1994
 msgid "count (number of entries)"
 msgstr "количество (количество элементов)"
 
-#: tools/gdbmshell.c:1964 tools/gdbmshell.c:1992 tools/gdbmshell.c:2045
-#: tools/gdbmshell.c:2154
+#: tools/gdbmshell.c:2004 tools/gdbmshell.c:2032 tools/gdbmshell.c:2085
+#: tools/gdbmshell.c:2194
 msgid "KEY"
 msgstr "КЛЮЧ"
 
-#: tools/gdbmshell.c:1967
+#: tools/gdbmshell.c:2007
 msgid "delete a record"
 msgstr "удалить запись"
 
-#: tools/gdbmshell.c:1977 tools/gdbmshell.c:2005 tools/gdbmtool.c:93
+#: tools/gdbmshell.c:2017 tools/gdbmshell.c:2045 tools/gdbmtool.c:93
 msgid "FILE"
 msgstr "ФАЙЛ"
 
-#: tools/gdbmshell.c:1982
+#: tools/gdbmshell.c:2022
 msgid "export"
 msgstr "экспорт"
 
-#: tools/gdbmshell.c:1995
+#: tools/gdbmshell.c:2035
 msgid "fetch record"
 msgstr "выбрать запись"
 
-#: tools/gdbmshell.c:2010
+#: tools/gdbmshell.c:2050
 msgid "import"
 msgstr "импорт"
 
-#: tools/gdbmshell.c:2022
+#: tools/gdbmshell.c:2062
 msgid "list"
 msgstr "список"
 
-#: tools/gdbmshell.c:2032
+#: tools/gdbmshell.c:2072
 msgid "[KEY]"
 msgstr "[КЛЮЧ]"
 
-#: tools/gdbmshell.c:2035
+#: tools/gdbmshell.c:2075
 msgid "continue iteration: get next key and datum"
 msgstr "продолжение итерации: получаем следующий ключ и данные"
 
-#: tools/gdbmshell.c:2046
+#: tools/gdbmshell.c:2086
 msgid "DATA"
 msgstr "ДАННЫЕ"
 
-#: tools/gdbmshell.c:2049
+#: tools/gdbmshell.c:2089
 msgid "store"
 msgstr "сохранить"
 
-#: tools/gdbmshell.c:2058
+#: tools/gdbmshell.c:2098
 msgid "begin iteration: get first key and datum"
 msgstr "начало итерации: получить первый ключ и данные"
 
-#: tools/gdbmshell.c:2067
+#: tools/gdbmshell.c:2107
 msgid "reorganize"
 msgstr "перекомпоновать"
 
-#: tools/gdbmshell.c:2086
+#: tools/gdbmshell.c:2126
 msgid "recover the database"
 msgstr "восстановить базу данных"
 
-#: tools/gdbmshell.c:2095
+#: tools/gdbmshell.c:2135
 msgid "print avail list"
 msgstr "напечатать доступный список"
 
-#: tools/gdbmshell.c:2105
-#, fuzzy
+#: tools/gdbmshell.c:2145
 msgid "[NUMBER]"
-msgstr "НОМЕР"
+msgstr "[НОМЕР]"
 
-#: tools/gdbmshell.c:2108
+#: tools/gdbmshell.c:2148
 msgid "print a bucket"
 msgstr "показать корзину"
 
-#: tools/gdbmshell.c:2117
+#: tools/gdbmshell.c:2157
 msgid "print current bucket"
 msgstr "показать текущую корзину"
 
-#: tools/gdbmshell.c:2126
-#, fuzzy
+#: tools/gdbmshell.c:2166
 msgid "print sibling bucket"
-msgstr "показать корзину"
+msgstr "показать корзину того же уровня"
 
-#: tools/gdbmshell.c:2135
+#: tools/gdbmshell.c:2175
 msgid "print hash directory"
 msgstr "показать хэш-каталог"
 
-#: tools/gdbmshell.c:2144
+#: tools/gdbmshell.c:2184
 msgid "print database file header"
 msgstr "показать заголовок файла базы данных"
 
-#: tools/gdbmshell.c:2157
+#: tools/gdbmshell.c:2197
 msgid "hash value of key"
 msgstr "хэш-значение ключа"
 
-#: tools/gdbmshell.c:2165
+#: tools/gdbmshell.c:2205
 msgid "print the bucket cache"
 msgstr "показать кэш корзины"
 
-#: tools/gdbmshell.c:2174
+#: tools/gdbmshell.c:2214
 msgid "print current program status"
 msgstr "показать текущее состояние программы"
 
-#: tools/gdbmshell.c:2182
+#: tools/gdbmshell.c:2222
 msgid "Synchronize the database with disk copy"
 msgstr "Синхронизировать базу данных с копией на диске"
 
-#: tools/gdbmshell.c:2191
+#: tools/gdbmshell.c:2231
 msgid "Upgrade the database to extended format"
 msgstr "Обновить базу данных до расширенного формата"
 
-#: tools/gdbmshell.c:2200
+#: tools/gdbmshell.c:2240
 msgid "Downgrade the database to standard format"
 msgstr "Перевести базу данных в стандартный формат"
 
-#: tools/gdbmshell.c:2214
+#: tools/gdbmshell.c:2254
 msgid "analyze two database snapshots"
 msgstr "анализировать два снимка базы данных"
 
-#: tools/gdbmshell.c:2222
+#: tools/gdbmshell.c:2262
 msgid "print version of gdbm"
 msgstr "показать версию gdbm"
 
-#: tools/gdbmshell.c:2230
+#: tools/gdbmshell.c:2270
 msgid "print this help list"
 msgstr "показать эту справку"
 
-#: tools/gdbmshell.c:2239
+#: tools/gdbmshell.c:2279
 msgid "quit the program"
 msgstr "завершить работу программы"
 
-#: tools/gdbmshell.c:2251
+#: tools/gdbmshell.c:2291
 msgid "set or list variables"
 msgstr "задать или показать переменные"
 
-#: tools/gdbmshell.c:2262
+#: tools/gdbmshell.c:2302
 msgid "unset variables"
 msgstr "удалить переменные"
 
-#: tools/gdbmshell.c:2274
+#: tools/gdbmshell.c:2314
 msgid "define datum structure"
 msgstr "определить структуру datum"
 
-#: tools/gdbmshell.c:2285
+#: tools/gdbmshell.c:2325
 msgid "source command script"
 msgstr "источник командного сценария"
 
-#: tools/gdbmshell.c:2293
+#: tools/gdbmshell.c:2333
 msgid "close the database"
 msgstr "закрыть базу данных"
 
-#: tools/gdbmshell.c:2305
+#: tools/gdbmshell.c:2345
 msgid "open new database"
 msgstr "открыть базу данных"
 
-#: tools/gdbmshell.c:2314
+#: tools/gdbmshell.c:2354
 msgid "[FROM]"
 msgstr "[ИЗ]"
 
-#: tools/gdbmshell.c:2315
+#: tools/gdbmshell.c:2355
 msgid "[COUNT]"
 msgstr "[КОЛИЧЕСТВО]"
 
-#: tools/gdbmshell.c:2318
+#: tools/gdbmshell.c:2358
 msgid "show input history"
 msgstr "показать историю ввода"
 
-#: tools/gdbmshell.c:2327
+#: tools/gdbmshell.c:2367
 msgid "query/set debug level"
 msgstr "показать/задать уровень отладки"
 
-#: tools/gdbmshell.c:2335
+#: tools/gdbmshell.c:2386
 msgid "invoke the shell"
 msgstr "запустить оболочку"
 
-#: tools/gdbmshell.c:2347
+#: tools/gdbmshell.c:2398
 msgid "describe GDBM error code"
-msgstr ""
+msgstr "пояснить код ошибки GDBM"
 
-#: tools/gdbmshell.c:2492
+#: tools/gdbmshell.c:2547
 msgid "Invalid command. Try ? for help."
 msgstr "Недопустимая команда. Введите ? для показа справки."
 
-#: tools/gdbmshell.c:2493
+#: tools/gdbmshell.c:2548
 msgid "Unknown command"
 msgstr "Неизвестная команда"
 
-#: tools/gdbmshell.c:2808
+#: tools/gdbmshell.c:2863
 #, c-format
 msgid "cannot coerce %s to %s"
 msgstr "невозможно преобразовать %s к %s"
 
-#: tools/gdbmshell.c:2957
+#: tools/gdbmshell.c:3044
 #, c-format
 msgid "%s: not enough arguments"
 msgstr "%s: недостаточно аргументов"
 
-#: tools/gdbmshell.c:2964
+#: tools/gdbmshell.c:3052
 msgid "unexpected eof"
 msgstr "неожиданный конец файла"
 
-#: tools/gdbmshell.c:2980
+#: tools/gdbmshell.c:3068
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: слишком много аргументов"
 
-#: tools/gdbmshell.c:3041
+#: tools/gdbmshell.c:3129
 #, c-format
 msgid "cannot run pager `%s': %s"
 msgstr "не удалось запустить программу просмотра «%s»: %s"
 
-#: tools/gdbmshell.c:3146
+#: tools/gdbmshell.c:3234
 #, c-format
 msgid ""
 "\n"
@@ -1175,13 +1204,12 @@ msgid "extended format (numsync)"
 msgstr "расширенный формат (numsync)"
 
 #: tools/gdbmtool.c:108
-#, fuzzy
 msgid "enable trace mode"
-msgstr "включить трассировку грамматики"
+msgstr "включить режим трассировки"
 
 #: tools/gdbmtool.c:109
 msgid "print timing after each command"
-msgstr ""
+msgstr "печатать время после каждой команды"
 
 #: tools/gdbmtool.c:111
 msgid "enable lexical analyzer traces"
@@ -1197,9 +1225,9 @@ msgid "invalid file descriptor: %s"
 msgstr "неверный файловый дескриптор: %s"
 
 #: tools/gdbmtool.c:226
-#, fuzzy, c-format
+#, c-format
 msgid "unknown option %s; try `%s -h' for more info"
-msgstr "неизвестный параметр %c; для показа справки введите «%s -h»"
+msgstr "неизвестный параметр %s; для показа справки введите «%s -h»"
 
 #: tools/gdbmtool.c:229
 #, c-format
@@ -1210,81 +1238,80 @@ msgstr "неизвестный параметр %c; для показа спра
 msgid "--file and command cannot be used together"
 msgstr "--file и команду нельзя использовать вместе"
 
-#: tools/gram.y:172
+#: tools/gram.y:179
 #, c-format
 msgid "duplicate tag: %s"
 msgstr "повторный тег: %s"
 
-#: tools/gram.y:253
+#: tools/gram.y:261
 #, c-format
 msgid "expected \"key\" or \"content\", but found \"%s\""
 msgstr "ожидалось «key» или «content», но найдено «%s»"
 
-#: tools/gram.y:325 tools/gram.y:354 tools/gram.y:386
+#: tools/gram.y:333 tools/gram.y:362 tools/gram.y:394
 #, c-format
 msgid "no such variable: %s"
 msgstr "нет переменной с именем: %s"
 
-#: tools/gram.y:329
+#: tools/gram.y:337
 #, c-format
 msgid "%s is not a boolean variable"
 msgstr "%s не является булевой переменной"
 
-#: tools/gram.y:333
+#: tools/gram.y:341
 #, c-format
 msgid "%s: setting is not allowed"
 msgstr "%s: значение недопустимо"
 
-#: tools/gram.y:337
-#, fuzzy
+#: tools/gram.y:345
 msgid "can't set variable"
-msgstr "удалить переменные"
+msgstr "невозможно задать переменную"
 
-#: tools/gram.y:341 tools/gram.y:366
+#: tools/gram.y:349 tools/gram.y:374
 #, c-format
 msgid "unexpected error setting %s: %d"
 msgstr "неожиданный ошибка при назначении %s: %d"
 
-#: tools/gram.y:358
+#: tools/gram.y:366
 #, c-format
 msgid "%s: bad variable type"
 msgstr "%s: неправильный тип переменной"
 
-#: tools/gram.y:362
+#: tools/gram.y:370
 #, c-format
 msgid "%s: value %s is not allowed"
 msgstr "%s: значение %s не допускается"
 
-#: tools/gram.y:390
+#: tools/gram.y:398
 #, c-format
 msgid "%s: variable cannot be unset"
 msgstr "%s: переменную нельзя удалить"
 
 #: tools/input-file.c:60
-#, fuzzy, c-format
+#, c-format
 msgid "cannot open `%s': %s"
-msgstr "не удалось открыть %s"
+msgstr "не удалось открыть «%s»: %s"
 
 #: tools/input-file.c:65
-#, fuzzy, c-format
+#, c-format
 msgid "%s is not a regular file"
-msgstr "не обычный файл"
+msgstr "%s не является обычным файлом"
 
 #: tools/input-file.c:72
-#, fuzzy, c-format
+#, c-format
 msgid "cannot open %s for reading: %s"
-msgstr "невозможно преобразовать %s к %s"
+msgstr "невозможно открыть %s для чтения: %s"
 
-#: tools/lex.l:144
+#: tools/lex.l:146
 msgid "recursive sourcing"
 msgstr "рекурсивный источник"
 
-#: tools/lex.l:146
+#: tools/lex.l:148
 #, c-format
 msgid "%s already sourced here"
 msgstr "источник  уже указан здесь %s"
 
-#: tools/lex.l:257 tools/lex.l:267
+#: tools/lex.l:259 tools/lex.l:269
 msgid "invalid #line statement"
 msgstr "неправильное определение #line"
 
@@ -1303,37 +1330,37 @@ msgstr "вывод короткого сообщения об использов
 #: tools/parseopt.c:289
 #, c-format
 msgid "error in ARGP_HELP_FMT: improper usage of [no-]%s\n"
-msgstr ""
+msgstr "ошибка в ARGP_HELP_FMT: некорректное использование [no-]%s\n"
 
 #: tools/parseopt.c:307
 #, c-format
 msgid "error in ARGP_HELP_FMT: bad value for %s"
-msgstr ""
+msgstr "ошибка в ARGP_HELP_FMT: некорректное значение %s"
 
 #: tools/parseopt.c:311
 #, c-format
 msgid " (near %s)"
-msgstr ""
+msgstr " (около %s)"
 
 #: tools/parseopt.c:320
 #, c-format
 msgid "error in ARGP_HELP_FMT: %s value is out of range\n"
-msgstr ""
+msgstr "ошибка в ARGP_HELP_FMT: значение %s вне диапазона\n"
 
 #: tools/parseopt.c:331
 #, c-format
 msgid "%s: ARGP_HELP_FMT parameter requires a value\n"
-msgstr ""
+msgstr "%s: для параметра ARGP_HELP_FMT требуется значение\n"
 
 #: tools/parseopt.c:340
 #, c-format
 msgid "%s: Unknown ARGP_HELP_FMT parameter\n"
-msgstr ""
+msgstr "%s: неизвестный параметр ARGP_HELP_FMT\n"
 
 #: tools/parseopt.c:367
 #, c-format
 msgid "ARGP_HELP_FMT: missing delimiter near %s\n"
-msgstr ""
+msgstr "ARGP_HELP_FMT: отсутствует разделитель рядом с %s\n"
 
 #: tools/parseopt.c:487 tools/parseopt.c:565
 msgid "Usage:"
@@ -1378,9 +1405,9 @@ msgid "Please, reply 'y' or 'n'"
 msgstr "Введите «y» или «n»"
 
 #: tools/var.c:792
-#, fuzzy, c-format
+#, c-format
 msgid "unrecognized error code: %s"
-msgstr "неожиданный код ошибки: %d"
+msgstr "неожиданный код ошибки: %s"
 
 #~ msgid ""
 #~ "bits = %d\n"

@@ -1,5 +1,5 @@
 # This file is part of GDBM.                                   -*- autoconf -*-
-# Copyright (C) 2011-2022 Free Software Foundation, Inc.
+# Copyright (C) 2011-2024 Free Software Foundation, Inc.
 #
 # GDBM is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -65,6 +65,7 @@ TESTSUITE_AT = \
  dbmfetch01.at\
  dbmfetch02.at\
  dbmfetch03.at\
+ dumpload.at\
  create00.at\
  delete00.at\
  delete01.at\
@@ -126,6 +127,7 @@ check_PROGRAMS = \
  gtrecover\
  gtver\
  num2word\
+ t_dumpload\
  t_wordwrap\
  $(DBMPROGS)
 

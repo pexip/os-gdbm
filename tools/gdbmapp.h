@@ -1,5 +1,5 @@
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 2011-2022 Free Software Foundation, Inc.
+   Copyright (C) 2011-2024 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -21,12 +21,16 @@
 # include <locale.h>
 #endif
 
+#ifndef GDBM_PRINTFLIKE
+# define GDBM_PRINTFLIKE(fmt,narg) __attribute__ ((__format__ (__printf__, fmt, narg)))
+#endif
+
 extern const char *progname;
 
 void set_progname (const char *arg);
-void gdbm_perror (const char *fmt, ...);
-void sys_perror (int code, const char *fmt, ...);
-void error (const char *fmt, ...);
+void gdbm_perror (const char *fmt, ...) GDBM_PRINTFLIKE(1,2);
+void sys_perror (int code, const char *fmt, ...) GDBM_PRINTFLIKE(2,3);
+void error (const char *fmt, ...) GDBM_PRINTFLIKE(1,2);
 void verror (const char *fmt, va_list ap);
 
 void *emalloc (size_t size);

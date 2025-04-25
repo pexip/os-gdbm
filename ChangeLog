@@ -1,3 +1,208 @@
+2024-07-02  Sergey Poznyakoff  <gray@gnu.org>
+
+        Version 1.24
+
+
+2024-07-01  Sergey Poznyakoff  <gray@gnu.org>
+
+        New function: gdbm_load_from_file_ext. Use it in gdbm_load tool.
+
+        The function takes gdbm_open flags as one of its arguments.  Its 
+        use in gdbm_load avoids rewriting existing database if -U is 
+        specified without -r.
+
+        * NEWS: Document changes.
+        * doc/gdbm.texi: Likewise.
+        * doc/gdbm_load.1: Likewise.
+        * src/gdbmdump.c (gdbm_dump_to_file): Fix return value and error 
+        setting in case of invalid arguments.
+        * src/gdbm.h.in (gdbm_load_from_file_ext): New prototype.
+        * src/gdbmload.c (gdbm_load_from_file_ext): New function.
+        (gdbm_load_from_file): Call gdbm_load_from_file_ext.
+        * tools/gdbm_load.c: Use gdbm_load_from_file_ext.
+
+2024-06-17  Sergey Poznyakoff  <gray@gnu.org>
+
+        Require autoconf 2.71
+
+
+2024-06-17  Sergey Poznyakoff  <gray@gnu.org>
+
+        Update NEWS. Update copyright years.
+
+
+2024-06-04  Sergey Poznyakoff  <gray@gnu.org>
+
+        Ensure any padding bytes in avail_elem are filled with 0.
+
+        * src/gdbmdefs.h (avail_elem_init): New function.
+        * src/bucket.c: Use avail_elem_init to initialize local
+        variables of avail_elem type.
+        * src/falloc.c: Likewise.
+
+2024-06-04  Sergey Poznyakoff  <gray@gnu.org>
+
+        Don't require database name to be specified with -U
+
+        Rationale: the name may be supplied in the dump file itself (in 
+        ascii format).  Besides, the check was incorrect anyway.
+
+        This fixes 0591202918.
+
+        * tools/gdbm_load.c (main): Remove buggy check.
+        * NEWS: Reflect the change.
+        * doc/gdbm.texi: Likewise.
+
+2024-03-18  Sergey Poznyakoff  <gray@gnu.org>
+
+        Version 1.23.90
+
+
+2024-03-18  Sergey Poznyakoff  <gray@gnu.org>
+
+        Bugfix
+
+        * src/gdbmload.c (get_dump_line): Fix possible buffer underflow. 
+        Return error code. Return number of bytes read in the memory
+        location passed by the second argument. All uses changed
+
+2023-03-03  Sergey Poznyakoff  <gray@gnu.org>
+
+        Minor fix in the compatibility library.
+
+        * compat/dbmopen.c (ndbm_open_dir_file0): Don't try to unlink 
+        the 1.8-compatible dir file or create a missing one if the
+        database is being opened read-only.
+
+2023-01-22  Sergey Poznyakoff  <gray@gnu.org>
+
+        Minor fix in gdbm_dump utility.
+
+
+2023-01-22  Sergey Poznyakoff  <gray@gnu.org>
+
+        Update copyright years
+
+
+2022-07-04  Sergey Poznyakoff  <gray@gnu.org>
+
+        Bugfix
+
+        * tools/gdbm_load.c (main): Restore accidentally removed
+        parameter.
+        * tools/gdbmapp.h (GDBM_PRINTFLIKE): New macro
+        (gdbm_perror, sys_perror, error): Mark as printf-like.
+
+2022-07-03  Sergey Poznyakoff  <gray@gnu.org>
+
+        Test database file dumping and loading
+
+
+2022-07-02  Sergey Poznyakoff  <gray@gnu.org>
+
+        Improve handling of -u in gdbm_load
+
+        * tools/gdbm_load.c (main): Imply the owner login group if owner
+        name is followed by a :, and the current login group otherwise.
+        * doc/gdbm.texi: Document changes.
+
+2022-07-01  Sergey Poznyakoff  <gray@gnu.org>
+
+        Fix semantics of gdbm_load -r
+
+        Fixes https://puszcza.gnu.org.ua/bugs/index.php?573
+
+        * tools/gdbm_load.c: New option: --update (-U) The --replace
+        (-r) option is valid only if used together with
+        --update.
+        * NEWS: Document changes.
+        * doc/gdbm.texi: Document changes.
+
+2022-06-27  Sergey Poznyakoff  <gray@gnu.org>
+
+        Fix bug #569
+
+        * tools/gdbmshell.c (input_history_begin): return GDBMSHELL_ERR 
+        if history is not available.
+
+2022-06-20  Sergey Poznyakoff  <gray@gnu.org>
+
+        gdbm_dump: fix command line error detection
+
+        This fixes https://puszcza.gnu.org.ua/bugs/?567
+
+2022-06-18  Sergey Poznyakoff  <gray@gnu.org>
+
+        Fix https://puszcza.gnu.org.ua/bugs/index.php?563
+
+
+2022-02-07  Sergey Poznyakoff  <ttn@gnuvola.org>
+
+        Sync list of GDBM errors that need syserr
+
+        * doc/gdbm.texi (Errors): Update @itemize list.
+
+2022-06-18  Sergey Poznyakoff  <gray@gnu.org>
+
+        Fix location tracking in gdbmtool.  Fix the recover command.
+
+        In particular, this addresses
+        https://puszcza.gnu.org.ua/bugs/?566
+
+        * configure.ac: Fix diagnostic message
+        * tools/gdbmshell.c: Use lerror when needed.
+        (recover_handler): Accept varargs
+        (command_tab): Use argdoc to provide help for varargs
+        (help_handler): Handle argdoc
+        * tools/gdbmtool.h (PARAM_LOCPTR): New macro.
+        * tools/gram.y: Accept a single unadorned key=value pair as
+        argument. Fix locus for key=value pair in a list.
+        * tools/lex.l (YY_USER_ACTION): Use setbeg() to decide whether
+        yyloc.beg must be updated.
+        (setbeg): New function.
+
+2022-06-09  Sergey Poznyakoff  <gray@gnu.org>
+
+        Fix binary dump format for key and/or data of zero size.
+
+        Fixes https://puszcza.gnu.org.ua/bugs/?565
+
+        * src/gdbmexp.c (gdbm_export_to_file): Check for positive size
+        before attempting to write.
+        * src/gdbmimp.c (gdbm_import_from_file): Check for positive size
+        before attempting to read.
+
+2022-02-23  Sergey Poznyakoff  <gray@gnu.org>
+
+        Bugfix
+
+        * tools/parseopt.c (parseopt_next): Don't call parseopt_free. 
+        This triggered coredumps if, e.g. parseopt_print_help() got
+        called after parsing the arguments.  The bug was introduced by
+        203601fb06 in an attempt to pacify valgrind an similar tools.
+
+2022-02-21  Sergey Poznyakoff  <gray@gnu.org>
+
+        Make sure attempts to lock the file never block
+
+        * src/gdbmdefs.h: Minor change.
+        * src/lock.c: Clean up the code. Use F_TLOCK for lockf(), to
+        avoid blocking.
+
+2022-02-20  Sergey Poznyakoff  <gray@gnu.org>
+
+        Use getline in gdbm shell
+
+        * configure.ac: Check if getline is available.
+        * tools/gdbmshell.c (argsprep): Use getline.
+        [!HAVE_GETLINE] (getline): Simple replacement.
+
+2022-02-17  Sergey Poznyakoff  <gray@gnu.org>
+
+        Fix octal output in gdbm shell
+
+        * tools/datconv.c (f_string): Fix printing bytes in octal.
+
 2022-02-04  Sergey Poznyakoff  <gray@gnu.org>
 
         Version 1.23

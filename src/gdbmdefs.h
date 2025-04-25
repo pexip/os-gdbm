@@ -1,7 +1,7 @@
 /* gdbmdefs.h - The include file for dbm.  Defines structure and constants. */
 
 /* This file is part of GDBM, the GNU data base manager.
-   Copyright (C) 1990-2022 Free Software Foundation, Inc.
+   Copyright (C) 1990-2024 Free Software Foundation, Inc.
 
    GDBM is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -71,6 +71,15 @@ typedef struct
   int   av_size;                /* The size of the available block. */
   off_t  av_adr;                /* The file address of the available block. */
 } avail_elem;
+
+static inline void
+avail_elem_init (avail_elem *elem, int size, off_t adr)
+{
+  /* Make sure any padding in elem is filled with 0. */
+  memset (elem, 0, sizeof (*elem));
+  elem->av_size = size;
+  elem->av_adr = adr;
+}
 
 /* This is the actual table. The in-memory images of the avail blocks are
    allocated by malloc using a calculated size.  */
@@ -196,6 +205,15 @@ struct cache_elem
 				  bytes). */
 };
 
+/* Type of file locking in use. */
+enum lock_type
+  {
+    LOCKING_NONE = 0,
+    LOCKING_FLOCK,
+    LOCKING_LOCKF,
+    LOCKING_FCNTL
+  };
+
 /* This final structure contains all main memory based information for
    a gdbm file.  This allows multiple gdbm files to be opened at the same
    time by one program. */
@@ -240,11 +258,9 @@ struct gdbm_file_info
   int last_syserror;
   /* Last formatted error */
   char *last_errstr;
-  
-  /* Type of file locking in use. */
-  enum { LOCKING_NONE = 0, LOCKING_FLOCK, LOCKING_LOCKF,
-	 LOCKING_FCNTL } lock_type;
 
+  enum lock_type lock_type;
+  
   /* The fatal error handling routine. */
   void (*fatal_err) (const char *);
 
