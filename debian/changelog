@@ -1,3 +1,9 @@
+gdbm (1.24-2+pexip25u1) pexip-trixie; urgency=medium
+
+  * Initial trixie build
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Tue, 29 Apr 2025 22:32:09 +0100
+
 gdbm (1.24-2) unstable; urgency=medium
 
   * upload to unstable
